@@ -8,14 +8,23 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @ObservedObject var sessionManager = SessionManager()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            switch sessionManager.authState {
+            case .login:
+                LoginView()
+                    .environmentObject(sessionManager)
+            case .register:
+                RegisterView()
+                    .environmentObject(sessionManager)
+            case .home:
+                PrivateMsgView()
+                    .environmentObject(sessionManager)
+            }
         }
-        .padding()
     }
 }
 
