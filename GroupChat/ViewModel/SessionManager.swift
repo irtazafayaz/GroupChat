@@ -41,8 +41,7 @@ final class SessionManager: ObservableObject {
     }
     
     func login(email: String, password: String) {
-        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
-            guard let self = self else { return }
+        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
             if let error = error {
                 print("Error signing in: \(error.localizedDescription)")
                 return
@@ -51,13 +50,11 @@ final class SessionManager: ObservableObject {
     }
     
     func register(email: String, password: String) {
-        Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
-            guard let self = self else { return }
+        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
             if let error = error {
                 print("Error signing up: \(error.localizedDescription)")
                 return
             }
-            // Auth state will be updated automatically via the listener
         }
     }
     

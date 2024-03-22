@@ -21,7 +21,7 @@ struct ContentView: View {
                 RegisterView()
                     .environmentObject(sessionManager)
             case .home:
-                PrivateMsgView()
+                HomeView()
                     .environmentObject(sessionManager)
             }
         }

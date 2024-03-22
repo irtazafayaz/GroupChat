@@ -6,6 +6,9 @@
 //
 
 import Foundation
+import FirebaseAuth
+import Firebase
+import FirebaseFirestore
 
 struct Message: Identifiable, Codable {
     var id: String
@@ -13,3 +16,13 @@ struct Message: Identifiable, Codable {
     var received: Bool
     var timestamp: Date
 }
+
+struct Group: Identifiable, Codable {
+    @DocumentID var id: String?
+    var name: String
+    var type: String
+    var description: String
+    var owner: String
+    var image: String
+}
+
