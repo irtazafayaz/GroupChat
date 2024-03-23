@@ -38,6 +38,10 @@
 		D5439E2B2BAD0A4D00BCFD6F /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5439E2A2BAD0A4D00BCFD6F /* Utilities.swift */; };
 		D5AD630C2BAE097A002ECFD0 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD630B2BAE097A002ECFD0 /* ImagePicker.swift */; };
 		D5AD630E2BAE0E3E002ECFD0 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = D5AD630D2BAE0E3E002ECFD0 /* FirebaseStorage */; };
+		D5AD63102BAE63A1002ECFD0 /* GroupChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD630F2BAE63A1002ECFD0 /* GroupChatView.swift */; };
+		D5AD63122BAE63E4002ECFD0 /* GroupChatVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD63112BAE63E4002ECFD0 /* GroupChatVM.swift */; };
+		D5AD63142BAE680D002ECFD0 /* GroupMessageBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD63132BAE680D002ECFD0 /* GroupMessageBubble.swift */; };
+		D5AD63162BAE69A9002ECFD0 /* GroupMsgField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD63152BAE69A9002ECFD0 /* GroupMsgField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +68,10 @@
 		D5439E272BAD09B500BCFD6F /* GroupsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsVM.swift; sourceTree = "<group>"; };
 		D5439E2A2BAD0A4D00BCFD6F /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		D5AD630B2BAE097A002ECFD0 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		D5AD630F2BAE63A1002ECFD0 /* GroupChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatView.swift; sourceTree = "<group>"; };
+		D5AD63112BAE63E4002ECFD0 /* GroupChatVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatVM.swift; sourceTree = "<group>"; };
+		D5AD63132BAE680D002ECFD0 /* GroupMessageBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMessageBubble.swift; sourceTree = "<group>"; };
+		D5AD63152BAE69A9002ECFD0 /* GroupMsgField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMsgField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +150,7 @@
 				D5439DEE2BAC66FF00BCFD6F /* MessageManager.swift */,
 				D5439E0D2BAC768600BCFD6F /* SessionManager.swift */,
 				D5439E272BAD09B500BCFD6F /* GroupsVM.swift */,
+				D5AD63112BAE63E4002ECFD0 /* GroupChatVM.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -190,6 +199,9 @@
 			children = (
 				D5439E1D2BAC7E9D00BCFD6F /* GroupsListView.swift */,
 				D5439E252BAD08A300BCFD6F /* AddGroupView.swift */,
+				D5AD630F2BAE63A1002ECFD0 /* GroupChatView.swift */,
+				D5AD63132BAE680D002ECFD0 /* GroupMessageBubble.swift */,
+				D5AD63152BAE69A9002ECFD0 /* GroupMsgField.swift */,
 			);
 			path = Group;
 			sourceTree = "<group>";
@@ -300,11 +312,15 @@
 				D5439E162BAC784900BCFD6F /* ProfileView.swift in Sources */,
 				D5439E022BAC731A00BCFD6F /* UIView+Extensions.swift in Sources */,
 				D5439E282BAD09B500BCFD6F /* GroupsVM.swift in Sources */,
+				D5AD63162BAE69A9002ECFD0 /* GroupMsgField.swift in Sources */,
 				D5439E092BAC736E00BCFD6F /* MessageField.swift in Sources */,
+				D5AD63122BAE63E4002ECFD0 /* GroupChatVM.swift in Sources */,
 				D5439DDD2BAC650400BCFD6F /* GroupChatApp.swift in Sources */,
+				D5AD63102BAE63A1002ECFD0 /* GroupChatView.swift in Sources */,
 				D5439DEF2BAC66FF00BCFD6F /* MessageManager.swift in Sources */,
 				D5439E082BAC736E00BCFD6F /* TitleRow.swift in Sources */,
 				D5439E122BAC77F700BCFD6F /* LoginView.swift in Sources */,
+				D5AD63142BAE680D002ECFD0 /* GroupMessageBubble.swift in Sources */,
 				D5439E262BAD08A300BCFD6F /* AddGroupView.swift in Sources */,
 				D5439E0A2BAC736E00BCFD6F /* MessageBubble.swift in Sources */,
 			);

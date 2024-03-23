@@ -17,6 +17,13 @@ struct Message: Identifiable, Codable {
     var timestamp: Date
 }
 
+struct GroupMessage: Identifiable, Codable {
+    @DocumentID var id: String?
+    var senderId: String
+    var timestamp: Date
+    var content: String
+}
+
 struct Group: Identifiable, Codable {
     @DocumentID var id: String?
     var name: String

@@ -11,51 +11,62 @@ struct GroupsListView: View {
     
     @ObservedObject private var viewModel = GroupsVM()
     @EnvironmentObject var sessionManager: SessionManager
+    @State private var selectedGroup: Group?
+    @State private var openGroupChat: Bool = false
     
     var body: some View {
         VStack {
             
             HStack {
                 Text("Groups")
+                    .font(.title)
                     .foregroundColor(.black)
-                    .padding(.leading, 15)
                 Spacer()
-                
                 
                 Button {
                     viewModel.showingAddGroupView.toggle()
                 } label: {
                      Image(systemName: "plus.rectangle.fill.on.rectangle.fill")
+                        .font(.title2)
                 }
                 
             }
-            .padding(.top, 65)
+            .padding()
             
             if self.viewModel.groupsArray.count > 0 {
 
                 LazyVStack {
-                    ForEach(0..<self.viewModel.groupsArray.count, id: \.self) { index in
-                        
-                        HStack {
-                            if let url = URL(string: self.viewModel.groupsArray[index].image) {
-                                AsyncImage(url: url, content: view)
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 100, height: 100)
-                                    .clipShape(Circle())
-                            } else {
-                                Color.black
-                                    .frame(width: 100, height: 100)
+                    ForEach(0..<self.viewModel.groupsArray.count, id: \.self) { index in         
+                        Button {
+                            self.openGroupChat.toggle()
+                        } label: {
+                            HStack {
+                                if let url = URL(string: self.viewModel.groupsArray[index].image) {
+                                    AsyncImage(url: url, content: view)
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 50, height: 50)
+                                        .clipShape(Circle())
+                                } else {
+                                    Color.black
+                                        .frame(width: 100, height: 100)
+                                }
+                                
+                                VStack(alignment: .leading) {
+                                    Text(self.viewModel.groupsArray[index].name)
+                                        .font(.title2)
+                                        .foregroundStyle(.black)
+                                        .bold()
+                                    Text(self.viewModel.groupsArray[index].description)
+                                        .font(.title3)
+                                        .foregroundStyle(.gray)
+                                }
+                                .padding()
+                                
+                                Spacer()
+                                
                             }
-                            
-                            VStack {
-                                Text(self.viewModel.groupsArray[index].name)
-                                Text(self.viewModel.groupsArray[index].description)
-                            }
-                            
-                            Spacer()
-                            
+                            .padding()
                         }
-                        .padding()
 
                     }
                 }
@@ -73,6 +84,11 @@ struct GroupsListView: View {
         .onAppear {
             viewModel.fetchGroupsByOwner(sessionManager.getCurrentAuthUser()?.uid ?? "NaN")
         }
+        .navigationDestination(isPresented: $openGroupChat, destination: {
+            if let selected = selectedGroup, let id = selected.id {
+                GroupChatView(groupId: id)
+            }
+        })
     }
     
     @ViewBuilder
