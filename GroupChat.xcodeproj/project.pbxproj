@@ -42,6 +42,10 @@
 		D5AD63122BAE63E4002ECFD0 /* GroupChatVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD63112BAE63E4002ECFD0 /* GroupChatVM.swift */; };
 		D5AD63142BAE680D002ECFD0 /* GroupMessageBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD63132BAE680D002ECFD0 /* GroupMessageBubble.swift */; };
 		D5AD63162BAE69A9002ECFD0 /* GroupMsgField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD63152BAE69A9002ECFD0 /* GroupMsgField.swift */; };
+		D5AD63192BAF1D41002ECFD0 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD63182BAF1D41002ECFD0 /* Enums.swift */; };
+		D5AD631B2BAF238A002ECFD0 /* CustomBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD631A2BAF238A002ECFD0 /* CustomBackButton.swift */; };
+		D5AD631D2BAF2735002ECFD0 /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD631C2BAF2735002ECFD0 /* RoundedCorner.swift */; };
+		D5AD631F2BAF27C3002ECFD0 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD631E2BAF27C3002ECFD0 /* UIColor+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +76,11 @@
 		D5AD63112BAE63E4002ECFD0 /* GroupChatVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatVM.swift; sourceTree = "<group>"; };
 		D5AD63132BAE680D002ECFD0 /* GroupMessageBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMessageBubble.swift; sourceTree = "<group>"; };
 		D5AD63152BAE69A9002ECFD0 /* GroupMsgField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMsgField.swift; sourceTree = "<group>"; };
+		D5AD63172BAF1D06002ECFD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		D5AD63182BAF1D41002ECFD0 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		D5AD631A2BAF238A002ECFD0 /* CustomBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackButton.swift; sourceTree = "<group>"; };
+		D5AD631C2BAF2735002ECFD0 /* RoundedCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorner.swift; sourceTree = "<group>"; };
+		D5AD631E2BAF27C3002ECFD0 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,7 +123,8 @@
 		D5439DDB2BAC650400BCFD6F /* GroupChat */ = {
 			isa = PBXGroup;
 			children = (
-				D5439E292BAD0A4200BCFD6F /* Utilities */,
+				D5AD63172BAF1D06002ECFD0 /* Info.plist */,
+				D5439E292BAD0A4200BCFD6F /* HelperClasses */,
 				D5439E0B2BAC74EB00BCFD6F /* GoogleService-Info.plist */,
 				D5439E032BAC734B00BCFD6F /* Views */,
 				D5439E002BAC730500BCFD6F /* Extensions */,
@@ -166,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				D5439E012BAC731A00BCFD6F /* UIView+Extensions.swift */,
+				D5AD631E2BAF27C3002ECFD0 /* UIColor+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -206,13 +217,16 @@
 			path = Group;
 			sourceTree = "<group>";
 		};
-		D5439E292BAD0A4200BCFD6F /* Utilities */ = {
+		D5439E292BAD0A4200BCFD6F /* HelperClasses */ = {
 			isa = PBXGroup;
 			children = (
 				D5439E2A2BAD0A4D00BCFD6F /* Utilities.swift */,
 				D5AD630B2BAE097A002ECFD0 /* ImagePicker.swift */,
+				D5AD63182BAF1D41002ECFD0 /* Enums.swift */,
+				D5AD631A2BAF238A002ECFD0 /* CustomBackButton.swift */,
+				D5AD631C2BAF2735002ECFD0 /* RoundedCorner.swift */,
 			);
-			path = Utilities;
+			path = HelperClasses;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -304,8 +318,10 @@
 				D5439E1C2BAC7E0300BCFD6F /* HomeView.swift in Sources */,
 				D5439E1E2BAC7E9D00BCFD6F /* GroupsListView.swift in Sources */,
 				D5439DEC2BAC66DA00BCFD6F /* Message.swift in Sources */,
+				D5AD631D2BAF2735002ECFD0 /* RoundedCorner.swift in Sources */,
 				D5439DDF2BAC650400BCFD6F /* ContentView.swift in Sources */,
 				D5439E0E2BAC768600BCFD6F /* SessionManager.swift in Sources */,
+				D5AD631B2BAF238A002ECFD0 /* CustomBackButton.swift in Sources */,
 				D5439E2B2BAD0A4D00BCFD6F /* Utilities.swift in Sources */,
 				D5AD630C2BAE097A002ECFD0 /* ImagePicker.swift in Sources */,
 				D5439E182BAC788200BCFD6F /* PrivateMsgView.swift in Sources */,
@@ -322,6 +338,8 @@
 				D5439E122BAC77F700BCFD6F /* LoginView.swift in Sources */,
 				D5AD63142BAE680D002ECFD0 /* GroupMessageBubble.swift in Sources */,
 				D5439E262BAD08A300BCFD6F /* AddGroupView.swift in Sources */,
+				D5AD63192BAF1D41002ECFD0 /* Enums.swift in Sources */,
+				D5AD631F2BAF27C3002ECFD0 /* UIColor+Extensions.swift in Sources */,
 				D5439E0A2BAC736E00BCFD6F /* MessageBubble.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -459,6 +477,8 @@
 				DEVELOPMENT_TEAM = N3UZ6NV4QG;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GroupChat/Info.plist;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Wants to Acess Libray to upload profile pictures";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -488,6 +508,8 @@
 				DEVELOPMENT_TEAM = N3UZ6NV4QG;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GroupChat/Info.plist;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Wants to Acess Libray to upload profile pictures";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

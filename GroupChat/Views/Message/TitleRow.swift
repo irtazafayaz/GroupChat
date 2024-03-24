@@ -12,7 +12,7 @@ struct TitleRow: View {
     var name = "Sarah Smith"
     
     var body: some View {
-        HStack(spacing: 20) {
+        HStack(spacing: 10) {
             AsyncImage(url: imageUrl) { image in
                 image.resizable()
                     .aspectRatio(contentMode: .fill)
@@ -24,19 +24,10 @@ struct TitleRow: View {
             
             VStack(alignment: .leading) {
                 Text(name)
-                    .font(.title).bold()
-                
-                Text("Online")
-                    .font(.caption)
-                    .foregroundColor(.gray)
+                    .font(.custom(FontFamily.bold.rawValue, size: 20))
+
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            
-            Image(systemName: "phone.fill")
-                .foregroundColor(.gray)
-                .padding(10)
-                .background(.white)
-                .cornerRadius(50)
         }
         .padding()
     }

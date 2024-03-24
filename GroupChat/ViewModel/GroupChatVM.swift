@@ -23,7 +23,6 @@ class GroupChatVM: ObservableObject {
             "timestamp": FieldValue.serverTimestamp(),
             "content": message,
         ]
-        
         let groupDocument = self.db.collection("groups").document(groupId)
         groupDocument.collection("messages").addDocument(data: messageData) { err in
             if let err = err {
@@ -34,28 +33,31 @@ class GroupChatVM: ObservableObject {
         }
     }
     
-    
-    func fetchMessages(forGroup groupId: String) {
+    func getMessages(forGroup groupId: String) {
         db.collection("groups").document(groupId).collection("messages")
             .order(by: "timestamp", descending: false)
-            .addSnapshotListener { (querySnapshot, error) in
-                
-                guard let documents = querySnapshot?.documents else {
-                    print("No documents in 'messages'")
-                    return
-                }
-                
-                self.messages = documents.map { docSnapshot -> GroupMessage in
-                    
-                    let data = docSnapshot.data()
-                    let id = docSnapshot.documentID
-                    let senderId = data["senderId"] as? String ?? ""
-                    let timestamp = (data["timestamp"] as? Timestamp)?.dateValue() ?? Date()
-                    let content = data["content"] as? String ?? ""
-                    
-                    return GroupMessage(senderId: senderId, timestamp: timestamp, content: content)
+            .addSnapshotListener { querySnapshot, error in
+            
+            guard let documents = querySnapshot?.documents else {
+                print("Error fetching documents: \(String(describing: error))")
+                return
+            }
+            self.messages = documents.compactMap { document -> GroupMessage? in
+                do {
+                    return try document.data(as: GroupMessage.self)
+                } catch {
+                    print("Error decoding document into Message: \(error)")
+                    return nil
                 }
             }
+            self.messages.sort { $0.timestamp < $1.timestamp }
+            if let id = self.messages.last?.id {
+                self.lastMessageId = id
+            }
+        }
     }
+    
+    
+    
     
 }

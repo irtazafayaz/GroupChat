@@ -19,29 +19,31 @@ struct GroupsListView: View {
             
             HStack {
                 Text("Groups")
-                    .font(.title)
+                    .font(.custom(FontFamily.bold.rawValue, size: 30))
                     .foregroundColor(.black)
                 Spacer()
                 
                 Button {
                     viewModel.showingAddGroupView.toggle()
                 } label: {
-                     Image(systemName: "plus.rectangle.fill.on.rectangle.fill")
-                        .font(.title2)
+                    Image(systemName: "plus.rectangle.fill.on.rectangle.fill")
+                        .font(.custom(FontFamily.bold.rawValue, size: 24))
+                        .foregroundColor(.black)
                 }
-                
             }
             .padding()
+            .background(Color("Peach"))
             
             if self.viewModel.groupsArray.count > 0 {
-
+                
                 LazyVStack {
-                    ForEach(0..<self.viewModel.groupsArray.count, id: \.self) { index in         
+                    ForEach(viewModel.groupsArray, id: \.id) { group in
                         Button {
+                            selectedGroup = group
                             self.openGroupChat.toggle()
                         } label: {
                             HStack {
-                                if let url = URL(string: self.viewModel.groupsArray[index].image) {
+                                if let url = URL(string: group.image) {
                                     AsyncImage(url: url, content: view)
                                         .aspectRatio(contentMode: .fill)
                                         .frame(width: 50, height: 50)
@@ -52,34 +54,27 @@ struct GroupsListView: View {
                                 }
                                 
                                 VStack(alignment: .leading) {
-                                    Text(self.viewModel.groupsArray[index].name)
+                                    Text(group.name)
                                         .font(.title2)
                                         .foregroundStyle(.black)
                                         .bold()
-                                    Text(self.viewModel.groupsArray[index].description)
+                                    Text(group.description)
                                         .font(.title3)
                                         .foregroundStyle(.gray)
                                 }
                                 .padding()
-                                
                                 Spacer()
-                                
                             }
                             .padding()
                         }
-
                     }
                 }
                 .padding(.top, 10)
             }
-            
             Spacer()
-            
-
-            .sheet(isPresented: $viewModel.showingAddGroupView) {
-                AddGroupView(isPresented: $viewModel.showingAddGroupView)
-            }
-            
+        }
+        .sheet(isPresented: $viewModel.showingAddGroupView) {
+            AddGroupView(isPresented: $viewModel.showingAddGroupView)
         }
         .onAppear {
             viewModel.fetchGroupsByOwner(sessionManager.getCurrentAuthUser()?.uid ?? "NaN")
@@ -111,8 +106,6 @@ struct GroupsListView: View {
                 .foregroundColor(.gray)
         }
     }
-
-    
     
 }
 

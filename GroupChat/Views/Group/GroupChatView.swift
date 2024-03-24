@@ -9,34 +9,36 @@ import SwiftUI
 
 struct GroupChatView: View {
     
-    @StateObject var groupchatManager = GroupChatVM()
+    @ObservedObject var groupchatManager = GroupChatVM()
     @EnvironmentObject var sessionManager: SessionManager
     
-    var groupId: String
+    private var groupId: String
     
     init(groupId: String) {
         self.groupId = groupId
-        groupchatManager.fetchMessages(forGroup: groupId)
+        groupchatManager.getMessages(forGroup: groupId)
     }
 
-    
     var body: some View {
         VStack {
             VStack {
-                TitleRow()
-                
+                HStack {
+                    CustomBackButton()
+                    TitleRow()
+                }
                 ScrollViewReader { proxy in
                     ScrollView {
                         ForEach(groupchatManager.messages, id: \.id) { message in
                             GroupMessageBubble(message: message)
+                                .padding(.horizontal)
                         }
                     }
                     .padding(.top, 10)
                     .background(.white)
-                    .cornerRadius(30, corners: [.topLeft, .topRight])
-                    .onChange(of: groupchatManager.lastMessageId) { id in
+                    .cornerRadius(10, corners: [.topLeft, .topRight])
+                    .onChange(of: groupchatManager.lastMessageId) {
                         withAnimation {
-                            proxy.scrollTo(id, anchor: .bottom)
+                            proxy.scrollTo(groupchatManager.lastMessageId, anchor: .bottom)
                         }
                     }
                 }
@@ -49,6 +51,8 @@ struct GroupChatView: View {
             }
             
         }
+        .navigationBarBackButtonHidden()
+        
     }
     
 }

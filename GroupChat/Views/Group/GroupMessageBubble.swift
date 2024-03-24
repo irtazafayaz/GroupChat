@@ -8,34 +8,96 @@
 import SwiftUI
 
 struct GroupMessageBubble: View {
- 
-    @State private var showTime = false
+    
     @EnvironmentObject var sessionManager: SessionManager
-    var message: GroupMessage
-
+    private var message: GroupMessage
+    
+    init(message: GroupMessage) {
+        self.message = message
+    }
+    
     var body: some View {
-        VStack(alignment: sessionManager.getCurrentAuthUser() == nil ? .leading : .trailing) {
-            HStack {
-                Text(message.content)
-                    .padding()
-                    .background(sessionManager.getCurrentAuthUser() == nil ? Color("Gray") : Color("Peach"))
-                    .cornerRadius(30)
+        HStack {
+            if isCurrentUser {
+                Spacer()
             }
-            .frame(maxWidth: 300, alignment: sessionManager.getCurrentAuthUser() == nil ? .leading : .trailing)
-            .onTapGesture {
-                showTime.toggle()
+            VStack(alignment: isCurrentUser ? .trailing : .leading, spacing: 5) {
+                
+                Text(message.content)
+                    .font(.custom(FontFamily.medium.rawValue, size: 18))
+                    .foregroundColor(.black)
+                    .padding()
+                    .background(RoundedCorners(
+                        tl: isCurrentUser ? 20 : 8,
+                        tr: 20,
+                        bl: 20,
+                        br: isCurrentUser ? 8 : 20
+                    ).fill(
+                        isCurrentUser ?
+                        Color("Peach") : Color(hex: "#F5F5F5")
+                    ))
+                
+                Text("\(message.timestamp, formatter: messageDateFormatter)")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                
             }
             
-            if showTime {
-                Text("\(message.timestamp.formatted(.dateTime.hour().minute()))")
-                    .font(.caption2)
-                    .foregroundColor(.gray)
-                    .padding(sessionManager.getCurrentAuthUser() == nil ? .leading : .trailing, 25)
+            if !isCurrentUser {
+                Spacer()
             }
         }
-        .frame(maxWidth: .infinity, alignment: sessionManager.getCurrentAuthUser() == nil ? .leading : .trailing)
-        .padding(sessionManager.getCurrentAuthUser() == nil ? .leading : .trailing)
-        .padding(.horizontal, 10)
+        .padding(isCurrentUser ? .leading : .trailing, 40)
+        .transition(.scale)
+    }
+    
+    
+    
+    
+    
+    
+    func getMessageViewWithImage(_ message: GroupMessage) -> some View {
+        HStack {
+            if isCurrentUser {
+                Spacer()
+            }
+            HStack {
+                Text(message.content)
+                    .font(.custom(FontFamily.medium.rawValue, size: 18))
+                    .foregroundColor(isCurrentUser ? .white : .black)
+                    .padding()
+                    .background(RoundedCorners(
+                        tl: isCurrentUser ? 20 : 8,
+                        tr: 20,
+                        bl: 20,
+                        br: isCurrentUser ? 8 : 20
+                    ).fill(isCurrentUser ? Color(hex: Colors.primary.rawValue) : Color(hex: "#F5F5F5")))
+                
+            }
+            if !isCurrentUser {
+                Spacer()
+            }
+        }
+        .padding(.vertical, 10)
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    private var isCurrentUser: Bool {
+        sessionManager.getCurrentAuthUser()?.uid == message.senderId
+    }
+    
+    private var messageDateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        return formatter
     }
     
 }
