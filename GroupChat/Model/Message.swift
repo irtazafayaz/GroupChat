@@ -31,5 +31,6 @@ struct Group: Identifiable, Codable {
     var description: String
     var owner: String
     var image: String
+    var members: [String]?
 }
 

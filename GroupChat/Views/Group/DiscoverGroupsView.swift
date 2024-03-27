@@ -1,47 +1,26 @@
 //
-//  GroupsListView.swift
+//  DiscoverGroupsView.swift
 //  GroupChat
 //
-//  Created by Irtaza Fiaz on 21/03/2024.
+//  Created by Irtaza Fiaz on 27/03/2024.
 //
 
 import SwiftUI
 
-struct GroupsListView: View {
+struct DiscoverGroupsView: View {
     
-    @ObservedObject private var viewModel = GroupsVM()
+    @ObservedObject var viewModel: GroupsVM
     @EnvironmentObject var sessionManager: SessionManager
-    @State private var selectedGroup: Group?
-    @State private var openGroupChat: Bool = false
+    @Binding var isPresented: Bool
     
     var body: some View {
-        VStack {
-            
-            HStack {
-                Text("Groups")
-                    .font(.custom(FontFamily.bold.rawValue, size: 30))
-                    .foregroundColor(.black)
-                Spacer()
+        NavigationView {
+            VStack {
                 
-                Button {
-                    viewModel.showingAddGroupView.toggle()
-                } label: {
-                    Image(systemName: "plus.rectangle.fill.on.rectangle.fill")
-                        .font(.custom(FontFamily.bold.rawValue, size: 20))
-                        .foregroundColor(.black)
-                }
-            }
-            .padding()
-            .background(Color("Peach"))
-            
-            if self.viewModel.ownedOrJoinedGroups.count > 0 {
-                
-                LazyVStack(spacing: 0) {
-                    ForEach(viewModel.ownedOrJoinedGroups, id: \.id) { group in
-                        Button {
-                            selectedGroup = group
-                            self.openGroupChat.toggle()
-                        } label: {
+                if self.viewModel.notJoinedGroups.count > 0 {
+                    
+                    LazyVStack {
+                        ForEach(viewModel.notJoinedGroups, id: \.id) { group in
                             VStack {
                                 HStack {
                                     if let url = URL(string: group.image) {
@@ -63,39 +42,41 @@ struct GroupsListView: View {
                                             .font(.custom(FontFamily.regular.rawValue, size: 16))
                                             .foregroundStyle(.gray)
                                     }
-                                    .padding(.leading, 5)
                                     Spacer()
+                                    
+                                    Button("Join") {
+                                        if let user = sessionManager.getCurrentAuthUser() {
+                                            viewModel.joinGroup(groupId: group.id ?? "NaN", userId: user.uid) { error  in
+                                                if error == nil  {
+                                                    isPresented = false
+                                                } else {
+                                                    print("Eror \(String(describing: error))")
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
                                 }
                                 Divider()
                                     .frame(maxWidth: .infinity)
                             }
                             .padding()
-
+                            
+                            
                         }
                     }
                 }
+                Spacer()
             }
-            Spacer()
-            
-            Button("Discover") {
-                viewModel.openDiscoverGroupsView.toggle()
+            .navigationTitle("Discover")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        isPresented = false
+                    }
+                }
             }
-            
         }
-        .sheet(isPresented: $viewModel.showingAddGroupView) {
-            AddGroupView(isPresented: $viewModel.showingAddGroupView)
-        }
-        .sheet(isPresented: $viewModel.openDiscoverGroupsView) {
-            DiscoverGroupsView(viewModel: viewModel, isPresented: $viewModel.openDiscoverGroupsView)
-        }
-        .onAppear {
-            viewModel.fetchGroupsByOwner(sessionManager.getCurrentAuthUser()?.uid ?? "NaN")
-        }
-        .navigationDestination(isPresented: $openGroupChat, destination: {
-            if let selected = selectedGroup {
-                GroupChatView(selectedGroup: selected)
-            }
-        })
     }
     
     @ViewBuilder
@@ -121,7 +102,3 @@ struct GroupsListView: View {
     
 }
 
-
-#Preview {
-    GroupsListView()
-}

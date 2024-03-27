@@ -58,6 +58,4 @@ class GroupChatVM: ObservableObject {
     }
     
     
-    
-    
 }

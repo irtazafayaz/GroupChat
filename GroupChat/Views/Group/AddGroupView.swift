@@ -13,10 +13,7 @@ struct AddGroupView: View {
     
     @State var isUploading = false
     @State private var errorMessage: String = ""
-    
-    @Environment(\.dismiss) var dismiss
-//    var createGroup: (Group) -> Void
-    
+
     @Binding var isPresented: Bool
     @EnvironmentObject var sessionManager: SessionManager
     

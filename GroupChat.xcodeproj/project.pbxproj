@@ -64,6 +64,8 @@
 		D5FE43032BB440C200B594DC /* Urbanist-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5FE42F12BB440C100B594DC /* Urbanist-Medium.ttf */; };
 		D5FE43042BB440C200B594DC /* Urbanist-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5FE42F22BB440C100B594DC /* Urbanist-ExtraLight.ttf */; };
 		D5FE43052BB440C200B594DC /* Urbanist-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5FE42F32BB440C100B594DC /* Urbanist-ThinItalic.ttf */; };
+		D5FE43072BB476D500B594DC /* DiscoverGroupsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FE43062BB476D500B594DC /* DiscoverGroupsView.swift */; };
+		D5FE43092BB477DF00B594DC /* DiscoverGroupsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FE43082BB477DF00B594DC /* DiscoverGroupsVM.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -117,6 +119,8 @@
 		D5FE42F12BB440C100B594DC /* Urbanist-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Urbanist-Medium.ttf"; sourceTree = "<group>"; };
 		D5FE42F22BB440C100B594DC /* Urbanist-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Urbanist-ExtraLight.ttf"; sourceTree = "<group>"; };
 		D5FE42F32BB440C100B594DC /* Urbanist-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Urbanist-ThinItalic.ttf"; sourceTree = "<group>"; };
+		D5FE43062BB476D500B594DC /* DiscoverGroupsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverGroupsView.swift; sourceTree = "<group>"; };
+		D5FE43082BB477DF00B594DC /* DiscoverGroupsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverGroupsVM.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +202,7 @@
 				D5439E0D2BAC768600BCFD6F /* SessionManager.swift */,
 				D5439E272BAD09B500BCFD6F /* GroupsVM.swift */,
 				D5AD63112BAE63E4002ECFD0 /* GroupChatVM.swift */,
+				D5FE43082BB477DF00B594DC /* DiscoverGroupsVM.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -250,6 +255,7 @@
 				D5AD630F2BAE63A1002ECFD0 /* GroupChatView.swift */,
 				D5AD63132BAE680D002ECFD0 /* GroupMessageBubble.swift */,
 				D5AD63152BAE69A9002ECFD0 /* GroupMsgField.swift */,
+				D5FE43062BB476D500B594DC /* DiscoverGroupsView.swift */,
 			);
 			path = Group;
 			sourceTree = "<group>";
@@ -399,6 +405,7 @@
 				D5439E1E2BAC7E9D00BCFD6F /* GroupsListView.swift in Sources */,
 				D5439DEC2BAC66DA00BCFD6F /* Message.swift in Sources */,
 				D5AD631D2BAF2735002ECFD0 /* RoundedCorner.swift in Sources */,
+				D5FE43072BB476D500B594DC /* DiscoverGroupsView.swift in Sources */,
 				D5439DDF2BAC650400BCFD6F /* ContentView.swift in Sources */,
 				D5439E0E2BAC768600BCFD6F /* SessionManager.swift in Sources */,
 				D5AD631B2BAF238A002ECFD0 /* CustomBackButton.swift in Sources */,
@@ -413,6 +420,7 @@
 				D5AD63122BAE63E4002ECFD0 /* GroupChatVM.swift in Sources */,
 				D5439DDD2BAC650400BCFD6F /* GroupChatApp.swift in Sources */,
 				D5AD63102BAE63A1002ECFD0 /* GroupChatView.swift in Sources */,
+				D5FE43092BB477DF00B594DC /* DiscoverGroupsVM.swift in Sources */,
 				D5439DEF2BAC66FF00BCFD6F /* MessageManager.swift in Sources */,
 				D5439E082BAC736E00BCFD6F /* TitleRow.swift in Sources */,
 				D5439E122BAC77F700BCFD6F /* LoginView.swift in Sources */,
