@@ -19,7 +19,7 @@ struct HomeView: View {
                 TabView(selection: $selectedTab) {
                     PrivateMsgView()
                         .tabItem {
-                            Image(systemName: "house.circle.fill")
+                            Image(systemName: "message.circle.fill")
                                 .renderingMode(.template)
                             Text("Private Chat")
                         }

@@ -27,7 +27,7 @@ struct GroupsListView: View {
                     viewModel.showingAddGroupView.toggle()
                 } label: {
                     Image(systemName: "plus.rectangle.fill.on.rectangle.fill")
-                        .font(.custom(FontFamily.bold.rawValue, size: 24))
+                        .font(.custom(FontFamily.bold.rawValue, size: 20))
                         .foregroundColor(.black)
                 }
             }
@@ -42,34 +42,38 @@ struct GroupsListView: View {
                             selectedGroup = group
                             self.openGroupChat.toggle()
                         } label: {
-                            HStack {
-                                if let url = URL(string: group.image) {
-                                    AsyncImage(url: url, content: view)
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 50, height: 50)
-                                        .clipShape(Circle())
-                                } else {
-                                    Color.black
-                                        .frame(width: 100, height: 100)
+                            VStack {
+                                HStack {
+                                    if let url = URL(string: group.image) {
+                                        AsyncImage(url: url, content: view)
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 50, height: 50)
+                                            .clipShape(Circle())
+                                    } else {
+                                        Color.black
+                                            .frame(width: 50, height: 50)
+                                    }
+                                    
+                                    VStack(alignment: .leading) {
+                                        Text(group.name)
+                                            .font(.custom(FontFamily.bold.rawValue, size: 20))
+                                            .foregroundStyle(.black)
+                                            .bold()
+                                        Text(group.description)
+                                            .font(.custom(FontFamily.regular.rawValue, size: 16))
+                                            .foregroundStyle(.gray)
+                                    }
+    //                                .padding(.horizontal)
+                                    Spacer()
                                 }
-                                
-                                VStack(alignment: .leading) {
-                                    Text(group.name)
-                                        .font(.title2)
-                                        .foregroundStyle(.black)
-                                        .bold()
-                                    Text(group.description)
-                                        .font(.title3)
-                                        .foregroundStyle(.gray)
-                                }
-                                .padding()
-                                Spacer()
+                                Divider()
+                                    .frame(maxWidth: .infinity)
                             }
                             .padding()
+
                         }
                     }
                 }
-                .padding(.top, 10)
             }
             Spacer()
         }
@@ -80,8 +84,8 @@ struct GroupsListView: View {
             viewModel.fetchGroupsByOwner(sessionManager.getCurrentAuthUser()?.uid ?? "NaN")
         }
         .navigationDestination(isPresented: $openGroupChat, destination: {
-            if let selected = selectedGroup, let id = selected.id {
-                GroupChatView(groupId: id)
+            if let selected = selectedGroup {
+                GroupChatView(selectedGroup: selected)
             }
         })
     }
