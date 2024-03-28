@@ -17,13 +17,6 @@ struct HomeView: View {
         NavigationStack {
             VStack(alignment: .center) {
                 TabView(selection: $selectedTab) {
-                    PrivateMsgView()
-                        .tabItem {
-                            Image(systemName: "message.circle.fill")
-                                .renderingMode(.template)
-                            Text("Private Chat")
-                        }
-                        .tag(0)
                     GroupsListView()
                         .tabItem {
                             Image(systemName: "rectangle.3.group.bubble.fill")
