@@ -33,7 +33,7 @@ struct PrivateMsgView: View {
                     }
                 }
             }
-            .background(Color("Peach"))
+            .background(Color("primary-color"))
             
             MessageField()
                 .environmentObject(messagesManager)

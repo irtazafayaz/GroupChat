@@ -34,7 +34,7 @@ struct GroupMessageBubble: View {
                         br: isCurrentUser ? 8 : 20
                     ).fill(
                         isCurrentUser ?
-                        Color("Peach") : Color(hex: "#F5F5F5")
+                        Color("primary-color") : Color(hex: "#F5F5F5")
                     ))
                 
                 Text("\(message.timestamp, formatter: messageDateFormatter)")

@@ -43,7 +43,7 @@ struct GroupChatView: View {
                     }
                 }
             }
-            .background(Color("Peach"))
+            .background(Color("primary-color"))
             
             if let user = sessionManager.getCurrentAuthUser() {
                 GroupMsgField(groupId: selectedGroup.id ?? "NaN", senderId: user.uid)

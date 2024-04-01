@@ -30,7 +30,7 @@ struct GroupMsgField: View {
                 Image(systemName: "paperplane.fill")
                     .foregroundColor(.white)
                     .padding(10)
-                    .background(Color("Peach"))
+                    .background(Color("primary-color"))
                     .cornerRadius(50)
             }
         }

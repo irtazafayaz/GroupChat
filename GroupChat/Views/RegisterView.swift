@@ -40,7 +40,7 @@ struct RegisterView: View {
             }
             .foregroundColor(.white)
             .padding()
-            .background(Color("Peach"))
+            .background(Color("primary-color"))
             .cornerRadius(10)
             
             Spacer()

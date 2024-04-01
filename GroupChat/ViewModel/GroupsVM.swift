@@ -19,8 +19,17 @@ class GroupsVM: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var showingAddGroupView = false
     @Published var openDiscoverGroupsView = false
+    @Published var filteredGroups: [Group] = []
 
     private let db = Firestore.firestore()
+    
+    func filterGroups(_ searchText: String) {
+        if searchText.isEmpty {
+            filteredGroups = notJoinedGroups
+        } else {
+            filteredGroups = groupsArray.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+        }
+    }
     
     func createGroup(_ group: Group) {
         
@@ -45,32 +54,34 @@ class GroupsVM: ObservableObject {
         isLoading.toggle()
         groupsArray.removeAll()
         
-        db.collection("groups").getDocuments { [weak self] (querySnapshot, error) in
+        db.collection("groups").addSnapshotListener { [weak self] (querySnapshot, error) in
             guard let self = self else { return }
             guard let documents = querySnapshot?.documents else { return }
             
             let groups = documents.compactMap { document -> Group? in
                 try? document.data(as: Group.self)
             }
-            groupsArray = groups
-            categorizeGroups(user)
-            isLoading.toggle()
-            print("Grouped Messages\n \(groupsArray)")
+            self.groupsArray = groups
+            self.categorizeGroups(user)
+            self.isLoading.toggle()
+            print("Groups \n \(self.groupsArray)")
         }
     }
-    
+
     func categorizeGroups(_ currentUserID: String) {
+        ownedOrJoinedGroups.removeAll()
+        notJoinedGroups.removeAll()
         for group in groupsArray {
-            if group.owner == currentUserID || ((group.members?.contains(currentUserID)) != nil) {
+            if group.owner == currentUserID || (group.members?.contains(currentUserID) ?? false) {
                 ownedOrJoinedGroups.append(group)
             } else {
                 notJoinedGroups.append(group)
             }
         }
+        filterGroups("")
     }
 
     func joinGroup(groupId: String, userId: String, completion: @escaping (Error?) -> Void) {
-        let db = Firestore.firestore()
         let groupRef = db.collection("groups").document(groupId)
         
         db.runTransaction({ (transaction, errorPointer) -> Any? in

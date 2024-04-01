@@ -32,45 +32,46 @@ struct GroupsListView: View {
                 }
             }
             .padding()
-            .background(Color("Peach"))
+            .background(Color("primary-color"))
             
             if self.viewModel.ownedOrJoinedGroups.count > 0 {
-                
-                LazyVStack(spacing: 0) {
-                    ForEach(viewModel.ownedOrJoinedGroups, id: \.id) { group in
-                        Button {
-                            selectedGroup = group
-                            self.openGroupChat.toggle()
-                        } label: {
-                            VStack {
-                                HStack {
-                                    if let url = URL(string: group.image) {
-                                        AsyncImage(url: url, content: view)
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(width: 50, height: 50)
-                                            .clipShape(Circle())
-                                    } else {
-                                        Color.black
-                                            .frame(width: 50, height: 50)
+                ScrollView {
+                    VStack(spacing: 0) {
+                        ForEach(viewModel.ownedOrJoinedGroups, id: \.id) { group in
+                            Button {
+                                selectedGroup = group
+                                self.openGroupChat.toggle()
+                            } label: {
+                                VStack {
+                                    HStack {
+                                        if let url = URL(string: group.image) {
+                                            AsyncImage(url: url, content: view)
+                                                .aspectRatio(contentMode: .fill)
+                                                .frame(width: 50, height: 50)
+                                                .clipShape(Circle())
+                                        } else {
+                                            Color.black
+                                                .frame(width: 50, height: 50)
+                                        }
+                                        
+                                        VStack(alignment: .leading) {
+                                            Text(group.name)
+                                                .font(.custom(FontFamily.bold.rawValue, size: 20))
+                                                .foregroundStyle(.black)
+                                                .bold()
+                                            Text(group.description)
+                                                .font(.custom(FontFamily.regular.rawValue, size: 16))
+                                                .foregroundStyle(.gray)
+                                        }
+                                        .padding(.leading, 5)
+                                        Spacer()
                                     }
-                                    
-                                    VStack(alignment: .leading) {
-                                        Text(group.name)
-                                            .font(.custom(FontFamily.bold.rawValue, size: 20))
-                                            .foregroundStyle(.black)
-                                            .bold()
-                                        Text(group.description)
-                                            .font(.custom(FontFamily.regular.rawValue, size: 16))
-                                            .foregroundStyle(.gray)
-                                    }
-                                    .padding(.leading, 5)
-                                    Spacer()
+                                    Divider()
+                                        .frame(maxWidth: .infinity)
                                 }
-                                Divider()
-                                    .frame(maxWidth: .infinity)
+                                .padding()
+                                
                             }
-                            .padding()
-
                         }
                     }
                 }

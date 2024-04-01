@@ -12,15 +12,18 @@ struct DiscoverGroupsView: View {
     @ObservedObject var viewModel: GroupsVM
     @EnvironmentObject var sessionManager: SessionManager
     @Binding var isPresented: Bool
+    @State private var searchText = ""
     
     var body: some View {
         NavigationView {
             VStack {
                 
+                SearchBar(text: $searchText)
+                
                 if self.viewModel.notJoinedGroups.count > 0 {
                     
-                    LazyVStack {
-                        ForEach(viewModel.notJoinedGroups, id: \.id) { group in
+                    VStack {
+                        ForEach(viewModel.filteredGroups.prefix(10), id: \.id) { group in
                             VStack {
                                 HStack {
                                     if let url = URL(string: group.image) {
@@ -68,13 +71,16 @@ struct DiscoverGroupsView: View {
                 }
                 Spacer()
             }
-            .navigationTitle("Discover")
+            .navigationTitle("Trending Groups")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
                         isPresented = false
                     }
                 }
+            }
+            .onChange(of: searchText) {
+                viewModel.filterGroups(searchText)
             }
         }
     }
@@ -102,3 +108,18 @@ struct DiscoverGroupsView: View {
     
 }
 
+struct SearchBar: View {
+    @Binding var text: String
+    
+    var body: some View {
+        HStack {
+            TextField("Search", text: $text)
+                .padding(7)
+                .padding(.horizontal, 25)
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
+                .padding(.horizontal, 10)
+        }
+        .padding(.top, 10)
+    }
+}
