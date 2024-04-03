@@ -14,11 +14,43 @@ struct RegisterView: View {
     @State private var email = ""
     @State private var password = ""
     @State private var confirmPassword = ""
+    @State private var fullName = ""
+    @State private var image: UIImage?
+    @State private var showImagePicker = false
+    
     
     var body: some View {
         VStack(spacing: 16) {
             Text("Sign Up")
                 .font(.largeTitle).bold()
+            
+            VStack {
+                if let selectedImage = image {
+                    Image(uiImage: selectedImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 100, height: 100, alignment: .center)
+                        .clipShape(Circle())
+                        .onTapGesture {
+                            showImagePicker = true
+                        }
+                } else {
+                    Image(systemName: "person.crop.circle.fill")
+                        .resizable()
+                        .foregroundColor(.gray)
+                        .frame(width: 100, height: 100, alignment: .center)
+                        .onTapGesture {
+                            showImagePicker = true
+                        }
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding()
+            
+            CustomTextField(placeholder: Text("Name"), text: $fullName)
+                .padding()
+                .background(Color("Gray"))
+                .cornerRadius(10)
             
             CustomTextField(placeholder: Text("Email"), text: $email)
                 .padding()
@@ -36,7 +68,7 @@ struct RegisterView: View {
                 .cornerRadius(10)
             
             Button("Sign Up") {
-                sessionManager.register(email: email, password: password)
+                sessionManager.createNewUser(name: fullName, email: email, photo: image, password: password)
             }
             .foregroundColor(.white)
             .padding()
@@ -59,6 +91,10 @@ struct RegisterView: View {
             
         }
         .padding()
+        .sheet(isPresented: $showImagePicker) {
+            ImagePicker(image: $image, isShown: $showImagePicker) {
+            }
+        }
     }
 }
 

@@ -16,13 +16,15 @@ class GroupChatVM: ObservableObject {
     
     let db = Firestore.firestore()
     
-    func sendMessage(toGroup groupId: String, message: String, senderId: String) {
+    func sendMessage(toGroup groupId: String, message: String, senderId: String, senderName: String) {
         
         let messageData: [String: Any] = [
             "senderId": senderId,
+            "senderName": senderName,
             "timestamp": FieldValue.serverTimestamp(),
             "content": message,
         ]
+        
         let groupDocument = self.db.collection("groups").document(groupId)
         groupDocument.collection("messages").addDocument(data: messageData) { err in
             if let err = err {

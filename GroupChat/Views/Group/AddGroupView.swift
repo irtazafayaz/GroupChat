@@ -13,147 +13,159 @@ struct AddGroupView: View {
     
     @State var isUploading = false
     @State private var errorMessage: String = ""
-
+    
     @Binding var isPresented: Bool
     @EnvironmentObject var sessionManager: SessionManager
     
     @State private var title: String = ""
     @State private var description: String = ""
-    @State private var type: String = ""
+    @State private var type: String = "Movies"
     
     @State private var image: UIImage?
     @State private var showImagePicker = false
     
+    @State private var showAlert = false
+    @State private var uploadProgress: Float = 0.0
+    
+    private let groupTypes = ["Movies", "Books", "Social", "Entertainment", "Other"]
     private let db = Firestore.firestore()
     
     var body: some View {
         NavigationView {
             Form {
-                
                 Section(header: Text("Create Group")) {
-                    
                     VStack {
                         if let selectedImage = image {
                             Image(uiImage: selectedImage)
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
-                                .frame(width: 100, height: 100, alignment: .center)
+                                .frame(width: 60, height: 60, alignment: .center)
                                 .clipShape(Circle())
-                                .onTapGesture {
-                                    showImagePicker = true
-                                }
+                                .onTapGesture { showImagePicker = true }
                         } else {
                             Image(systemName: "person.crop.circle.fill")
                                 .resizable()
                                 .foregroundColor(.gray)
-                                .frame(width: 100, height: 100, alignment: .center)
-                                .onTapGesture {
-                                    showImagePicker = true
-                                }
+                                .frame(width: 60, height: 60, alignment: .center)
+                                .onTapGesture { showImagePicker = true }
                         }
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .frame(maxWidth: .infinity)
                     .padding()
                     
                     TextField("Group Name", text: $title)
                     
                     TextField("Description", text: $description)
                     
-                    TextField("Type", text: $type)
+                    Picker("Type", selection: $type) {
+                        ForEach(groupTypes, id: \.self) { groupType in
+                            Text(groupType).tag(groupType)
+                        }
+                    }
+                    .pickerStyle(MenuPickerStyle())
+                    
+                    if isUploading {
+                        HStack {
+                            Spacer()
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                .scaleEffect(1.5)
+                            Spacer()
+                        }
+                        .frame(height: 44)
+                        .background(Color.blue)
+                        .cornerRadius(8)
+                        .padding(.top, 10)
+                    } else {
+                        Button(action: handleUpload) {
+                            HStack {
+                                Spacer()
+                                Text("Add")
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.white)
+                                Spacer()
+                            }
+                            .frame(height: 44)
+                            .background(Color.blue)
+                            .cornerRadius(8)
+                        }
+                        .padding(.top, 10)
+                    }
                     
                 }
                 
-                Button("Add Transaction") {
-                    // Add logic to create and save a new transaction
-                    handleUpload()
-                }
-                
-                if !errorMessage.isEmpty {
-                    Text(errorMessage)
-                        .foregroundStyle(.red)
-                }
-                
-                if self.isUploading {
-                    ProgressView()
-                        .scaleEffect(2)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(Color.gray.opacity(0.5))
-                }
-                
             }
+            .disabled(isUploading)
             .sheet(isPresented: $showImagePicker) {
-                ImagePicker(image: $image, isShown: $showImagePicker) {
-                }
+                ImagePicker(image: $image, isShown: $showImagePicker) {}
+            }
+            .alert(isPresented: $showAlert) {
+                Alert(
+                    title: Text("Error"),
+                    message: Text(errorMessage),
+                    dismissButton: .default(Text("OK"), action: {})
+                )
             }
             .navigationTitle("Create Group")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        isPresented = false
-                    }
+                    Button("Cancel") { isPresented = false }
                 }
             }
         }
     }
     
     func handleUpload() {
-        guard image != nil else {
-            return
-        }
-        let storageRef = Storage.storage().reference()
-        let imageData = image?.jpegData(compressionQuality: 0.5)
-        let metadata = StorageMetadata()
-        metadata.contentType = "image/jpeg"
-        
-        guard imageData != nil else {
+        self.isUploading = true
+
+        guard let imageData = image?.jpegData(compressionQuality: 0.5) else {
+            errorMessage = "Please select an image for the group."
+            showAlert = true
             return
         }
         
         let path = "Images/\(UUID().uuidString)"
-        let fileRef = storageRef.child(path)
-        let uploadTask = fileRef.putData(imageData!, metadata: metadata)
-        
+        let fileRef = Storage.storage().reference().child(path)
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/jpeg"
+
+        let uploadTask = fileRef.putData(imageData, metadata: metadata)
+
         uploadTask.observe(.progress) { snapshot in
             self.isUploading = true
+            if let progress = snapshot.progress {
+                self.uploadProgress = Float(progress.fractionCompleted)
+            }
         }
-        
+
         uploadTask.observe(.success) { snapshot in
-            isUploading = false
+            self.isUploading = false
             fileRef.downloadURL { (url, error) in
                 guard let downloadURL = url else {
+                    self.errorMessage = "Error getting the download URL."
+                    self.showAlert = true
                     return
                 }
-                uploadData(group: Group(
-                    name: title,
-                    type: type,
-                    description: description,
-                    owner: sessionManager.getCurrentAuthUser()?.uid ?? "NaN",
+                self.uploadData(group: Group(
+                    name: self.title,
+                    type: self.type,
+                    description: self.description,
+                    owner: self.sessionManager.getCurrentAuthUser()?.uid ?? "NaN",
                     image: String(describing: downloadURL)
                 ))
-                isPresented.toggle()
-                
+                self.isPresented = false
             }
-            
-            
-            uploadTask.observe(.failure) { snapshot in
-                self.isUploading = false
-                if let error = snapshot.error as? NSError {
-                    switch StorageErrorCode(rawValue: error.code) {
-                    case .objectNotFound:
-                        self.errorMessage = "File doesn't exist"
-                    case .unauthorized:
-                        self.errorMessage = "User doesn't have permission to access the file"
-                    case .cancelled:
-                        self.errorMessage = "User canceled the upload"
-                    case .unknown:
-                        self.errorMessage = "Unknown error occurred"
-                    default:
-                        self.errorMessage = "A separate error occurred. This is a good place to retry the upload."
-                    }
-                }
+        }
+
+        uploadTask.observe(.failure) { snapshot in
+            self.isUploading = false
+            if let error = snapshot.error as NSError? {
+                self.errorMessage = error.localizedDescription
+                self.showAlert = true
             }
         }
     }
+
     
     func uploadData(group: Group) {
         
@@ -175,7 +187,3 @@ struct AddGroupView: View {
     }
     
 }
-
-//#Preview {
-//    AddGroupView(addGroup: { _ in })
-//}

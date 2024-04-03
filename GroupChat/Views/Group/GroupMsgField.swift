@@ -14,6 +14,7 @@ struct GroupMsgField: View {
     
     var groupId: String
     var senderId: String
+    var senderName: String
     
     var body: some View {
         HStack {
@@ -23,7 +24,7 @@ struct GroupMsgField: View {
                 .disableAutocorrection(true)
             
             Button {
-                groupManager.sendMessage(toGroup: groupId, message: message, senderId: senderId)
+                groupManager.sendMessage(toGroup: groupId, message: message, senderId: senderId, senderName: senderName)
                 message = ""
                 
             } label: {
@@ -44,5 +45,5 @@ struct GroupMsgField: View {
 }
 
 #Preview {
-    GroupMsgField(groupId: "", senderId: "")
+    GroupMsgField(groupId: "", senderId: "", senderName: "")
 }

@@ -23,6 +23,12 @@ struct GroupMessageBubble: View {
             }
             VStack(alignment: isCurrentUser ? .trailing : .leading, spacing: 5) {
                 
+                if !isCurrentUser {
+                    Text(message.senderName)
+                        .font(.custom(FontFamily.regular.rawValue, size: 12))
+                        .foregroundColor(.black)
+                }
+                
                 Text(message.content)
                     .font(.custom(FontFamily.medium.rawValue, size: 18))
                     .foregroundColor(.black)
@@ -51,11 +57,7 @@ struct GroupMessageBubble: View {
         .transition(.scale)
     }
     
-    
-    
-    
-    
-    
+
     func getMessageViewWithImage(_ message: GroupMessage) -> some View {
         HStack {
             if isCurrentUser {
@@ -81,15 +83,6 @@ struct GroupMessageBubble: View {
         .padding(.vertical, 10)
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
     private var isCurrentUser: Bool {
         sessionManager.getCurrentAuthUser()?.uid == message.senderId
     }
@@ -102,6 +95,3 @@ struct GroupMessageBubble: View {
     
 }
 
-#Preview {
-    GroupMessageBubble(message: GroupMessage(senderId: "11", timestamp: .now, content: ""))
-}

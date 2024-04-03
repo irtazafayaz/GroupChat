@@ -12,12 +12,21 @@ struct HomeView: View {
     
     //MARK: - Data Members
     @State private var selectedTab: Int = 0
+    @StateObject private var viewModel = GroupsVM()
+    @EnvironmentObject var sessionManager: SessionManager
     
     var body: some View {
         NavigationStack {
             VStack(alignment: .center) {
                 TabView(selection: $selectedTab) {
-                    GroupsListView()
+                    TrendingView(viewModel: viewModel, selectedTab: $selectedTab)
+                        .tabItem {
+                            Image(systemName: "chart.line.uptrend.xyaxis.circle.fill")
+                                .renderingMode(.template)
+                            Text("Trending")
+                        }
+                        .tag(0)
+                    GroupsListView(viewModel: viewModel)
                         .tabItem {
                             Image(systemName: "rectangle.3.group.bubble.fill")
                                 .renderingMode(.template)
@@ -32,6 +41,10 @@ struct HomeView: View {
                         }
                         .tag(2)
                 }
+                
+            }
+            .onAppear {
+                viewModel.fetchGroupsByOwner(sessionManager.getCurrentAuthUser()?.uid ?? "NaN")
             }
             .navigationBarBackButtonHidden(true)
         }

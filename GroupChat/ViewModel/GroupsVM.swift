@@ -19,6 +19,7 @@ class GroupsVM: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var showingAddGroupView = false
     @Published var openDiscoverGroupsView = false
+    @Published var isFetchingGroups = false
     @Published var filteredGroups: [Group] = []
 
     private let db = Firestore.firestore()
@@ -31,32 +32,15 @@ class GroupsVM: ObservableObject {
         }
     }
     
-    func createGroup(_ group: Group) {
-        
-        let group: [String: Any] = [
-            "name": group.name,
-            "type": group.type,
-            "description":  group.description,
-            "owner": group.owner,
-            "members": []
-        ]
-        
-        self.db.collection("groups").addDocument(data: group) { err in
-            if let err = err {
-                print("Error adding document: \(err)")
-            } else {
-                print("Document added")
-            }
-        }
-    }
-    
     func fetchGroupsByOwner(_ user: String) {
         isLoading.toggle()
         groupsArray.removeAll()
         
         db.collection("groups").addSnapshotListener { [weak self] (querySnapshot, error) in
             guard let self = self else { return }
-            guard let documents = querySnapshot?.documents else { return }
+            guard let documents = querySnapshot?.documents else {
+                return
+            }
             
             let groups = documents.compactMap { document -> Group? in
                 try? document.data(as: Group.self)

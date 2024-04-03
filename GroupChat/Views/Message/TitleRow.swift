@@ -22,14 +22,23 @@ struct TitleRow: View {
     
     var body: some View {
         HStack(spacing: 10) {
-            AsyncImage(url: imageUrl) { image in
-                image.resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 50, height: 50)
-                    .cornerRadius(50)
-            } placeholder: {
-                ProgressView()
+            if let url = imageUrl {
+                AsyncImage(url: imageUrl) { image in
+                    image.resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 50, height: 50)
+                        .cornerRadius(50)
+                } placeholder: {
+                    ProgressView()
+                }
+            } else {
+                Image(systemName: "person.circle.fill")
+                    .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 50, height: 50)
+                        .cornerRadius(50)
             }
+            
             
             VStack(alignment: .leading) {
                 Text(name)

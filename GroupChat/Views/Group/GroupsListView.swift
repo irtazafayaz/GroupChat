@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GroupsListView: View {
     
-    @ObservedObject private var viewModel = GroupsVM()
+    @ObservedObject var viewModel: GroupsVM
     @EnvironmentObject var sessionManager: SessionManager
     @State private var selectedGroup: Group?
     @State private var openGroupChat: Bool = false
@@ -124,5 +124,5 @@ struct GroupsListView: View {
 
 
 #Preview {
-    GroupsListView()
+    GroupsListView(viewModel: GroupsVM())
 }

@@ -46,6 +46,8 @@
 		D5AD631B2BAF238A002ECFD0 /* CustomBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD631A2BAF238A002ECFD0 /* CustomBackButton.swift */; };
 		D5AD631D2BAF2735002ECFD0 /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD631C2BAF2735002ECFD0 /* RoundedCorner.swift */; };
 		D5AD631F2BAF27C3002ECFD0 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD631E2BAF27C3002ECFD0 /* UIColor+Extensions.swift */; };
+		D5BA875D2BBB886B006CEA8C /* GroupMembersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BA875C2BBB886B006CEA8C /* GroupMembersView.swift */; };
+		D5C7A3602BBD9D8B00FCAF36 /* TrendingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C7A35F2BBD9D8B00FCAF36 /* TrendingView.swift */; };
 		D5FE42F42BB440C200B594DC /* Urbanist-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5FE42E22BB440C100B594DC /* Urbanist-Bold.ttf */; };
 		D5FE42F52BB440C200B594DC /* Urbanist-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5FE42E32BB440C100B594DC /* Urbanist-Regular.ttf */; };
 		D5FE42F62BB440C200B594DC /* Urbanist-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5FE42E42BB440C100B594DC /* Urbanist-LightItalic.ttf */; };
@@ -65,7 +67,6 @@
 		D5FE43042BB440C200B594DC /* Urbanist-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5FE42F22BB440C100B594DC /* Urbanist-ExtraLight.ttf */; };
 		D5FE43052BB440C200B594DC /* Urbanist-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5FE42F32BB440C100B594DC /* Urbanist-ThinItalic.ttf */; };
 		D5FE43072BB476D500B594DC /* DiscoverGroupsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FE43062BB476D500B594DC /* DiscoverGroupsView.swift */; };
-		D5FE43092BB477DF00B594DC /* DiscoverGroupsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FE43082BB477DF00B594DC /* DiscoverGroupsVM.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -101,6 +102,8 @@
 		D5AD631A2BAF238A002ECFD0 /* CustomBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackButton.swift; sourceTree = "<group>"; };
 		D5AD631C2BAF2735002ECFD0 /* RoundedCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorner.swift; sourceTree = "<group>"; };
 		D5AD631E2BAF27C3002ECFD0 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		D5BA875C2BBB886B006CEA8C /* GroupMembersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMembersView.swift; sourceTree = "<group>"; };
+		D5C7A35F2BBD9D8B00FCAF36 /* TrendingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendingView.swift; sourceTree = "<group>"; };
 		D5FE42E22BB440C100B594DC /* Urbanist-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Urbanist-Bold.ttf"; sourceTree = "<group>"; };
 		D5FE42E32BB440C100B594DC /* Urbanist-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Urbanist-Regular.ttf"; sourceTree = "<group>"; };
 		D5FE42E42BB440C100B594DC /* Urbanist-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Urbanist-LightItalic.ttf"; sourceTree = "<group>"; };
@@ -120,7 +123,6 @@
 		D5FE42F22BB440C100B594DC /* Urbanist-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Urbanist-ExtraLight.ttf"; sourceTree = "<group>"; };
 		D5FE42F32BB440C100B594DC /* Urbanist-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Urbanist-ThinItalic.ttf"; sourceTree = "<group>"; };
 		D5FE43062BB476D500B594DC /* DiscoverGroupsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverGroupsView.swift; sourceTree = "<group>"; };
-		D5FE43082BB477DF00B594DC /* DiscoverGroupsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverGroupsVM.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,7 +204,6 @@
 				D5439E0D2BAC768600BCFD6F /* SessionManager.swift */,
 				D5439E272BAD09B500BCFD6F /* GroupsVM.swift */,
 				D5AD63112BAE63E4002ECFD0 /* GroupChatVM.swift */,
-				D5FE43082BB477DF00B594DC /* DiscoverGroupsVM.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -250,12 +251,14 @@
 		D5439E1A2BAC7DF200BCFD6F /* Group */ = {
 			isa = PBXGroup;
 			children = (
+				D5C7A35E2BBD9D7B00FCAF36 /* TrendingGroups */,
 				D5439E1D2BAC7E9D00BCFD6F /* GroupsListView.swift */,
 				D5439E252BAD08A300BCFD6F /* AddGroupView.swift */,
 				D5AD630F2BAE63A1002ECFD0 /* GroupChatView.swift */,
 				D5AD63132BAE680D002ECFD0 /* GroupMessageBubble.swift */,
 				D5AD63152BAE69A9002ECFD0 /* GroupMsgField.swift */,
 				D5FE43062BB476D500B594DC /* DiscoverGroupsView.swift */,
+				D5BA875C2BBB886B006CEA8C /* GroupMembersView.swift */,
 			);
 			path = Group;
 			sourceTree = "<group>";
@@ -270,6 +273,14 @@
 				D5AD631C2BAF2735002ECFD0 /* RoundedCorner.swift */,
 			);
 			path = HelperClasses;
+			sourceTree = "<group>";
+		};
+		D5C7A35E2BBD9D7B00FCAF36 /* TrendingGroups */ = {
+			isa = PBXGroup;
+			children = (
+				D5C7A35F2BBD9D8B00FCAF36 /* TrendingView.swift */,
+			);
+			path = TrendingGroups;
 			sourceTree = "<group>";
 		};
 		D5FE42E12BB440C100B594DC /* Fonts */ = {
@@ -403,6 +414,7 @@
 				D5439E142BAC781500BCFD6F /* RegisterView.swift in Sources */,
 				D5439E1C2BAC7E0300BCFD6F /* HomeView.swift in Sources */,
 				D5439E1E2BAC7E9D00BCFD6F /* GroupsListView.swift in Sources */,
+				D5C7A3602BBD9D8B00FCAF36 /* TrendingView.swift in Sources */,
 				D5439DEC2BAC66DA00BCFD6F /* Message.swift in Sources */,
 				D5AD631D2BAF2735002ECFD0 /* RoundedCorner.swift in Sources */,
 				D5FE43072BB476D500B594DC /* DiscoverGroupsView.swift in Sources */,
@@ -414,13 +426,13 @@
 				D5439E182BAC788200BCFD6F /* PrivateMsgView.swift in Sources */,
 				D5439E162BAC784900BCFD6F /* ProfileView.swift in Sources */,
 				D5439E022BAC731A00BCFD6F /* UIView+Extensions.swift in Sources */,
+				D5BA875D2BBB886B006CEA8C /* GroupMembersView.swift in Sources */,
 				D5439E282BAD09B500BCFD6F /* GroupsVM.swift in Sources */,
 				D5AD63162BAE69A9002ECFD0 /* GroupMsgField.swift in Sources */,
 				D5439E092BAC736E00BCFD6F /* MessageField.swift in Sources */,
 				D5AD63122BAE63E4002ECFD0 /* GroupChatVM.swift in Sources */,
 				D5439DDD2BAC650400BCFD6F /* GroupChatApp.swift in Sources */,
 				D5AD63102BAE63A1002ECFD0 /* GroupChatView.swift in Sources */,
-				D5FE43092BB477DF00B594DC /* DiscoverGroupsVM.swift in Sources */,
 				D5439DEF2BAC66FF00BCFD6F /* MessageManager.swift in Sources */,
 				D5439E082BAC736E00BCFD6F /* TitleRow.swift in Sources */,
 				D5439E122BAC77F700BCFD6F /* LoginView.swift in Sources */,

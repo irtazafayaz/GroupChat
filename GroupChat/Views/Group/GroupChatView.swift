@@ -25,6 +25,9 @@ struct GroupChatView: View {
                 HStack {
                     CustomBackButton()
                     TitleRow(imageUrl: URL(string: selectedGroup.image), name: selectedGroup.name)
+//                        .onTapGesture {
+//                            <#code#>
+//                        }
                 }
                 ScrollViewReader { proxy in
                     ScrollView {
@@ -44,9 +47,13 @@ struct GroupChatView: View {
                 }
             }
             .background(Color("primary-color"))
+//            .sheet(isPresented: $showingCredits) {
+//                Text("This app was brought to you by Hacking with Swift")
+//                    .presentationDetents([.medium, .large])
+//            }
             
             if let user = sessionManager.getCurrentAuthUser() {
-                GroupMsgField(groupId: selectedGroup.id ?? "NaN", senderId: user.uid)
+                GroupMsgField(groupId: selectedGroup.id ?? "NaN", senderId: user.uid, senderName: user.email ?? "NaN")
                     .environmentObject(groupchatManager)
             }
             
