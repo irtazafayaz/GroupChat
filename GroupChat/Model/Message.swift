@@ -41,3 +41,10 @@ struct Group: Identifiable, Codable {
     var members: [String]?
 }
 
+struct UserDetails: Identifiable, Codable {
+    @DocumentID var id: String?
+    var displayName: String
+    var email: String
+    var photoURL: String
+
+}

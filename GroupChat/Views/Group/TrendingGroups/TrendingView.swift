@@ -20,8 +20,8 @@ struct TrendingView: View {
             VStack {
                 
                 HStack {
-                    Text("Trending Groups")
-                        .font(.custom(FontFamily.bold.rawValue, size: 30))
+                    Text("Trending Groups 🔥")
+                        .font(.custom(FontFamily.bold.rawValue, size: 26))
                         .foregroundColor(.black)
                     Spacer()
                     

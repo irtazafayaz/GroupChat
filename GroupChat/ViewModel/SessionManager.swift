@@ -36,7 +36,7 @@ final class SessionManager: ObservableObject {
     
     private func fetchUserData() {
         guard let currentUser = Auth.auth().currentUser else { return }
-        let userRef = db.collection("users").document(currentUser.email ?? "")
+        let userRef = db.collection("users").document(currentUser.uid)
         userRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 let data = document.data()
@@ -117,7 +117,7 @@ final class SessionManager: ObservableObject {
                         guard let photoUrl = url else { return }
                         let values = ["displayName": name, "email": email, "photoURL": photoUrl.absoluteString]
 
-                        let groupDocument = self.db.collection("users").document(email)
+                        let groupDocument = self.db.collection("users").document(uid)
                         groupDocument.setData(values) { err in
                             if let err = err {
                                 print("Error sending message: \(err)")

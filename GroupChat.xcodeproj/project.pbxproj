@@ -66,7 +66,6 @@
 		D5FE43032BB440C200B594DC /* Urbanist-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5FE42F12BB440C100B594DC /* Urbanist-Medium.ttf */; };
 		D5FE43042BB440C200B594DC /* Urbanist-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5FE42F22BB440C100B594DC /* Urbanist-ExtraLight.ttf */; };
 		D5FE43052BB440C200B594DC /* Urbanist-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5FE42F32BB440C100B594DC /* Urbanist-ThinItalic.ttf */; };
-		D5FE43072BB476D500B594DC /* DiscoverGroupsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FE43062BB476D500B594DC /* DiscoverGroupsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -122,7 +121,6 @@
 		D5FE42F12BB440C100B594DC /* Urbanist-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Urbanist-Medium.ttf"; sourceTree = "<group>"; };
 		D5FE42F22BB440C100B594DC /* Urbanist-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Urbanist-ExtraLight.ttf"; sourceTree = "<group>"; };
 		D5FE42F32BB440C100B594DC /* Urbanist-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Urbanist-ThinItalic.ttf"; sourceTree = "<group>"; };
-		D5FE43062BB476D500B594DC /* DiscoverGroupsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverGroupsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -257,7 +255,6 @@
 				D5AD630F2BAE63A1002ECFD0 /* GroupChatView.swift */,
 				D5AD63132BAE680D002ECFD0 /* GroupMessageBubble.swift */,
 				D5AD63152BAE69A9002ECFD0 /* GroupMsgField.swift */,
-				D5FE43062BB476D500B594DC /* DiscoverGroupsView.swift */,
 				D5BA875C2BBB886B006CEA8C /* GroupMembersView.swift */,
 			);
 			path = Group;
@@ -417,7 +414,6 @@
 				D5C7A3602BBD9D8B00FCAF36 /* TrendingView.swift in Sources */,
 				D5439DEC2BAC66DA00BCFD6F /* Message.swift in Sources */,
 				D5AD631D2BAF2735002ECFD0 /* RoundedCorner.swift in Sources */,
-				D5FE43072BB476D500B594DC /* DiscoverGroupsView.swift in Sources */,
 				D5439DDF2BAC650400BCFD6F /* ContentView.swift in Sources */,
 				D5439E0E2BAC768600BCFD6F /* SessionManager.swift in Sources */,
 				D5AD631B2BAF238A002ECFD0 /* CustomBackButton.swift in Sources */,

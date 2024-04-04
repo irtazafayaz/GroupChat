@@ -11,12 +11,13 @@ struct GroupChatView: View {
     
     @ObservedObject var groupchatManager = GroupChatVM()
     @EnvironmentObject var sessionManager: SessionManager
-    
+    @State private var openMemberList: Bool = false
+
     private var selectedGroup: Group
     
     init(selectedGroup: Group) {
         self.selectedGroup = selectedGroup
-        groupchatManager.getMessages(forGroup: selectedGroup.id ?? "NaN")
+        groupchatManager.getMessagesAndMembers(forGroup: selectedGroup.id ?? "NaN")
     }
 
     var body: some View {
@@ -25,9 +26,9 @@ struct GroupChatView: View {
                 HStack {
                     CustomBackButton()
                     TitleRow(imageUrl: URL(string: selectedGroup.image), name: selectedGroup.name)
-//                        .onTapGesture {
-//                            <#code#>
-//                        }
+                        .onTapGesture {
+                            openMemberList.toggle()
+                        }
                 }
                 ScrollViewReader { proxy in
                     ScrollView {
@@ -47,10 +48,10 @@ struct GroupChatView: View {
                 }
             }
             .background(Color("primary-color"))
-//            .sheet(isPresented: $showingCredits) {
-//                Text("This app was brought to you by Hacking with Swift")
-//                    .presentationDetents([.medium, .large])
-//            }
+            .sheet(isPresented: $openMemberList) {
+                GroupMembersView(members: $groupchatManager.members)
+                    .presentationDetents([.medium, .large])
+            }
             
             if let user = sessionManager.getCurrentAuthUser() {
                 GroupMsgField(groupId: selectedGroup.id ?? "NaN", senderId: user.uid, senderName: user.email ?? "NaN")

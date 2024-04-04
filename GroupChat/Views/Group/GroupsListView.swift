@@ -78,16 +78,9 @@ struct GroupsListView: View {
             }
             Spacer()
             
-            Button("Discover") {
-                viewModel.openDiscoverGroupsView.toggle()
-            }
-            
         }
         .sheet(isPresented: $viewModel.showingAddGroupView) {
             AddGroupView(isPresented: $viewModel.showingAddGroupView)
-        }
-        .sheet(isPresented: $viewModel.openDiscoverGroupsView) {
-            DiscoverGroupsView(viewModel: viewModel, isPresented: $viewModel.openDiscoverGroupsView)
         }
         .onAppear {
             viewModel.fetchGroupsByOwner(sessionManager.getCurrentAuthUser()?.uid ?? "NaN")
