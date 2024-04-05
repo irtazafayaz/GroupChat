@@ -36,6 +36,7 @@
 		D5439E262BAD08A300BCFD6F /* AddGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5439E252BAD08A300BCFD6F /* AddGroupView.swift */; };
 		D5439E282BAD09B500BCFD6F /* GroupsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5439E272BAD09B500BCFD6F /* GroupsVM.swift */; };
 		D5439E2B2BAD0A4D00BCFD6F /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5439E2A2BAD0A4D00BCFD6F /* Utilities.swift */; };
+		D544BAFB2BBE32B1005AE549 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D544BAFA2BBE32B1005AE549 /* SearchBar.swift */; };
 		D5AD630C2BAE097A002ECFD0 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD630B2BAE097A002ECFD0 /* ImagePicker.swift */; };
 		D5AD630E2BAE0E3E002ECFD0 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = D5AD630D2BAE0E3E002ECFD0 /* FirebaseStorage */; };
 		D5AD63102BAE63A1002ECFD0 /* GroupChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD630F2BAE63A1002ECFD0 /* GroupChatView.swift */; };
@@ -91,6 +92,7 @@
 		D5439E252BAD08A300BCFD6F /* AddGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGroupView.swift; sourceTree = "<group>"; };
 		D5439E272BAD09B500BCFD6F /* GroupsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsVM.swift; sourceTree = "<group>"; };
 		D5439E2A2BAD0A4D00BCFD6F /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		D544BAFA2BBE32B1005AE549 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		D5AD630B2BAE097A002ECFD0 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		D5AD630F2BAE63A1002ECFD0 /* GroupChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatView.swift; sourceTree = "<group>"; };
 		D5AD63112BAE63E4002ECFD0 /* GroupChatVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatVM.swift; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 				D5AD63182BAF1D41002ECFD0 /* Enums.swift */,
 				D5AD631A2BAF238A002ECFD0 /* CustomBackButton.swift */,
 				D5AD631C2BAF2735002ECFD0 /* RoundedCorner.swift */,
+				D544BAFA2BBE32B1005AE549 /* SearchBar.swift */,
 			);
 			path = HelperClasses;
 			sourceTree = "<group>";
@@ -425,6 +428,7 @@
 				D5BA875D2BBB886B006CEA8C /* GroupMembersView.swift in Sources */,
 				D5439E282BAD09B500BCFD6F /* GroupsVM.swift in Sources */,
 				D5AD63162BAE69A9002ECFD0 /* GroupMsgField.swift in Sources */,
+				D544BAFB2BBE32B1005AE549 /* SearchBar.swift in Sources */,
 				D5439E092BAC736E00BCFD6F /* MessageField.swift in Sources */,
 				D5AD63122BAE63E4002ECFD0 /* GroupChatVM.swift in Sources */,
 				D5439DDD2BAC650400BCFD6F /* GroupChatApp.swift in Sources */,

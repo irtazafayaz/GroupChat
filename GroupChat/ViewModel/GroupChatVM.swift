@@ -15,10 +15,16 @@ class GroupChatVM: ObservableObject {
     @Published var members: [UserDetails] = []
     @Published private(set) var lastMessageId: String = ""
     
-    let db = Firestore.firestore()
+    private let db = Firestore.firestore()
+    private var messagesListener: ListenerRegistration?
+    private var groupListener: ListenerRegistration?
+    
+    deinit {
+        messagesListener?.remove()
+        groupListener?.remove()
+    }
     
     func sendMessage(toGroup groupId: String, message: String, senderId: String, senderName: String) {
-        
         let messageData: [String: Any] = [
             "senderId": senderId,
             "senderName": senderName,
@@ -26,8 +32,7 @@ class GroupChatVM: ObservableObject {
             "content": message,
         ]
         
-        let groupDocument = self.db.collection("groups").document(groupId)
-        groupDocument.collection("messages").addDocument(data: messageData) { err in
+        db.collection("groups").document(groupId).collection("messages").addDocument(data: messageData) { err in
             if let err = err {
                 print("Error sending message: \(err)")
             } else {
@@ -37,51 +42,54 @@ class GroupChatVM: ObservableObject {
     }
     
     func getMessagesAndMembers(forGroup groupId: String) {
-        // Step 1: Fetch the group to get members' IDs
-        db.collection("groups").document(groupId).getDocument { [weak self] (document, error) in
+        messagesListener?.remove()
+        groupListener?.remove()
+
+        groupListener = db.collection("groups").document(groupId).addSnapshotListener { [weak self] (document, error) in
             guard let self = self else { return }
             guard let document = document, document.exists, let group = try? document.data(as: Group.self) else {
-                print("Error fetching group: \(String(describing: error))")
+                print("Error fetching group: \(error?.localizedDescription ?? "Unknown error")")
                 return
             }
+            self.fetchMembers(memberIDs: group.members ?? [])
+        }
 
-            // Step 2: Fetch messages as you already do
-            db.collection("groups").document(groupId).collection("messages")
-                .order(by: "timestamp", descending: false)
-                .addSnapshotListener { querySnapshot, error in
-                    guard let documents = querySnapshot?.documents else {
-                        print("Error fetching documents: \(String(describing: error))")
-                        return
-                    }
-                    self.messages = documents.compactMap { document -> GroupMessage? in
-                        do {
-                            return try document.data(as: GroupMessage.self)
-                        } catch {
-                            print("Error decoding document into Message: \(error)")
-                            return nil
-                        }
-                    }
-                    self.messages.sort { $0.timestamp < $1.timestamp }
-                    
-                    if let id = self.messages.last?.id {
-                        self.lastMessageId = id
-                    }
+        messagesListener = db.collection("groups").document(groupId).collection("messages")
+            .order(by: "timestamp", descending: false)
+            .addSnapshotListener { [weak self] (querySnapshot, error) in
+                guard let documents = querySnapshot?.documents else {
+                    print("Error fetching documents: \(error?.localizedDescription ?? "Unknown error")")
+                    return
                 }
-            
-            guard let memberIDs = group.members else { return }
-            for memberId in memberIDs {
-                db.collection("users").document(memberId).getDocument { (document, error) in
-                    guard let document = document, document.exists, let user = try? document.data(as: UserDetails.self) else {
-                        print("Error fetching user: \(String(describing: error))")
-                        return
-                    }
-                    print("Adding \(user)")
-                    self.members.append(user)
+                self?.messages = documents.compactMap { try? $0.data(as: GroupMessage.self) }
+                
+                if let lastMessageId = self?.messages.last?.id {
+                    self?.lastMessageId = lastMessageId
+                }
+            }
+    }
+
+    private func fetchMembers(memberIDs: [String]) {
+        members.removeAll()
+        
+        let memberFetchGroup = DispatchGroup()
+        for memberId in memberIDs {
+            memberFetchGroup.enter()
+            db.collection("users").document(memberId).getDocument { [weak self] (document, error) in
+                defer { memberFetchGroup.leave() }
+                guard let document = document, document.exists, let user = try? document.data(as: UserDetails.self) else {
+                    print("Error fetching user: \(error?.localizedDescription ?? "Unknown error")")
+                    return
+                }
+                DispatchQueue.main.async {
+                    self?.members.append(user)
                 }
             }
         }
+        
+        memberFetchGroup.notify(queue: .main) {
+            print("Completed fetching all members.")
+        }
     }
-
-    
-    
 }
+
