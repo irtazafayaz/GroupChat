@@ -10,97 +10,61 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 class MessagesManager: ObservableObject {
-   
+    
     @Published private(set) var messages: [Message] = []
     @Published private(set) var lastMessageId: String = ""
     @Published private(set) var chatId: String = ""
-
-    let db = Firestore.firestore()
-
+    
+    private let db = Firestore.firestore()
+    
     func startOrRetrieveChat(senderId: String, receiverId: String) {
-        
-        let chatsRef = db.collection("Chats")
-        let query = chatsRef.whereField("participants", arrayContains: senderId)
-        
-        query.getDocuments(completion: { [weak self] snapshot, error in
-            
-            guard let self = self else { return }
-            if let error = error {
-                print("Error finding chats: \(error.localizedDescription)")
-                return
-            }
-            
-            let existingChat = snapshot?.documents.first { docSnapshot in
-                let participants = docSnapshot.get("participants") as? [String] ?? []
+        db.collection("Chats")
+            .whereField("participants", arrayContains: senderId)
+            .getDocuments { [weak self] snapshot, error in
                 
-                if participants.contains(receiverId) {
-                    self.chatId = docSnapshot.documentID
+                guard let self = self, error == nil else { return }
+                
+                if let chatDoc = snapshot?.documents.first(where: { ($0["participants"] as? [String])?.contains(receiverId) ?? false }) {
+                    self.chatId = chatDoc.documentID
                     self.getMessages()
-                    return true
-                }
-                return false
-            }
-            
-            if (existingChat == nil) {
-                // No chat exists, create a new chat document
-                let newChatRef = chatsRef.document()
-                self.chatId = newChatRef.documentID
-                newChatRef.setData([
-                    "participants": [senderId, receiverId]
-                ]) { error in
-                    if let error = error {
-                        print("Error creating new chat: \(error.localizedDescription)")
-                    } else {
-                        print("Chat Started")
-                        self.getMessages()
+                    
+                } else {
+                    let newChatRef = self.db.collection("Chats").document()
+                    self.chatId = newChatRef.documentID
+                    newChatRef.setData(["participants": [senderId, receiverId]]) { error in
+                        if error == nil { self.getMessages() }
                     }
                 }
             }
-        })
     }
     
     func sendMessage(senderId: String, receiverId: String, message: String) {
-        let collection = db.collection("Chats").document(chatId).collection("messages")
-        let document = collection.document()
-        document.setData([
+        
+        guard !chatId.isEmpty else { return }
+        let data = [
             "senderId": senderId,
             "receiverId": receiverId,
             "message": message,
             "timestamp": FieldValue.serverTimestamp()
-        ]) { error in
-            if let error = error {
-                print("Error sending message: \(error.localizedDescription)")
-            } else {
-                print("Message sent successfully")
-            }
-        }
+        ] as [String : Any]
+        
+        db.collection("Chats").document(chatId).collection("messages").addDocument(data: data)
+        
     }
-    
     
     func getMessages() {
-        if !chatId.isEmpty {
+        
+        guard !chatId.isEmpty else { return }
+        db.collection("Chats").document(chatId).collection("messages").addSnapshotListener { [weak self] querySnapshot, error in
             
-
-        db.collection("Chats").document(chatId).collection("messages").addSnapshotListener { querySnapshot, error in
+            guard let self = self, error == nil else { return }
             
-            guard let documents = querySnapshot?.documents else {
-                print("Error fetching documents: \(String(describing: error))")
-                return
-            }
-            self.messages = documents.compactMap { document -> Message? in
-                do {
-                    return try document.data(as: Message.self)
-                } catch {
-                    print("Error decoding document into Message: \(error)")
-                    return nil
-                }
-            }
-            self.messages.sort { $0.timestamp < $1.timestamp }
-            if let id = self.messages.last?.id {
-                self.lastMessageId = id
-            }
-        }
+            self.messages = querySnapshot?.documents.compactMap {
+                try? $0.data(as: Message.self)
+            }.sorted { $0.timestamp < $1.timestamp } ?? []
+            
+            self.lastMessageId = self.messages.last?.id ?? ""
+            
         }
     }
-    
 }

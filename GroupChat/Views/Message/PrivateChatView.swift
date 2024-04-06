@@ -9,10 +9,12 @@ import SwiftUI
 
 struct PrivateChatView: View {
     
-    @EnvironmentObject var sessionManager: SessionManager
-    @StateObject private var messagesManager = MessagesManager()
-    
+    // MARK: Data Members
     private var selectedUser: String
+
+    // MARK: Data Managers
+    @EnvironmentObject private var sessionManager: SessionManager
+    @StateObject private var messagesManager = MessagesManager()
     
     init(selectedUser: String) {
         self.selectedUser = selectedUser
@@ -22,7 +24,6 @@ struct PrivateChatView: View {
         VStack {
             VStack {
                 TitleRow()
-                
                 ScrollViewReader { proxy in
                     ScrollView {
                         ForEach(messagesManager.messages, id: \.id) { message in
@@ -30,12 +31,10 @@ struct PrivateChatView: View {
                         }
                     }
                     .padding(.top, 10)
-                    .background(.white)
+                    .background(Color.white)
                     .cornerRadius(30, corners: [.topLeft, .topRight])
                     .onChange(of: messagesManager.lastMessageId) {
-                        withAnimation {
-                            proxy.scrollTo(messagesManager.lastMessageId, anchor: .bottom)
-                        }
+                        proxy.scrollTo(messagesManager.lastMessageId, anchor: .bottom)
                     }
                 }
             }

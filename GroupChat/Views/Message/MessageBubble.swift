@@ -24,14 +24,14 @@ struct MessageBubble: View {
     }
     
     var body: some View {
-        VStack(alignment: isCurrentUser ? .leading : .trailing) {
+        VStack(alignment: !isCurrentUser ? .leading : .trailing) {
             HStack {
                 Text(message.message)
                     .padding()
-                    .background(isCurrentUser ? Color("Gray") : Color("primary-color"))
+                    .background(!isCurrentUser ? Color("Gray") : Color("primary-color"))
                     .cornerRadius(30)
             }
-            .frame(maxWidth: 300, alignment: isCurrentUser ? .leading : .trailing)
+            .frame(maxWidth: 300, alignment: !isCurrentUser ? .leading : .trailing)
             .onTapGesture {
                 showTime.toggle()
             }
@@ -40,11 +40,11 @@ struct MessageBubble: View {
                 Text("\(message.timestamp.formatted(.dateTime.hour().minute()))")
                     .font(.caption2)
                     .foregroundColor(.gray)
-                    .padding(isCurrentUser ? .leading : .trailing, 25)
+                    .padding(!isCurrentUser ? .leading : .trailing, 25)
             }
         }
-        .frame(maxWidth: .infinity, alignment: isCurrentUser ? .leading : .trailing)
-        .padding(isCurrentUser ? .leading : .trailing)
+        .frame(maxWidth: .infinity, alignment: !isCurrentUser ? .leading : .trailing)
+        .padding(!isCurrentUser ? .leading : .trailing)
         .padding(.horizontal, 10)
     }
 }
