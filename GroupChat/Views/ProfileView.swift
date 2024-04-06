@@ -13,6 +13,8 @@ struct ProfileView: View {
     @State private var openImagePicker: Bool = false
     @State private var image: UIImage?
     @State private var isFriendsListExpanded: Bool = false
+    @State private var openChat: Bool = false
+    @State private var selectedFriend: String?
 
     var body: some View {
         VStack {
@@ -27,7 +29,8 @@ struct ProfileView: View {
                                 .foregroundColor(.black)
                             Spacer()
                             Button("Chat") {
-                                
+                                selectedFriend = friend.id
+                                openChat.toggle()
                             }
                         }
                         
@@ -63,6 +66,11 @@ struct ProfileView: View {
         .onAppear {
             sessionManager.fetchUserFriends()
         }
+        .navigationDestination(isPresented: $openChat, destination: {
+            if let user = selectedFriend {
+                PrivateChatView(selectedUser: user)
+            }
+        })
     }
 }
 

@@ -252,6 +252,8 @@
 		D5439E042BAC735500BCFD6F /* Message */ = {
 			isa = PBXGroup;
 			children = (
+				D544BAFD2BC0C6F2005AE549 /* PrivateListView.swift */,
+				D544BB012BC0C794005AE549 /* PrivateChatView.swift */,
 				D5439E072BAC736E00BCFD6F /* MessageBubble.swift */,
 				D5439E062BAC736E00BCFD6F /* MessageField.swift */,
 				D5439E052BAC736E00BCFD6F /* TitleRow.swift */,
@@ -289,8 +291,6 @@
 		D544BAFC2BC0C6D2005AE549 /* Private */ = {
 			isa = PBXGroup;
 			children = (
-				D544BAFD2BC0C6F2005AE549 /* PrivateListView.swift */,
-				D544BB012BC0C794005AE549 /* PrivateChatView.swift */,
 			);
 			path = Private;
 			sourceTree = "<group>";

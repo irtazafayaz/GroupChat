@@ -8,18 +8,30 @@
 import SwiftUI
 
 struct MessageBubble: View {
+    @EnvironmentObject var sessionManager: SessionManager
+
     var message: Message
     @State private var showTime = false
     
+    private var isCurrentUser: Bool {
+        sessionManager.getCurrentAuthUser()?.uid == message.senderId
+    }
+    
+    private var messageDateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        return formatter
+    }
+    
     var body: some View {
-        VStack(alignment: message.received ? .leading : .trailing) {
+        VStack(alignment: isCurrentUser ? .leading : .trailing) {
             HStack {
-                Text(message.text)
+                Text(message.message)
                     .padding()
-                    .background(message.received ? Color("Gray") : Color("primary-color"))
+                    .background(isCurrentUser ? Color("Gray") : Color("primary-color"))
                     .cornerRadius(30)
             }
-            .frame(maxWidth: 300, alignment: message.received ? .leading : .trailing)
+            .frame(maxWidth: 300, alignment: isCurrentUser ? .leading : .trailing)
             .onTapGesture {
                 showTime.toggle()
             }
@@ -28,17 +40,12 @@ struct MessageBubble: View {
                 Text("\(message.timestamp.formatted(.dateTime.hour().minute()))")
                     .font(.caption2)
                     .foregroundColor(.gray)
-                    .padding(message.received ? .leading : .trailing, 25)
+                    .padding(isCurrentUser ? .leading : .trailing, 25)
             }
         }
-        .frame(maxWidth: .infinity, alignment: message.received ? .leading : .trailing)
-        .padding(message.received ? .leading : .trailing)
+        .frame(maxWidth: .infinity, alignment: isCurrentUser ? .leading : .trailing)
+        .padding(isCurrentUser ? .leading : .trailing)
         .padding(.horizontal, 10)
     }
 }
 
-struct MessageBubble_Previews: PreviewProvider {
-    static var previews: some View {
-        MessageBubble(message: Message(id: "12345", text: "I've been coding applications from scratch in SwiftUI and it's so much fun!", received: true, timestamp: Date()))
-    }
-}

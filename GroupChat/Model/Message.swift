@@ -11,9 +11,10 @@ import Firebase
 import FirebaseFirestore
 
 struct Message: Identifiable, Codable {
-    var id: String
-    var text: String
-    var received: Bool
+    @DocumentID var id: String?
+    var message: String
+    var receiverId: String
+    var senderId: String
     var timestamp: Date
 }
 

@@ -10,7 +10,11 @@ import SwiftUI
 struct MessageField: View {
     
     @EnvironmentObject var messagesManager: MessagesManager
+    @EnvironmentObject var sessionManager: SessionManager
+    
     @State private var message = ""
+    
+    var selectedUser: String
 
     var body: some View {
         HStack {
@@ -20,8 +24,11 @@ struct MessageField: View {
                 .disableAutocorrection(true)
 
             Button {
-                messagesManager.sendMessage(text: message)
-                message = ""
+                if let user = sessionManager.getCurrentAuthUser()?.uid {
+                    messagesManager.sendMessage(senderId: user, receiverId: selectedUser, message: message)
+                    message = ""
+                }
+                
             } label: {
                 Image(systemName: "paperplane.fill")
                     .foregroundColor(.white)
@@ -35,13 +42,6 @@ struct MessageField: View {
         .background(Color("Gray"))
         .cornerRadius(50)
         .padding()
-    }
-}
-
-struct MessageField_Previews: PreviewProvider {
-    static var previews: some View {
-        MessageField()
-            .environmentObject(MessagesManager())
     }
 }
 

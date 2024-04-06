@@ -13,15 +13,75 @@ class MessagesManager: ObservableObject {
    
     @Published private(set) var messages: [Message] = []
     @Published private(set) var lastMessageId: String = ""
-    
-    let db = Firestore.firestore()
-    
-    init() {
-        getMessages()
-    }
+    @Published private(set) var chatId: String = ""
 
+    let db = Firestore.firestore()
+
+    func startOrRetrieveChat(senderId: String, receiverId: String) {
+        
+        let chatsRef = db.collection("Chats")
+        let query = chatsRef.whereField("participants", arrayContains: senderId)
+        
+        query.getDocuments(completion: { [weak self] snapshot, error in
+            
+            guard let self = self else { return }
+            if let error = error {
+                print("Error finding chats: \(error.localizedDescription)")
+                return
+            }
+            
+            let existingChat = snapshot?.documents.first { docSnapshot in
+                let participants = docSnapshot.get("participants") as? [String] ?? []
+                
+                if participants.contains(receiverId) {
+                    self.chatId = docSnapshot.documentID
+                    self.getMessages()
+                    return true
+                }
+                return false
+            }
+            
+            if (existingChat == nil) {
+                // No chat exists, create a new chat document
+                let newChatRef = chatsRef.document()
+                self.chatId = newChatRef.documentID
+                newChatRef.setData([
+                    "participants": [senderId, receiverId]
+                ]) { error in
+                    if let error = error {
+                        print("Error creating new chat: \(error.localizedDescription)")
+                    } else {
+                        print("Chat Started")
+                        self.getMessages()
+                    }
+                }
+            }
+        })
+    }
+    
+    func sendMessage(senderId: String, receiverId: String, message: String) {
+        let collection = db.collection("Chats").document(chatId).collection("messages")
+        let document = collection.document()
+        document.setData([
+            "senderId": senderId,
+            "receiverId": receiverId,
+            "message": message,
+            "timestamp": FieldValue.serverTimestamp()
+        ]) { error in
+            if let error = error {
+                print("Error sending message: \(error.localizedDescription)")
+            } else {
+                print("Message sent successfully")
+            }
+        }
+    }
+    
+    
     func getMessages() {
-        db.collection("messages").addSnapshotListener { querySnapshot, error in
+        if !chatId.isEmpty {
+            
+
+        db.collection("Chats").document(chatId).collection("messages").addSnapshotListener { querySnapshot, error in
             
             guard let documents = querySnapshot?.documents else {
                 print("Error fetching documents: \(String(describing: error))")
@@ -40,14 +100,7 @@ class MessagesManager: ObservableObject {
                 self.lastMessageId = id
             }
         }
-    }
-    
-    func sendMessage(text: String) {
-        do {
-            let newMessage = Message(id: "\(UUID())", text: text, received: false, timestamp: Date())
-            try db.collection("messages").document().setData(from: newMessage)
-        } catch {
-            print("Error adding message to Firestore: \(error)")
         }
     }
+    
 }
