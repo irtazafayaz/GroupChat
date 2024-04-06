@@ -24,28 +24,64 @@ struct MessageBubble: View {
     }
     
     var body: some View {
-        VStack(alignment: !isCurrentUser ? .leading : .trailing) {
-            HStack {
-                Text(message.message)
-                    .padding()
-                    .background(!isCurrentUser ? Color("Gray") : Color("primary-color"))
-                    .cornerRadius(30)
+        HStack {
+            if isCurrentUser {
+                Spacer()
             }
-            .frame(maxWidth: 300, alignment: !isCurrentUser ? .leading : .trailing)
-            .onTapGesture {
-                showTime.toggle()
+            VStack(alignment: isCurrentUser ? .trailing : .leading, spacing: 5) {
+                
+                Text(message.message)
+                    .font(.custom(FontFamily.medium.rawValue, size: 18))
+                    .foregroundColor(.black)
+                    .padding()
+                    .background(RoundedCorners(
+                        tl: isCurrentUser ? 20 : 8,
+                        tr: 20,
+                        bl: 20,
+                        br: isCurrentUser ? 8 : 20
+                    ).fill(
+                        isCurrentUser ?
+                        Color("primary-color") : Color(hex: "#F5F5F5")
+                    ))
+                
+                Text("\(message.timestamp, formatter: messageDateFormatter)")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                
             }
             
-            if showTime {
-                Text("\(message.timestamp.formatted(.dateTime.hour().minute()))")
-                    .font(.caption2)
-                    .foregroundColor(.gray)
-                    .padding(!isCurrentUser ? .leading : .trailing, 25)
+            if !isCurrentUser {
+                Spacer()
             }
         }
-        .frame(maxWidth: .infinity, alignment: !isCurrentUser ? .leading : .trailing)
-        .padding(!isCurrentUser ? .leading : .trailing)
-        .padding(.horizontal, 10)
+        .padding(isCurrentUser ? .leading : .trailing, 40)
+        .transition(.scale)
+    }
+    
+
+    func getMessageViewWithImage(_ message: GroupMessage) -> some View {
+        HStack {
+            if isCurrentUser {
+                Spacer()
+            }
+            HStack {
+                Text(message.content)
+                    .font(.custom(FontFamily.medium.rawValue, size: 18))
+                    .foregroundColor(isCurrentUser ? .white : .black)
+                    .padding()
+                    .background(RoundedCorners(
+                        tl: isCurrentUser ? 20 : 8,
+                        tr: 20,
+                        bl: 20,
+                        br: isCurrentUser ? 8 : 20
+                    ).fill(isCurrentUser ? Color(hex: Colors.primary.rawValue) : Color(hex: "#F5F5F5")))
+                
+            }
+            if !isCurrentUser {
+                Spacer()
+            }
+        }
+        .padding(.vertical, 10)
     }
 }
 

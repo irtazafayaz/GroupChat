@@ -11,32 +11,36 @@ struct GroupMembersView: View {
     
     @EnvironmentObject var groupchatManager: GroupChatVM
     @EnvironmentObject var sessionManager: SessionManager
-
+    
     var body: some View {
         
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 
-                Text("Members")
-                    .font(.custom(FontFamily.bold.rawValue, size: 30))
-                    .foregroundStyle(.black)
-                    .bold()
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, 10)
+                VStack {
+                    Text("Members")
+                        .font(.custom(FontFamily.bold.rawValue, size: 30))
+                        .foregroundStyle(.white)
+                        .padding(.top, 15)
+                        .frame(maxWidth: .infinity)
+                }
+                .background(Color("primary-color"))
+                .frame(maxWidth: .infinity)
+                .ignoresSafeArea(.all)
                 
                 ForEach(groupchatManager.members, id: \.id) { member in
                     HStack {
                         if let url = URL(string: member.photoURL) {
                             AsyncImage(url: url, content: view)
                                 .aspectRatio(contentMode: .fill)
-                                .frame(width: 30, height: 30)
+                                .frame(width: 20, height: 20)
                                 .clipShape(Circle())
                         } else {
                             Color.black
-                                .frame(width: 30, height: 30)
+                                .frame(width: 20, height: 20)
                         }
                         
-                        Text(member.displayName)
+                        Text(member.displayName.uppercased())
                             .font(.custom(FontFamily.semiBold.rawValue, size: 20))
                             .foregroundStyle(.black)
                             .bold()
@@ -44,20 +48,27 @@ struct GroupMembersView: View {
                         Spacer()
                         
                         Button {
-                            // TODO: Add friend
                             if let current = sessionManager.getCurrentAuthUser()?.uid, let friend = member.id {
                                 groupchatManager.addFriend(currentUserId: current, friendId: friend)
                             }
                         } label: {
-                            Text("Add Friend")
+                            HStack {
+                                Image(systemName: "plus")
+                            }
+                            .foregroundColor(.white)
+                            .padding(5)
+                            .background(Color("primary-color"))
+                            .cornerRadius(10)
                         }
                         
                     }
+                    .padding(.horizontal)
                 }
                 .padding(.top, 20)
             }
-            .padding()
         }
+        .ignoresSafeArea(.all)
+        
         
     }
     

@@ -14,7 +14,7 @@ struct MessageField: View {
     
     @State private var message = ""
     
-    var selectedUser: String
+    var receiverId: String
 
     var body: some View {
         HStack {
@@ -25,7 +25,7 @@ struct MessageField: View {
 
             Button {
                 if let user = sessionManager.getCurrentAuthUser()?.uid {
-                    messagesManager.sendMessage(senderId: user, receiverId: selectedUser, message: message)
+                    messagesManager.sendMessage(senderId: user, receiverId: receiverId, message: message)
                     message = ""
                 }
                 

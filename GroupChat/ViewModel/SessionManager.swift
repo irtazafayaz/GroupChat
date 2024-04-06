@@ -27,6 +27,7 @@ final class SessionManager: ObservableObject {
     private let db = Firestore.firestore()
 
     @Published var userName: String = ""
+    @Published var userEmail: String = ""
     @Published var userProfileImageUrl: URL?
     @Published var userFriends: [UserDetails] = []
 
@@ -41,7 +42,8 @@ final class SessionManager: ObservableObject {
         userRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 let data = document.data()
-                self.userName = data?["displayName"] as? String ?? "No Name"
+                self.userName = data?["displayName"] as? String ?? "NaN"
+                self.userEmail = data?["email"] as? String ?? "NaN"
                 if let urlString = data?["photoURL"] as? String, let url = URL(string: urlString) {
                     self.userProfileImageUrl = url
                 }

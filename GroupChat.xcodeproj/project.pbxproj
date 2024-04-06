@@ -41,6 +41,7 @@
 		D544BB002BC0C728005AE549 /* PrivateVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = D544BAFF2BC0C728005AE549 /* PrivateVM.swift */; };
 		D544BB022BC0C794005AE549 /* PrivateChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D544BB012BC0C794005AE549 /* PrivateChatView.swift */; };
 		D544BB042BC0C7C8005AE549 /* PrivateChatVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = D544BB032BC0C7C8005AE549 /* PrivateChatVM.swift */; };
+		D544BE022BC1B74A0013C004 /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D544BE012BC1B74A0013C004 /* ProfileHeader.swift */; };
 		D5AD630C2BAE097A002ECFD0 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD630B2BAE097A002ECFD0 /* ImagePicker.swift */; };
 		D5AD630E2BAE0E3E002ECFD0 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = D5AD630D2BAE0E3E002ECFD0 /* FirebaseStorage */; };
 		D5AD63102BAE63A1002ECFD0 /* GroupChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD630F2BAE63A1002ECFD0 /* GroupChatView.swift */; };
@@ -101,6 +102,7 @@
 		D544BAFF2BC0C728005AE549 /* PrivateVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateVM.swift; sourceTree = "<group>"; };
 		D544BB012BC0C794005AE549 /* PrivateChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateChatView.swift; sourceTree = "<group>"; };
 		D544BB032BC0C7C8005AE549 /* PrivateChatVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateChatVM.swift; sourceTree = "<group>"; };
+		D544BE012BC1B74A0013C004 /* ProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeader.swift; sourceTree = "<group>"; };
 		D5AD630B2BAE097A002ECFD0 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		D5AD630F2BAE63A1002ECFD0 /* GroupChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatView.swift; sourceTree = "<group>"; };
 		D5AD63112BAE63E4002ECFD0 /* GroupChatVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatVM.swift; sourceTree = "<group>"; };
@@ -237,12 +239,12 @@
 		D5439E032BAC734B00BCFD6F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D544BE002BC1B7350013C004 /* Profile */,
 				D544BAFC2BC0C6D2005AE549 /* Private */,
 				D5439E1A2BAC7DF200BCFD6F /* Group */,
 				D5439E042BAC735500BCFD6F /* Message */,
 				D5439E112BAC77F700BCFD6F /* LoginView.swift */,
 				D5439E132BAC781500BCFD6F /* RegisterView.swift */,
-				D5439E152BAC784800BCFD6F /* ProfileView.swift */,
 				D5439E172BAC788200BCFD6F /* PrivateMsgView.swift */,
 				D5439E1B2BAC7E0300BCFD6F /* HomeView.swift */,
 			);
@@ -293,6 +295,15 @@
 			children = (
 			);
 			path = Private;
+			sourceTree = "<group>";
+		};
+		D544BE002BC1B7350013C004 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				D5439E152BAC784800BCFD6F /* ProfileView.swift */,
+				D544BE012BC1B74A0013C004 /* ProfileHeader.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		D5C7A35E2BBD9D7B00FCAF36 /* TrendingGroups */ = {
@@ -459,6 +470,7 @@
 				D5439E082BAC736E00BCFD6F /* TitleRow.swift in Sources */,
 				D5439E122BAC77F700BCFD6F /* LoginView.swift in Sources */,
 				D5AD63142BAE680D002ECFD0 /* GroupMessageBubble.swift in Sources */,
+				D544BE022BC1B74A0013C004 /* ProfileHeader.swift in Sources */,
 				D544BAFE2BC0C6F2005AE549 /* PrivateListView.swift in Sources */,
 				D5439E262BAD08A300BCFD6F /* AddGroupView.swift in Sources */,
 				D544BB042BC0C7C8005AE549 /* PrivateChatVM.swift in Sources */,

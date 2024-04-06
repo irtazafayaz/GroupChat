@@ -10,29 +10,39 @@ import SwiftUI
 struct PrivateChatView: View {
     
     // MARK: Data Members
-    private var selectedUser: String
-
+    private var receiverId: String
+    
     // MARK: Data Managers
     @EnvironmentObject private var sessionManager: SessionManager
     @StateObject private var messagesManager = MessagesManager()
     
-    init(selectedUser: String) {
-        self.selectedUser = selectedUser
+    init(receiverId: String) {
+        self.receiverId = receiverId
     }
     
     var body: some View {
         VStack {
             VStack {
-                TitleRow()
+                HStack {
+                    CustomBackButton()
+                    if let receiver = messagesManager.receiverInfo {
+                        TitleRow(
+                            imageUrl: URL(string: receiver.photoURL),
+                            name: receiver.displayName
+                        )
+                    }
+                }
+                
                 ScrollViewReader { proxy in
                     ScrollView {
                         ForEach(messagesManager.messages, id: \.id) { message in
                             MessageBubble(message: message)
+                                .padding(.horizontal)
                         }
                     }
                     .padding(.top, 10)
                     .background(Color.white)
-                    .cornerRadius(30, corners: [.topLeft, .topRight])
+                    .cornerRadius(10, corners: [.topLeft, .topRight])
                     .onChange(of: messagesManager.lastMessageId) {
                         proxy.scrollTo(messagesManager.lastMessageId, anchor: .bottom)
                     }
@@ -40,13 +50,15 @@ struct PrivateChatView: View {
             }
             .background(Color("primary-color"))
             
-            MessageField(selectedUser: selectedUser)
+            MessageField(receiverId: receiverId)
                 .environmentObject(messagesManager)
         }
         .onAppear {
             if let user = sessionManager.getCurrentAuthUser()?.uid {
-                messagesManager.startOrRetrieveChat(senderId: user, receiverId: selectedUser)
+                messagesManager.startOrRetrieveChat(senderId: user, receiverId: receiverId)
+                messagesManager.fetchFriendInfo(receiverId: receiverId)
             }
         }
+        .navigationBarBackButtonHidden()
     }
 }

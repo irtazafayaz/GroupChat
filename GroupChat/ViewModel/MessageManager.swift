@@ -14,7 +14,8 @@ class MessagesManager: ObservableObject {
     @Published private(set) var messages: [Message] = []
     @Published private(set) var lastMessageId: String = ""
     @Published private(set) var chatId: String = ""
-    
+    @Published private(set) var receiverInfo: UserDetails?
+
     private let db = Firestore.firestore()
     
     func startOrRetrieveChat(senderId: String, receiverId: String) {
@@ -67,4 +68,17 @@ class MessagesManager: ObservableObject {
             
         }
     }
+    
+    func fetchFriendInfo(receiverId: String) {
+        db.collection("users").document(receiverId).getDocument { [weak self] (document, error) in
+            guard let document = document, document.exists, let user = try? document.data(as: UserDetails.self) else {
+                print("Error fetching user: \(error?.localizedDescription ?? "Unknown error")")
+                return
+            }
+            DispatchQueue.main.async {
+                self?.receiverInfo = user
+            }
+        }
+    }
+    
 }
