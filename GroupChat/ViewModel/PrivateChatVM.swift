@@ -1,15 +1,15 @@
 //
-//  GroupChatVM.swift
+//  PrivateChatVM.swift
 //  GroupChat
 //
-//  Created by Irtaza Fiaz on 23/03/2024.
+//  Created by Irtaza Fiaz on 06/04/2024.
 //
 
 import Foundation
 import Firebase
 import FirebaseFirestore
 
-class GroupChatVM: ObservableObject {
+class PrivateChatVM: ObservableObject {
     
     @Published private(set) var messages: [GroupMessage] = []
     @Published var members: [UserDetails] = []
@@ -51,9 +51,7 @@ class GroupChatVM: ObservableObject {
                 print("Error fetching group: \(error?.localizedDescription ?? "Unknown error")")
                 return
             }
-            var groupMembers = group.members
-            groupMembers?.append(group.owner)
-            self.fetchMembers(memberIDs: groupMembers ?? [])
+            self.fetchMembers(memberIDs: group.members ?? [])
         }
 
         messagesListener = db.collection("groups").document(groupId).collection("messages")
@@ -93,49 +91,4 @@ class GroupChatVM: ObservableObject {
             print("Completed fetching all members.")
         }
     }
-    
-    
-    func addFriend(currentUserId: String, friendId: String) {
-        let usersRef = db.collection("users")
-        let currentUserRef = usersRef.document(currentUserId)
-        let friendUserRef = usersRef.document(friendId)
-
-        // Use Firestore transaction for atomic updates
-        db.runTransaction({ (transaction, errorPointer) -> Any? in
-            let currentUserDocument: DocumentSnapshot
-            let friendUserDocument: DocumentSnapshot
-            do {
-                try currentUserDocument = transaction.getDocument(currentUserRef)
-                try friendUserDocument = transaction.getDocument(friendUserRef)
-            } catch let fetchError as NSError {
-                errorPointer?.pointee = fetchError
-                return nil
-            }
-
-            // Update current user's friends list
-            var currentUserFriends = currentUserDocument.data()?["friends"] as? [String] ?? []
-            if !currentUserFriends.contains(friendId) {
-                currentUserFriends.append(friendId)
-                transaction.updateData(["friends": currentUserFriends], forDocument: currentUserRef)
-            }
-
-            // Update friend user's friends list
-            var friendUserFriends = friendUserDocument.data()?["friends"] as? [String] ?? []
-            if !friendUserFriends.contains(currentUserId) {
-                friendUserFriends.append(currentUserId)
-                transaction.updateData(["friends": friendUserFriends], forDocument: friendUserRef)
-            }
-
-            return nil
-        }) { (object, error) in
-            if let error = error {
-                print("Transaction failed: \(error)")
-            } else {
-                print("Transaction successfully committed!")
-            }
-        }
-    }
-
-    
 }
-

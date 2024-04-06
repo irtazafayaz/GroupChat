@@ -28,7 +28,8 @@ final class SessionManager: ObservableObject {
 
     @Published var userName: String = ""
     @Published var userProfileImageUrl: URL?
-    
+    @Published var userFriends: [UserDetails] = []
+
     init() {
         self.observeAuthChanges()
         self.fetchUserData()
@@ -142,6 +143,45 @@ final class SessionManager: ObservableObject {
     func getCurrentAuthUser() -> User? {
         return Auth.auth().currentUser
     }
+    
+    func fetchUserFriends() {
+        guard let currentUserID = Auth.auth().currentUser?.uid else {
+            print("No logged-in user")
+            return
+        }
+
+        let currentUserRef = db.collection("users").document(currentUserID)
+
+        currentUserRef.getDocument { [weak self] (document, error) in
+            if let document = document, document.exists, let data = document.data(), let friendIDs = data["friends"] as? [String] {
+                var friendsDetails: [UserDetails] = []
+
+                let fetchGroup = DispatchGroup()
+
+                for friendID in friendIDs {
+                    fetchGroup.enter()
+                    let friendRef = self?.db.collection("users").document(friendID)
+                    friendRef?.getDocument { (friendDoc, error) in
+                        if let friendDoc = friendDoc, friendDoc.exists, let friend = try? friendDoc.data(as: UserDetails.self) {
+                            friendsDetails.append(friend)
+                        } else {
+                            print("Could not fetch friend details for ID: \(friendID)")
+                        }
+                        fetchGroup.leave()
+                    }
+                }
+
+                fetchGroup.notify(queue: .main) {
+                    self?.userFriends = friendsDetails
+                    print(self?.userFriends)
+                }
+
+            } else {
+                print("Document does not exist or failed to fetch friends list")
+            }
+        }
+    }
+
     
     
 }

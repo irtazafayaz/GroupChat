@@ -46,5 +46,6 @@ struct UserDetails: Identifiable, Codable {
     var displayName: String
     var email: String
     var photoURL: String
+    var friends: [String]? // Add this line
 
 }

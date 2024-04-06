@@ -1,13 +1,13 @@
 //
-//  GroupChatView.swift
+//  PrivateChatView.swift
 //  GroupChat
 //
-//  Created by Irtaza Fiaz on 23/03/2024.
+//  Created by Irtaza Fiaz on 06/04/2024.
 //
 
 import SwiftUI
 
-struct GroupChatView: View {
+struct PrivateChatView: View {
     
     @ObservedObject var groupchatManager = GroupChatVM()
     @EnvironmentObject var sessionManager: SessionManager
@@ -48,12 +48,6 @@ struct GroupChatView: View {
                 }
             }
             .background(Color("primary-color"))
-            .sheet(isPresented: $openMemberList) {
-                GroupMembersView()
-                    .environmentObject(groupchatManager)
-                    .presentationDetents([.medium, .large])
-            }
-            
             if let user = sessionManager.getCurrentAuthUser() {
                 GroupMsgField(groupId: selectedGroup.id ?? "NaN", senderId: user.uid, senderName: user.email ?? "NaN")
                     .environmentObject(groupchatManager)
@@ -63,5 +57,4 @@ struct GroupChatView: View {
         .navigationBarBackButtonHidden()
         
     }
-    
 }

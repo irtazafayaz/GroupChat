@@ -9,8 +9,9 @@ import SwiftUI
 
 struct GroupMembersView: View {
     
-    @Binding var members: [UserDetails]
-    
+    @EnvironmentObject var groupchatManager: GroupChatVM
+    @EnvironmentObject var sessionManager: SessionManager
+
     var body: some View {
         
         ScrollView {
@@ -23,7 +24,7 @@ struct GroupMembersView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.top, 10)
                 
-                ForEach(members, id: \.id) { member in
+                ForEach(groupchatManager.members, id: \.id) { member in
                     HStack {
                         if let url = URL(string: member.photoURL) {
                             AsyncImage(url: url, content: view)
@@ -41,6 +42,15 @@ struct GroupMembersView: View {
                             .bold()
                         
                         Spacer()
+                        
+                        Button {
+                            // TODO: Add friend
+                            if let current = sessionManager.getCurrentAuthUser()?.uid, let friend = member.id {
+                                groupchatManager.addFriend(currentUserId: current, friendId: friend)
+                            }
+                        } label: {
+                            Text("Add Friend")
+                        }
                         
                     }
                 }
