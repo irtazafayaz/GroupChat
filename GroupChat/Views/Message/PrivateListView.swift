@@ -9,85 +9,80 @@ import SwiftUI
 
 struct PrivateListView: View {
     
-    @ObservedObject var viewModel: PrivateVM
-    @EnvironmentObject var sessionManager: SessionManager
-    @State private var selectedGroup: Group?
-    @State private var openGroupChat: Bool = false
+    // MARK: Data Members
+    @State private var selectedMember: UserDetails?
+    @State private var openPrivateChat: Bool = false
     
+    // MARK: Data Binding
+    @StateObject var viewModel: PrivateVM = PrivateVM()
+    @EnvironmentObject var sessionManager: SessionManager
+    
+    // MARK: Body
     var body: some View {
         VStack {
             
             HStack {
-                Text("Groups")
+                Text("Private Chat")
                     .font(.custom(FontFamily.bold.rawValue, size: 30))
                     .foregroundColor(.black)
                 Spacer()
-                
-                Button {
-                    viewModel.showingAddGroupView.toggle()
-                } label: {
-                    Image(systemName: "plus.rectangle.fill.on.rectangle.fill")
-                        .font(.custom(FontFamily.bold.rawValue, size: 20))
-                        .foregroundColor(.black)
-                }
             }
             .padding()
             .background(Color("primary-color"))
             
-            if self.viewModel.ownedOrJoinedGroups.count > 0 {
-                ScrollView {
-                    VStack(spacing: 0) {
-                        ForEach(viewModel.ownedOrJoinedGroups, id: \.id) { group in
-                            Button {
-                                selectedGroup = group
-                                self.openGroupChat.toggle()
-                            } label: {
-                                VStack {
-                                    HStack {
-                                        if let url = URL(string: group.image) {
-                                            AsyncImage(url: url, content: view)
-                                                .aspectRatio(contentMode: .fill)
-                                                .frame(width: 50, height: 50)
-                                                .clipShape(Circle())
-                                        } else {
-                                            Color.black
-                                                .frame(width: 50, height: 50)
+            if viewModel.isLoading {
+                if self.viewModel.members.count > 0 {
+                    ScrollView {
+                        VStack(spacing: 0) {
+                            ForEach(viewModel.members, id: \.id) { member in
+                                Button {
+                                    selectedMember = member
+                                    self.openPrivateChat.toggle()
+                                } label: {
+                                    VStack {
+                                        HStack {
+                                            if let url = URL(string: member.photoURL) {
+                                                AsyncImage(url: url, content: view)
+                                                    .aspectRatio(contentMode: .fill)
+                                                    .frame(width: 50, height: 50)
+                                                    .clipShape(Circle())
+                                            } else {
+                                                Color.black
+                                                    .frame(width: 50, height: 50)
+                                            }
+                                            
+                                            VStack(alignment: .leading) {
+                                                Text(member.displayName.uppercased())
+                                                    .font(.custom(FontFamily.bold.rawValue, size: 20))
+                                                    .foregroundStyle(.black)
+                                                    .bold()
+                                            }
+                                            .padding(.leading, 5)
+                                            Spacer()
                                         }
-                                        
-                                        VStack(alignment: .leading) {
-                                            Text(group.name)
-                                                .font(.custom(FontFamily.bold.rawValue, size: 20))
-                                                .foregroundStyle(.black)
-                                                .bold()
-                                            Text(group.description)
-                                                .font(.custom(FontFamily.regular.rawValue, size: 16))
-                                                .foregroundStyle(.gray)
-                                        }
-                                        .padding(.leading, 5)
-                                        Spacer()
+                                        Divider()
+                                            .frame(maxWidth: .infinity)
                                     }
-                                    Divider()
-                                        .frame(maxWidth: .infinity)
+                                    .padding()
+                                    
                                 }
-                                .padding()
-                                
                             }
                         }
                     }
                 }
+                Spacer()
+            } else {
+                Spacer()
+                ProgressView()
+                Spacer()
             }
-            Spacer()
-            
-        }
-        .sheet(isPresented: $viewModel.showingAddGroupView) {
-            AddGroupView(isPresented: $viewModel.showingAddGroupView)
         }
         .onAppear {
-            viewModel.fetchGroupsByOwner(sessionManager.getCurrentAuthUser()?.uid ?? "NaN")
+            viewModel.startOrRetrieveChat(senderId: sessionManager.getCurrentAuthUser()?.uid ?? "NaN")
         }
-        .navigationDestination(isPresented: $openGroupChat, destination: {
-            if let selected = selectedGroup {
-                GroupChatView(selectedGroup: selected)
+        .navigationDestination(isPresented: $openPrivateChat, destination: {
+            if let memberId = selectedMember?.id {
+                PrivateChatView(receiverId: memberId)
             }
         })
     }

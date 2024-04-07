@@ -22,13 +22,10 @@ class MessagesManager: ObservableObject {
         db.collection("Chats")
             .whereField("participants", arrayContains: senderId)
             .getDocuments { [weak self] snapshot, error in
-                
                 guard let self = self, error == nil else { return }
-                
                 if let chatDoc = snapshot?.documents.first(where: { ($0["participants"] as? [String])?.contains(receiverId) ?? false }) {
                     self.chatId = chatDoc.documentID
                     self.getMessages()
-                    
                 } else {
                     let newChatRef = self.db.collection("Chats").document()
                     self.chatId = newChatRef.documentID
@@ -39,8 +36,17 @@ class MessagesManager: ObservableObject {
             }
     }
     
+    private func getMessages() {
+        guard !chatId.isEmpty else { return }
+        db.collection("Chats").document(chatId).collection("messages").addSnapshotListener { [weak self] querySnapshot, error in
+            guard let self = self, error == nil else { return }
+            self.messages = querySnapshot?.documents.compactMap { try? $0.data(as: Message.self) }
+                .sorted { $0.timestamp < $1.timestamp } ?? []
+            self.lastMessageId = self.messages.last?.id ?? ""
+        }
+    }
+    
     func sendMessage(senderId: String, receiverId: String, message: String) {
-        
         guard !chatId.isEmpty else { return }
         let data = [
             "senderId": senderId,
@@ -48,25 +54,7 @@ class MessagesManager: ObservableObject {
             "message": message,
             "timestamp": FieldValue.serverTimestamp()
         ] as [String : Any]
-        
         db.collection("Chats").document(chatId).collection("messages").addDocument(data: data)
-        
-    }
-    
-    func getMessages() {
-        
-        guard !chatId.isEmpty else { return }
-        db.collection("Chats").document(chatId).collection("messages").addSnapshotListener { [weak self] querySnapshot, error in
-            
-            guard let self = self, error == nil else { return }
-            
-            self.messages = querySnapshot?.documents.compactMap {
-                try? $0.data(as: Message.self)
-            }.sorted { $0.timestamp < $1.timestamp } ?? []
-            
-            self.lastMessageId = self.messages.last?.id ?? ""
-            
-        }
     }
     
     func fetchFriendInfo(receiverId: String) {
@@ -75,9 +63,7 @@ class MessagesManager: ObservableObject {
                 print("Error fetching user: \(error?.localizedDescription ?? "Unknown error")")
                 return
             }
-            DispatchQueue.main.async {
-                self?.receiverInfo = user
-            }
+            DispatchQueue.main.async { self?.receiverInfo = user }
         }
     }
     

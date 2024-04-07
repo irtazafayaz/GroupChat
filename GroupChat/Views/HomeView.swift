@@ -19,27 +19,34 @@ struct HomeView: View {
         NavigationStack {
             VStack(alignment: .center) {
                 TabView(selection: $selectedTab) {
+                    PrivateListView()
+                        .tabItem {
+                            Image(systemName: "message.and.waveform.fill")
+                                .renderingMode(.template)
+                            Text("Chat")
+                        }
+                        .tag(0)
                     TrendingView(viewModel: viewModel, selectedTab: $selectedTab)
                         .tabItem {
                             Image(systemName: "chart.line.uptrend.xyaxis.circle.fill")
                                 .renderingMode(.template)
                             Text("Trending")
                         }
-                        .tag(0)
+                        .tag(1)
                     GroupsListView(viewModel: viewModel)
                         .tabItem {
                             Image(systemName: "rectangle.3.group.bubble.fill")
                                 .renderingMode(.template)
                             Text("Groups")
                         }
-                        .tag(1)
+                        .tag(2)
                     ProfileView()
                         .tabItem {
                             Image(systemName: "person.crop.circle.fill")
                                 .renderingMode(.template)
                             Text("Profile")
                         }
-                        .tag(2)
+                        .tag(3)
                 }
                 
             }

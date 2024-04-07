@@ -23,13 +23,17 @@ struct TitleRow: View {
     var body: some View {
         HStack(spacing: 10) {
             if let url = imageUrl {
-                AsyncImage(url: imageUrl) { image in
+                AsyncImage(url: url) { image in
                     image.resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 50, height: 50)
                         .cornerRadius(50)
                 } placeholder: {
-                    ProgressView()
+                    Image(systemName: "person.circle.fill")
+                        .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 50, height: 50)
+                            .cornerRadius(50)
                 }
             } else {
                 Image(systemName: "person.circle.fill")
@@ -41,7 +45,7 @@ struct TitleRow: View {
             
             
             VStack(alignment: .leading) {
-                Text(name)
+                Text(name.uppercased())
                     .font(.custom(FontFamily.bold.rawValue, size: 20))
 
             }

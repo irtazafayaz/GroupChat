@@ -31,6 +31,7 @@ struct PrivateChatView: View {
                             name: receiver.displayName
                         )
                     }
+                    Spacer()
                 }
                 
                 ScrollViewReader { proxy in
@@ -60,5 +61,6 @@ struct PrivateChatView: View {
             }
         }
         .navigationBarBackButtonHidden()
+        .frame(maxWidth: .infinity)
     }
 }
