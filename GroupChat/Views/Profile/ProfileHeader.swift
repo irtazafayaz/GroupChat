@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProfileHeader: View {
     
-    var imageUrl: URL?
+    @Binding var imageUrl: URL?
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -47,6 +47,3 @@ struct ProfileHeader: View {
     }
 }
 
-#Preview {
-    ProfileHeader()
-}

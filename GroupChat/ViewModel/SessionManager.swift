@@ -184,6 +184,55 @@ final class SessionManager: ObservableObject {
         }
     }
 
+    func updateUserProfilePicture(newPhoto: UIImage, completion: @escaping (Bool, Error?) -> Void) {
+        guard let userid = getCurrentAuthUser()?.uid else { return }
+        let imageName = UUID().uuidString
+        let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).jpg")
+        
+        if let uploadData = newPhoto.jpegData(compressionQuality: 0.1) {
+            // Upload the image data to Firebase Storage
+            storageRef.putData(uploadData, metadata: nil) { (_, error) in
+                if let error = error {
+                    print("Error uploading image: \(error.localizedDescription)")
+                    completion(false, error)
+                    return
+                }
+                
+                // Retrieve the download URL of the uploaded image
+                storageRef.downloadURL { (url, error) in
+                    if let error = error {
+                        print("Error fetching image URL: \(error.localizedDescription)")
+                        completion(false, error)
+                        return
+                    }
+                    
+                    guard let newPhotoUrl = url else {
+                        completion(false, NSError(domain: "URLCreationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not create URL for uploaded photo."]))
+                        return
+                    }
+                    
+                    // Update the Firestore document with the new image URL
+                    let values = ["photoURL": newPhotoUrl.absoluteString]
+                    self.userProfileImageUrl = newPhotoUrl
+                    let userDocument = self.db.collection("users").document(userid)
+                    
+                    userDocument.updateData(values) { error in
+                        if let error = error {
+                            print("Error updating user profile picture: \(error)")
+                            completion(false, error)
+                        } else {
+                            print("Profile picture updated successfully.")
+                            completion(true, nil)
+                        }
+                    }
+                }
+            }
+        } else {
+            // Handle the case where the image could not be converted to JPEG data
+            completion(false, NSError(domain: "ImageDataError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not convert image to JPEG data."]))
+        }
+    }
+
     
     
 }

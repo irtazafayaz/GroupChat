@@ -19,7 +19,7 @@ struct ProfileView: View {
     var body: some View {
         VStack {
             
-            ProfileHeader(imageUrl: sessionManager.userProfileImageUrl)
+            ProfileHeader(imageUrl: $sessionManager.userProfileImageUrl)
             
             Text(sessionManager.userName.uppercased())
                 .font(.custom(FontFamily.bold.rawValue, size: 30))
@@ -32,40 +32,48 @@ struct ProfileView: View {
 
             Divider()
             
-            DisclosureGroup(isExpanded: $isFriendsListExpanded) {
-                VStack {
-                    ForEach(sessionManager.userFriends, id: \.id) { friend in
-                        HStack {
-                            Text(friend.displayName.uppercased())
-                                .font(.custom(FontFamily.semiBold.rawValue, size: 20))
-                                .foregroundColor(.black)
-                            Spacer()
-                            Button {
-                                selectedFriend = friend.id
-                                openChat.toggle()
-                            } label: {
-                                Image(systemName: "message.fill")
-                                    .font(.custom(FontFamily.semiBold.rawValue, size: 16))
-                                    .foregroundColor(Color("primary-color"))
-                            }
-                        }
-                        
-                    }
-                }
-                .padding(.top)
+            Button {
+                openImagePicker.toggle()
             } label: {
-                HStack {
-                    Text("Friends")
-                        .font(.custom(FontFamily.bold.rawValue, size: 24))
-                        .foregroundColor(.black)
-                    Spacer()
-                }
-                .onTapGesture {
-                    isFriendsListExpanded.toggle()
+                Text("Change Profile Picture")
+                    .font(.custom(FontFamily.bold.rawValue, size: 20))
+                    .foregroundColor(Color("primary-color"))
+                    .padding(.top)
+            }
+            .sheet(isPresented: $openImagePicker) {
+                ImagePicker(image: $image, isShown: $openImagePicker) {
+                    guard let img = image else { return }
+                    sessionManager.updateUserProfilePicture(newPhoto: img, completion: {_,_ in })
                 }
             }
-            .tint(.clear)
-            .padding()
+
+            
+            Divider()
+
+            Text("Friends")
+                .font(.custom(FontFamily.bold.rawValue, size: 24))
+                .foregroundColor(.black)
+                .padding(.top)
+
+            VStack {
+                ForEach(sessionManager.userFriends, id: \.id) { friend in
+                    HStack {
+                        Text(friend.displayName.uppercased())
+                            .font(.custom(FontFamily.semiBold.rawValue, size: 20))
+                            .foregroundColor(.black)
+                        Spacer()
+                        Button {
+                            selectedFriend = friend.id
+                            openChat.toggle()
+                        } label: {
+                            Image(systemName: "message.fill")
+                                .font(.custom(FontFamily.semiBold.rawValue, size: 16))
+                                .foregroundColor(Color("primary-color"))
+                        }
+                    }
+                    .padding()
+                }
+            }
             
             Spacer()
             
