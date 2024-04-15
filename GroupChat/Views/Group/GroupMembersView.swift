@@ -12,6 +12,10 @@ struct GroupMembersView: View {
     @EnvironmentObject var groupchatManager: GroupChatVM
     @EnvironmentObject var sessionManager: SessionManager
     
+    private func isCurrentUser(_ friend: String) -> Bool {
+        sessionManager.getCurrentAuthUser()?.uid == friend
+    }
+    
     var body: some View {
         
         ScrollView {
@@ -22,6 +26,7 @@ struct GroupMembersView: View {
                         .font(.custom(FontFamily.bold.rawValue, size: 30))
                         .foregroundStyle(.white)
                         .padding(.top, 15)
+                        .padding(.bottom, 5)
                         .frame(maxWidth: .infinity)
                 }
                 .background(Color("primary-color"))
@@ -31,19 +36,20 @@ struct GroupMembersView: View {
                 ForEach(groupchatManager.members, id: \.id) { member in
                     HStack {
                         if let url = URL(string: member.photoURL) {
-                            AsyncImage(url: url, content: view)
+                            CachedAsyncImageView(url: url)
                                 .aspectRatio(contentMode: .fill)
-                                .frame(width: 20, height: 20)
+                                .frame(width: 30, height: 30)
                                 .clipShape(Circle())
                         } else {
                             Color.black
-                                .frame(width: 20, height: 20)
+                                .frame(width: 30, height: 30)
                         }
                         
                         Text(member.displayName.uppercased())
-                            .font(.custom(FontFamily.semiBold.rawValue, size: 20))
+                            .font(.custom(FontFamily.semiBold.rawValue, size: 18))
                             .foregroundStyle(.black)
                             .bold()
+                            .padding(.leading, 5)
                         
                         Spacer()
                         
@@ -52,14 +58,14 @@ struct GroupMembersView: View {
                                 groupchatManager.addFriend(currentUserId: current, friendId: friend)
                             }
                         } label: {
-                            HStack {
-                                Image(systemName: "plus")
-                            }
-                            .foregroundColor(.white)
-                            .padding(5)
-                            .background(Color("primary-color"))
-                            .cornerRadius(10)
+                            Image(systemName: "plus")
+                                .font(.custom(FontFamily.regular.rawValue, size: 12))
+                                .foregroundColor(.white)
+                                .padding(5)
+                                .background(!isCurrentUser(member.id ?? "NaN") ? Color("primary-color") : .gray)
+                                .cornerRadius(5)
                         }
+                        .disabled(isCurrentUser(member.id ?? "NaN"))
                         
                     }
                     .padding(.horizontal)
@@ -69,29 +75,9 @@ struct GroupMembersView: View {
         }
         .ignoresSafeArea(.all)
         
-        
     }
     
-    @ViewBuilder
-    private func view(for phase: AsyncImagePhase) -> some View {
-        switch phase {
-        case .empty:
-            ProgressView()
-        case .success(let image):
-            image
-                .resizable()
-        case .failure(let error):
-            VStack(spacing: 16) {
-                Image(systemName: "xmark.octagon.fill")
-                    .foregroundColor(.red)
-                Text(error.localizedDescription)
-                    .multilineTextAlignment(.center)
-            }
-        @unknown default:
-            Text("Unknown")
-                .foregroundColor(.gray)
-        }
-    }
+    
     
 }
 

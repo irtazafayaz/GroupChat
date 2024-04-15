@@ -23,18 +23,10 @@ struct TitleRow: View {
     var body: some View {
         HStack(spacing: 10) {
             if let url = imageUrl {
-                AsyncImage(url: url) { image in
-                    image.resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 50, height: 50)
-                        .cornerRadius(50)
-                } placeholder: {
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 50, height: 50)
-                            .cornerRadius(50)
-                }
+                CachedAsyncImageView(url: url)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 50, height: 50)
+                    .clipShape(Circle())
             } else {
                 Image(systemName: "person.circle.fill")
                     .resizable()
@@ -42,8 +34,6 @@ struct TitleRow: View {
                         .frame(width: 50, height: 50)
                         .cornerRadius(50)
             }
-            
-            
             VStack(alignment: .leading) {
                 Text(name.uppercased())
                     .font(.custom(FontFamily.bold.rawValue, size: 20))

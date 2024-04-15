@@ -31,7 +31,7 @@ struct GroupMessageBubble: View {
                 
                 Text(message.content)
                     .font(.custom(FontFamily.medium.rawValue, size: 18))
-                    .foregroundColor(.black)
+                    .foregroundColor(isCurrentUser ? .white : .black)
                     .padding()
                     .background(RoundedCorners(
                         tl: isCurrentUser ? 20 : 8,

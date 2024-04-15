@@ -24,6 +24,7 @@ struct TrendingView: View {
                     .foregroundColor(.black)
                 Spacer()
             }
+            .frame(height: 30)
             .padding()
             .background(Color("primary-color"))
             
@@ -36,7 +37,7 @@ struct TrendingView: View {
                         VStack {
                             HStack {
                                 if let url = URL(string: group.image) {
-                                    AsyncImage(url: url, content: view)
+                                    CachedAsyncImageView(url: url)
                                         .aspectRatio(contentMode: .fill)
                                         .frame(width: 50, height: 50)
                                         .clipShape(Circle())
@@ -86,24 +87,4 @@ struct TrendingView: View {
         }
     }
     
-    @ViewBuilder
-    private func view(for phase: AsyncImagePhase) -> some View {
-        switch phase {
-        case .empty:
-            ProgressView()
-        case .success(let image):
-            image
-                .resizable()
-        case .failure(let error):
-            VStack(spacing: 16) {
-                Image(systemName: "xmark.octagon.fill")
-                    .foregroundColor(.red)
-                Text(error.localizedDescription)
-                    .multilineTextAlignment(.center)
-            }
-        @unknown default:
-            Text("Unknown")
-                .foregroundColor(.gray)
-        }
-    }
 }

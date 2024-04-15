@@ -25,11 +25,35 @@ struct GroupChatView: View {
             VStack {
                 HStack {
                     CustomBackButton()
-                    TitleRow(imageUrl: URL(string: selectedGroup.image), name: selectedGroup.name)
-                        .onTapGesture {
-                            openMemberList.toggle()
-                        }
+                    if let url = URL(string: selectedGroup.image) {
+                        CachedAsyncImageView(url: url)
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 30, height: 30)
+                            .clipShape(Circle())
+                            .padding(.leading, 5)
+                    } else {
+                        Image(systemName: "person.circle.fill")
+                            .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 30, height: 30)
+                                .cornerRadius(30)
+                                .padding(.leading, 5)
+                    }
+                    Text(selectedGroup.name.uppercased())
+                        .font(.custom(FontFamily.bold.rawValue, size: 20))
+                    Spacer()
+                    Button {
+                        openMemberList.toggle()
+                    } label: {
+                        Image(systemName: "info.bubble.fill")
+                            .foregroundColor(.black)
+                            .font(.body)
+                            .padding(.trailing)
+                    }
                 }
+                .frame(height: 60)
+                .background(Color("primary-color"))
+
                 ScrollViewReader { proxy in
                     ScrollView {
                         ForEach(groupchatManager.messages, id: \.id) { message in
@@ -47,7 +71,6 @@ struct GroupChatView: View {
                     }
                 }
             }
-            .background(Color("primary-color"))
             .sheet(isPresented: $openMemberList) {
                 GroupMembersView()
                     .environmentObject(groupchatManager)

@@ -26,13 +26,28 @@ struct PrivateChatView: View {
                 HStack {
                     CustomBackButton()
                     if let receiver = messagesManager.receiverInfo {
-                        TitleRow(
-                            imageUrl: URL(string: receiver.photoURL),
-                            name: receiver.displayName
-                        )
+                        if let url = URL(string: receiver.photoURL) {
+                            CachedAsyncImageView(url: url)
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 30, height: 30)
+                                .clipShape(Circle())
+                                .padding(.leading, 5)
+                        } else {
+                            Image(systemName: "person.circle.fill")
+                                .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 30, height: 30)
+                                    .cornerRadius(30)
+                                    .padding(.leading, 5)
+                        }
+                        Text(receiver.displayName.uppercased())
+                            .font(.custom(FontFamily.bold.rawValue, size: 20))
                     }
                     Spacer()
                 }
+                .frame(height: 60)
+                .background(Color("primary-color"))
+
                 
                 ScrollViewReader { proxy in
                     ScrollView {
@@ -48,8 +63,8 @@ struct PrivateChatView: View {
                         proxy.scrollTo(messagesManager.lastMessageId, anchor: .bottom)
                     }
                 }
+                Spacer()
             }
-            .background(Color("primary-color"))
             
             MessageField(receiverId: receiverId)
                 .environmentObject(messagesManager)

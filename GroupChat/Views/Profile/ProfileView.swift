@@ -55,13 +55,29 @@ struct ProfileView: View {
                 .foregroundColor(.black)
                 .padding(.top)
 
-            VStack {
+            VStack(spacing: 0) {
                 ForEach(sessionManager.userFriends, id: \.id) { friend in
                     HStack {
+                        if let url = URL(string: friend.photoURL) {
+                            CachedAsyncImageView(url: url)
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 20, height: 20)
+                                .clipShape(Circle())
+                                .padding(.leading)
+                        } else {
+                            Color.black
+                                .frame(width: 20, height: 20)
+                                .padding(.leading)
+                        }
+                        
                         Text(friend.displayName.uppercased())
-                            .font(.custom(FontFamily.semiBold.rawValue, size: 20))
-                            .foregroundColor(.black)
+                            .font(.custom(FontFamily.semiBold.rawValue, size: 18))
+                            .foregroundStyle(.black)
+                            .bold()
+                            .padding(.leading, 5)
+                        
                         Spacer()
+                        
                         Button {
                             selectedFriend = friend.id
                             openChat.toggle()
@@ -69,9 +85,10 @@ struct ProfileView: View {
                             Image(systemName: "message.fill")
                                 .font(.custom(FontFamily.semiBold.rawValue, size: 16))
                                 .foregroundColor(Color("primary-color"))
+                                .padding(.trailing)
                         }
                     }
-                    .padding()
+                    .padding(.bottom, 10)
                 }
             }
             

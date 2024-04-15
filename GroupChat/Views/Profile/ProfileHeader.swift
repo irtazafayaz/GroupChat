@@ -19,20 +19,14 @@ struct ProfileHeader: View {
                 .edgesIgnoringSafeArea(.top)
                 .frame(height: 70)
             
-            if let url = imageUrl {
-                AsyncImage(url: url) { image in
-                    image.resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 100, height: 100)
-                        .clipShape(Circle())
-                        .overlay(Circle().stroke(Color.white, lineWidth: 4))
-                        .shadow(radius: 10)
-                        .padding(.top, 20)
-                    
-                } placeholder: {
-                    ProgressView()
-                        .frame(width: 50, height: 50)
-                }
+            if let url = imageUrl {   
+                CachedAsyncImageView(url: url)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                    .shadow(radius: 10)
+                    .padding(.top, 20)
             } else {
                 Image(systemName: "person.circle.fill")
                     .resizable()

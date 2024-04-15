@@ -32,7 +32,7 @@ struct MessageBubble: View {
                 
                 Text(message.message)
                     .font(.custom(FontFamily.medium.rawValue, size: 18))
-                    .foregroundColor(.black)
+                    .foregroundColor(isCurrentUser ? .white : .black)
                     .padding()
                     .background(RoundedCorners(
                         tl: isCurrentUser ? 20 : 8,
