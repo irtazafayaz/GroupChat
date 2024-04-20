@@ -62,6 +62,11 @@ class GroupsVM: ObservableObject {
                 notJoinedGroups.append(group)
             }
         }
+        notJoinedGroups.sort { (group1, group2) -> Bool in
+            let count1 = group1.members?.count ?? 0
+            let count2 = group2.members?.count ?? 0
+            return count1 > count2
+        }
         filterGroups("")
     }
 
