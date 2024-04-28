@@ -14,7 +14,9 @@ class GroupChatVM: ObservableObject {
     @Published private(set) var messages: [GroupMessage] = []
     @Published var members: [UserDetails] = []
     @Published private(set) var lastMessageId: String = ""
-    
+    @Published private(set) var friendAddedAlertMessage: String = ""
+    @Published var friendAddedAlert: Bool = false
+
     private let db = Firestore.firestore()
     private var messagesListener: ListenerRegistration?
     private var groupListener: ListenerRegistration?
@@ -44,7 +46,7 @@ class GroupChatVM: ObservableObject {
     func getMessagesAndMembers(forGroup groupId: String) {
         messagesListener?.remove()
         groupListener?.remove()
-
+        
         groupListener = db.collection("groups").document(groupId).addSnapshotListener { [weak self] (document, error) in
             guard let self = self else { return }
             guard let document = document, document.exists, let group = try? document.data(as: Group.self) else {
@@ -55,7 +57,7 @@ class GroupChatVM: ObservableObject {
             groupMembers?.append(group.owner)
             self.fetchMembers(memberIDs: groupMembers ?? [])
         }
-
+        
         messagesListener = db.collection("groups").document(groupId).collection("messages")
             .order(by: "timestamp", descending: false)
             .addSnapshotListener { [weak self] (querySnapshot, error) in
@@ -70,7 +72,7 @@ class GroupChatVM: ObservableObject {
                 }
             }
     }
-
+    
     private func fetchMembers(memberIDs: [String]) {
         members.removeAll()
         
@@ -99,8 +101,7 @@ class GroupChatVM: ObservableObject {
         let usersRef = db.collection("users")
         let currentUserRef = usersRef.document(currentUserId)
         let friendUserRef = usersRef.document(friendId)
-
-        // Use Firestore transaction for atomic updates
+        
         db.runTransaction({ (transaction, errorPointer) -> Any? in
             let currentUserDocument: DocumentSnapshot
             let friendUserDocument: DocumentSnapshot
@@ -109,33 +110,39 @@ class GroupChatVM: ObservableObject {
                 try friendUserDocument = transaction.getDocument(friendUserRef)
             } catch let fetchError as NSError {
                 errorPointer?.pointee = fetchError
+                self.showAddFriendAlert("Unable to add friend")
                 return nil
             }
-
-            // Update current user's friends list
+            
             var currentUserFriends = currentUserDocument.data()?["friends"] as? [String] ?? []
             if !currentUserFriends.contains(friendId) {
                 currentUserFriends.append(friendId)
                 transaction.updateData(["friends": currentUserFriends], forDocument: currentUserRef)
             }
-
-            // Update friend user's friends list
+            
             var friendUserFriends = friendUserDocument.data()?["friends"] as? [String] ?? []
             if !friendUserFriends.contains(currentUserId) {
                 friendUserFriends.append(currentUserId)
                 transaction.updateData(["friends": friendUserFriends], forDocument: friendUserRef)
             }
-
+            
             return nil
         }) { (object, error) in
             if let error = error {
                 print("Transaction failed: \(error)")
+                self.showAddFriendAlert("Unable to add friend")
             } else {
                 print("Transaction successfully committed!")
+                self.showAddFriendAlert("Friend Added Successfully")
             }
         }
     }
-
+    
+    private func showAddFriendAlert(_ msg: String) {
+        friendAddedAlertMessage = msg
+        friendAddedAlert.toggle()
+    }
+    
     
 }
 

@@ -20,80 +20,81 @@ struct RegisterView: View {
     
     
     var body: some View {
-        VStack(spacing: 16) {
-            Text("Sign Up")
-                .font(.largeTitle).bold()
-            
-            VStack {
-                if let selectedImage = image {
-                    Image(uiImage: selectedImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 100, height: 100, alignment: .center)
-                        .clipShape(Circle())
-                        .onTapGesture {
-                            showImagePicker = true
-                        }
-                } else {
-                    Image(systemName: "person.crop.circle.fill")
-                        .resizable()
-                        .foregroundColor(.gray)
-                        .frame(width: 100, height: 100, alignment: .center)
-                        .onTapGesture {
-                            showImagePicker = true
-                        }
+        ZStack {
+            VStack(spacing: 10) {
+                Text("Sign Up")
+                    .font(.largeTitle).bold()
+                
+                VStack {
+                    if let selectedImage = image {
+                        Image(uiImage: selectedImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 100, height: 100, alignment: .center)
+                            .clipShape(Circle())
+                            .onTapGesture {
+                                showImagePicker = true
+                            }
+                    } else {
+                        Image(systemName: "person.crop.circle.fill")
+                            .resizable()
+                            .foregroundColor(.gray)
+                            .frame(width: 100, height: 100, alignment: .center)
+                            .onTapGesture {
+                                showImagePicker = true
+                            }
+                    }
                 }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding()
-            
-            CustomTextField(placeholder: Text("Name"), text: $fullName)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .padding()
-                .background(Color("Gray"))
-                .cornerRadius(10)
-            
-            CustomTextField(placeholder: Text("Email"), text: $email)
-                .padding()
-                .background(Color("Gray"))
-                .cornerRadius(10)
-            
-            CustomTextField(placeholder: Text("Password"), text: $password)
-                .padding()
-                .background(Color("Gray"))
-                .cornerRadius(10)
-            
-            CustomTextField(placeholder: Text("Confirm Password"), text: $confirmPassword)
-                .padding()
-                .background(Color("Gray"))
-                .cornerRadius(10)
-            
-            Button("Sign Up") {
-                sessionManager.createNewUser(name: fullName, email: email, photo: image, password: password)
-            }
-            .foregroundColor(.white)
-            .padding()
-            .background(Color("primary-color"))
-            .cornerRadius(10)
-            
-            Spacer()
-            
-            HStack {
-                Text("Already have an account?")
-                    .font(Font.custom("MontserratAlternates-Regular", size: 16))
-                Button(action: { sessionManager.authState = .login }) {
-                    Text("SIGN IN")
-                        .font(Font.custom("MontserratAlternates-Bold", size: 12))
-                        .underline()
+                
+                CustomTextField(label: $fullName, placeholder: "Enter your full name", textfieldType: .normal)
+                
+                CustomTextField(label: $email, placeholder: "Email", textfieldType: .email)
+                
+                CustomTextField(label: $password, placeholder: "Password", textfieldType: .password)
+                
+                CustomTextField(label: $confirmPassword, placeholder: "Confirm Password", textfieldType: .password)
+                
+                Button("Sign Up") {
+                    sessionManager.createNewUser(name: fullName, email: email, photo: image, password: password)
                 }
+                .foregroundColor(.white)
+                .padding()
+                .background(Color("primary-color"))
+                .cornerRadius(10)
+                
+                Spacer()
+                
+                HStack {
+                    Text("Already have an account?")
+                        .font(Font.system(size: 16))
+                    Button(action: { sessionManager.authState = .login }) {
+                        Text("SIGN IN")
+                            .font(Font.system(size: 16))
+                            .underline()
+                            .bold()
+                    }
+                }
+                .foregroundColor(Color.black)
+                .padding(.bottom)
+                
             }
-            .foregroundColor(Color.black)
-            .padding(.bottom)
+            .padding()
+            .sheet(isPresented: $showImagePicker) {
+                ImagePicker(image: $image, isShown: $showImagePicker) {}
+            }
+            .blur(radius: sessionManager.isLoading ? 3 : 0)
             
-        }
-        .padding()
-        .sheet(isPresented: $showImagePicker) {
-            ImagePicker(image: $image, isShown: $showImagePicker) {
+            
+            if sessionManager.isLoading {
+                Color.black.opacity(0.4).edgesIgnoringSafeArea(.all)
+                
+                ProgressView()
+                    .scaleEffect(2)
+                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
             }
+            
         }
     }
 }

@@ -43,6 +43,7 @@
 		D544BE022BC1B74A0013C004 /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D544BE012BC1B74A0013C004 /* ProfileHeader.swift */; };
 		D55F6D492BCDD3DE0048C757 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55F6D482BCDD3DE0048C757 /* ImageCache.swift */; };
 		D55F6D4B2BCDD4290048C757 /* CachedAsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55F6D4A2BCDD4290048C757 /* CachedAsyncImageView.swift */; };
+		D57E00402BDF05EC00C07250 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57E003F2BDF05EC00C07250 /* CustomTextField.swift */; };
 		D5AD630C2BAE097A002ECFD0 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD630B2BAE097A002ECFD0 /* ImagePicker.swift */; };
 		D5AD630E2BAE0E3E002ECFD0 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = D5AD630D2BAE0E3E002ECFD0 /* FirebaseStorage */; };
 		D5AD63102BAE63A1002ECFD0 /* GroupChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD630F2BAE63A1002ECFD0 /* GroupChatView.swift */; };
@@ -105,6 +106,7 @@
 		D544BE012BC1B74A0013C004 /* ProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeader.swift; sourceTree = "<group>"; };
 		D55F6D482BCDD3DE0048C757 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		D55F6D4A2BCDD4290048C757 /* CachedAsyncImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImageView.swift; sourceTree = "<group>"; };
+		D57E003F2BDF05EC00C07250 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		D5AD630B2BAE097A002ECFD0 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		D5AD630F2BAE63A1002ECFD0 /* GroupChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatView.swift; sourceTree = "<group>"; };
 		D5AD63112BAE63E4002ECFD0 /* GroupChatVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatVM.swift; sourceTree = "<group>"; };
@@ -288,6 +290,7 @@
 				D544BAFA2BBE32B1005AE549 /* SearchBar.swift */,
 				D55F6D482BCDD3DE0048C757 /* ImageCache.swift */,
 				D55F6D4A2BCDD4290048C757 /* CachedAsyncImageView.swift */,
+				D57E003F2BDF05EC00C07250 /* CustomTextField.swift */,
 			);
 			path = HelperClasses;
 			sourceTree = "<group>";
@@ -444,6 +447,7 @@
 				D5439DEC2BAC66DA00BCFD6F /* Message.swift in Sources */,
 				D55F6D492BCDD3DE0048C757 /* ImageCache.swift in Sources */,
 				D5AD631D2BAF2735002ECFD0 /* RoundedCorner.swift in Sources */,
+				D57E00402BDF05EC00C07250 /* CustomTextField.swift in Sources */,
 				D5439DDF2BAC650400BCFD6F /* ContentView.swift in Sources */,
 				D5439E0E2BAC768600BCFD6F /* SessionManager.swift in Sources */,
 				D544BB002BC0C728005AE549 /* PrivateVM.swift in Sources */,
@@ -618,11 +622,12 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mahadmohamed.groupchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -654,11 +659,12 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mahadmohamed.groupchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

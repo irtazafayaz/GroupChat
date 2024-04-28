@@ -22,21 +22,23 @@ enum AuthState {
 final class SessionManager: ObservableObject {
     
     @Published var authState: AuthState = .login
-
+    
     private var cancellables = Set<AnyCancellable>()
     private let db = Firestore.firestore()
-
+    
     @Published var userName: String = ""
     @Published var userEmail: String = ""
     @Published var userProfileImageUrl: URL?
     @Published var userFriends: [UserDetails] = []
-
+    @Published var isLoading: Bool = false
+    
+    
     init() {
         self.observeAuthChanges()
         self.fetchUserData()
     }
     
-    private func fetchUserData() {
+    func fetchUserData() {
         guard let currentUser = Auth.auth().currentUser else { return }
         let userRef = db.collection("users").document(currentUser.uid)
         userRef.getDocument { (document, error) in
@@ -66,7 +68,9 @@ final class SessionManager: ObservableObject {
     }
     
     func login(email: String, password: String) {
+        isLoading = true
         Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+            self.isLoading = false
             if let error = error {
                 print("Error signing in: \(error.localizedDescription)")
                 return
@@ -75,8 +79,10 @@ final class SessionManager: ObservableObject {
     }
     
     func register(email: String, password: String, fullName: String) {
+        isLoading = true
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
             if let error = error {
+                self.isLoading = false
                 print("Error signing up: \(error.localizedDescription)")
                 return
             }
@@ -84,19 +90,21 @@ final class SessionManager: ObservableObject {
             changeRequest?.displayName = fullName
             changeRequest?.commitChanges(completion: { error in
                 if let error = error {
+                    self.isLoading = false
                     print("Error updating user's display name: \(error.localizedDescription)")
-                    // Handle error, if necessary
                 } else {
+                    self.isLoading = false
                     print("User display name updated successfully")
-                    // Handle success, if necessary
                 }
             })
         }
     }
     
     func createNewUser(name: String, email: String, photo: UIImage?, password: String) {
+        isLoading = true
         Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
             if let error = error {
+                self.isLoading = false
                 print("Login error: \(error.localizedDescription)")
                 return
             }
@@ -104,28 +112,38 @@ final class SessionManager: ObservableObject {
             let imageName = UUID().uuidString
             let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).jpg")
             
-            guard let uid = result?.user.uid else { return }
+            guard let uid = result?.user.uid else {
+                self.isLoading = false
+                return
+            }
             
             if let uploadData = photo?.jpegData(compressionQuality: 0.1) {
                 storageRef.putData(uploadData, metadata: nil, completion: { (_, error) in
                     if let error = error {
+                        self.isLoading = false
                         print(error)
                         return
                     }
                     storageRef.downloadURL(completion: { (url, error) in
                         if let error = error {
+                            self.isLoading = false
                             print(error)
                             return
                         }
-                        guard let photoUrl = url else { return }
+                        guard let photoUrl = url else {
+                            self.isLoading = false
+                            return
+                        }
                         let values = ["displayName": name, "email": email, "photoURL": photoUrl.absoluteString]
-
+                        
                         let groupDocument = self.db.collection("users").document(uid)
                         groupDocument.setData(values) { err in
                             if let err = err {
+                                self.isLoading = false
                                 print("Error sending message: \(err)")
                             } else {
-                                print("Message sent")
+                                self.isLoading = false
+                                print("User Created")
                             }
                         }
                     })
@@ -151,15 +169,15 @@ final class SessionManager: ObservableObject {
             print("No logged-in user")
             return
         }
-
+        
         let currentUserRef = db.collection("users").document(currentUserID)
-
+        
         currentUserRef.getDocument { [weak self] (document, error) in
             if let document = document, document.exists, let data = document.data(), let friendIDs = data["friends"] as? [String] {
                 var friendsDetails: [UserDetails] = []
-
+                
                 let fetchGroup = DispatchGroup()
-
+                
                 for friendID in friendIDs {
                     fetchGroup.enter()
                     let friendRef = self?.db.collection("users").document(friendID)
@@ -172,18 +190,18 @@ final class SessionManager: ObservableObject {
                         fetchGroup.leave()
                     }
                 }
-
+                
                 fetchGroup.notify(queue: .main) {
                     self?.userFriends = friendsDetails
-                    print(self?.userFriends)
+                    print(self?.userFriends as Any)
                 }
-
+                
             } else {
                 print("Document does not exist or failed to fetch friends list")
             }
         }
     }
-
+    
     func updateUserProfilePicture(newPhoto: UIImage, completion: @escaping (Bool, Error?) -> Void) {
         guard let userid = getCurrentAuthUser()?.uid else { return }
         let imageName = UUID().uuidString
@@ -232,7 +250,7 @@ final class SessionManager: ObservableObject {
             completion(false, NSError(domain: "ImageDataError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not convert image to JPEG data."]))
         }
     }
-
+    
     
     
 }

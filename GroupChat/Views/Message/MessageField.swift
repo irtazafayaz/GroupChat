@@ -12,16 +12,18 @@ struct MessageField: View {
     @EnvironmentObject var messagesManager: MessagesManager
     @EnvironmentObject var sessionManager: SessionManager
     
-    @State private var message = ""
+    @State private var message = "Enter your message here"
     
     var receiverId: String
 
     var body: some View {
         HStack {
 
-            CustomTextField(placeholder: Text("Enter your message here"), text: $message)
-                .frame(height: 52)
-                .disableAutocorrection(true)
+            CustomTextField(label: $message, textfieldType: .email)
+
+//            CustomTextField(placeholder: Text("Enter your message here"), text: $message)
+//                .frame(height: 52)
+//                .disableAutocorrection(true)
 
             Button {
                 if let user = sessionManager.getCurrentAuthUser()?.uid {
@@ -45,20 +47,4 @@ struct MessageField: View {
     }
 }
 
-struct CustomTextField: View {
-    var placeholder: Text
-    @Binding var text: String
-    var editingChanged: (Bool)->() = { _ in }
-    var commit: ()->() = { }
 
-    var body: some View {
-        ZStack(alignment: .leading) {
-            // If text is empty, show the placeholder on top of the TextField
-            if text.isEmpty {
-                placeholder
-                .opacity(0.5)
-            }
-            TextField("", text: $text, onEditingChanged: editingChanged, onCommit: commit)
-        }
-    }
-}

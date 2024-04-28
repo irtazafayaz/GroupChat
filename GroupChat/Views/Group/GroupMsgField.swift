@@ -10,7 +10,7 @@ import SwiftUI
 struct GroupMsgField: View {
     
     @EnvironmentObject var groupManager: GroupChatVM
-    @State private var message = ""
+    @State private var message = "Enter your message here"
     
     var groupId: String
     var senderId: String
@@ -19,10 +19,13 @@ struct GroupMsgField: View {
     var body: some View {
         HStack {
             
-            CustomTextField(placeholder: Text("Enter your message here"), text: $message)
-                .frame(height: 52)
-                .disableAutocorrection(true)
+            CustomTextField(label: $message, textfieldType: .email)
+
             
+//            CustomTextField(placeholder: Text("Enter your message here"), text: $message)
+//                .frame(height: 52)
+//                .disableAutocorrection(true)
+//            
             Button {
                 groupManager.sendMessage(toGroup: groupId, message: message, senderId: senderId, senderName: senderName)
                 message = ""

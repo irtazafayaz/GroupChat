@@ -107,6 +107,7 @@ struct ProfileView: View {
         }
         .onAppear {
             sessionManager.fetchUserFriends()
+            sessionManager.fetchUserData()
         }
         .navigationDestination(isPresented: $openChat, destination: {
             if let user = selectedFriend {

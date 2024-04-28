@@ -27,7 +27,7 @@ struct AddGroupView: View {
     @State private var showAlert = false
     @State private var uploadProgress: Float = 0.0
     
-    private let groupTypes = ["Movies", "Books", "Social", "Entertainment", "Other"]
+    private let groupTypes = ["Movies", "Books", "Social", "Entertainment", "Sports", "Other"]
     private let db = Firestore.firestore()
     
     var body: some View {
