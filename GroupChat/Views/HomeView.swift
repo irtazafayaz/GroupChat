@@ -51,6 +51,8 @@ struct HomeView: View {
                 
             }
             .onAppear {
+                sessionManager.fetchUserFriends()
+                sessionManager.fetchUserData()
                 viewModel.fetchGroupsByOwner(sessionManager.getCurrentAuthUser()?.uid ?? "NaN")
             }
             .navigationBarBackButtonHidden(true)

@@ -19,7 +19,7 @@ enum AuthState {
 }
 
 
-final class SessionManager: ObservableObject {
+class SessionManager: ObservableObject {
     
     @Published var authState: AuthState = .login
     
@@ -154,6 +154,8 @@ final class SessionManager: ObservableObject {
     
     func logout() {
         do {
+            userProfileImageUrl = nil
+            userFriends = []
             try Auth.auth().signOut()
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)

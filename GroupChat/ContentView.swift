@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @ObservedObject var sessionManager = SessionManager()
+    @StateObject var sessionManager = SessionManager()
     
     var body: some View {
         NavigationView {

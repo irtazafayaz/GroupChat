@@ -10,6 +10,7 @@ import SwiftUI
 struct ProfileView: View {
     
     @EnvironmentObject var sessionManager: SessionManager
+    
     @State private var openImagePicker: Bool = false
     @State private var openChat: Bool = false
     @State private var isFriendsListExpanded: Bool = false
@@ -104,10 +105,6 @@ struct ProfileView: View {
             .cornerRadius(10)
             .padding(.bottom, 20)
             
-        }
-        .onAppear {
-            sessionManager.fetchUserFriends()
-            sessionManager.fetchUserData()
         }
         .navigationDestination(isPresented: $openChat, destination: {
             if let user = selectedFriend {
