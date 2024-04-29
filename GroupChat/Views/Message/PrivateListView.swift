@@ -31,52 +31,47 @@ struct PrivateListView: View {
             .padding()
             .background(Color("primary-color"))
             
-            if viewModel.isLoading {
-                if self.viewModel.members.count > 0 {
-                    ScrollView {
-                        VStack(spacing: 0) {
-                            ForEach(viewModel.members, id: \.id) { member in
-                                Button {
-                                    selectedMember = member
-                                    self.openPrivateChat.toggle()
-                                } label: {
-                                    VStack {
-                                        HStack {
-                                            if let url = URL(string: member.photoURL) {
-                                                CachedAsyncImageView(url: url)
-                                                    .aspectRatio(contentMode: .fill)
-                                                    .frame(width: 50, height: 50)
-                                                    .clipShape(Circle())
-                                            } else {
-                                                Color.black
-                                                    .frame(width: 50, height: 50)
-                                            }
-                                            
-                                            VStack(alignment: .leading) {
-                                                Text(member.displayName.uppercased())
-                                                    .font(.custom(FontFamily.bold.rawValue, size: 20))
-                                                    .foregroundStyle(.black)
-                                                    .bold()
-                                            }
-                                            .padding(.leading, 5)
-                                            Spacer()
+            if self.viewModel.members.count > 0 {
+                ScrollView {
+                    VStack(spacing: 0) {
+                        ForEach(viewModel.members, id: \.id) { member in
+                            Button {
+                                selectedMember = member
+                                self.openPrivateChat.toggle()
+                            } label: {
+                                VStack {
+                                    HStack {
+                                        if let url = URL(string: member.photoURL) {
+                                            CachedAsyncImageView(url: url)
+                                                .aspectRatio(contentMode: .fill)
+                                                .frame(width: 30, height: 30)
+                                                .clipShape(Circle())
+                                        } else {
+                                            Color.black
+                                                .frame(width: 30, height: 30)
                                         }
-                                        Divider()
-                                            .frame(maxWidth: .infinity)
+                                        
+                                        VStack(alignment: .leading) {
+                                            Text(member.displayName.uppercased())
+                                                .font(.custom(FontFamily.bold.rawValue, size: 20))
+                                                .foregroundStyle(.black)
+                                                .bold()
+                                        }
+                                        .padding(.leading, 5)
+                                        Spacer()
                                     }
-                                    .padding()
-                                    
+                                    Divider()
+                                        .frame(maxWidth: .infinity)
                                 }
+                                .padding()
+                                
                             }
                         }
                     }
                 }
-                Spacer()
-            } else {
-                Spacer()
-                ProgressView()
-                Spacer()
             }
+            Spacer()
+            
         }
         .onAppear {
             viewModel.startOrRetrieveChat(senderId: sessionManager.getCurrentAuthUser()?.uid ?? "NaN")

@@ -59,9 +59,15 @@ struct PrivateChatView: View {
                     .padding(.top, 10)
                     .background(Color.white)
                     .cornerRadius(10, corners: [.topLeft, .topRight])
-                    .onChange(of: messagesManager.lastMessageId) {
-                        proxy.scrollTo(messagesManager.lastMessageId, anchor: .bottom)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            if let lastId = messagesManager.messages.last?.id {
+                                proxy.scrollTo(lastId, anchor: .bottom)
+                            }
+                        }
                     }
+                    .onChange(of: messagesManager.messages.last?.id) { scrollToBottom(proxy: proxy) }
+
                 }
                 Spacer()
             }
@@ -78,4 +84,10 @@ struct PrivateChatView: View {
         .navigationBarBackButtonHidden()
         .frame(maxWidth: .infinity)
     }
+    
+    private func scrollToBottom(proxy: ScrollViewProxy) {
+        guard let id = messagesManager.messages.last?.id else { return }
+        proxy.scrollTo(id, anchor: .bottomTrailing)
+    }
+    
 }

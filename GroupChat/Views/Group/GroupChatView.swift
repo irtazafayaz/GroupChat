@@ -12,14 +12,16 @@ struct GroupChatView: View {
     @ObservedObject var groupchatManager = GroupChatVM()
     @EnvironmentObject var sessionManager: SessionManager
     @State private var openMemberList: Bool = false
-
+    @State private var lastMessageId: String? = nil
+    @State private var shouldScrollToBottom: Bool = true
+    
     private var selectedGroup: Group
     
     init(selectedGroup: Group) {
         self.selectedGroup = selectedGroup
         groupchatManager.getMessagesAndMembers(forGroup: selectedGroup.id ?? "NaN")
     }
-
+    
     var body: some View {
         VStack {
             VStack {
@@ -34,10 +36,10 @@ struct GroupChatView: View {
                     } else {
                         Image(systemName: "person.circle.fill")
                             .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 30, height: 30)
-                                .cornerRadius(30)
-                                .padding(.leading, 5)
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 30, height: 30)
+                            .cornerRadius(30)
+                            .padding(.leading, 5)
                     }
                     Text(selectedGroup.name.uppercased())
                         .font(.custom(FontFamily.bold.rawValue, size: 20))
@@ -53,23 +55,28 @@ struct GroupChatView: View {
                 }
                 .frame(height: 60)
                 .background(Color("primary-color"))
-
+                
                 ScrollViewReader { proxy in
                     ScrollView {
                         ForEach(groupchatManager.messages, id: \.id) { message in
                             GroupMessageBubble(message: message)
                                 .padding(.horizontal)
+                                .id(message.id)
                         }
                     }
                     .padding(.top, 10)
                     .background(.white)
                     .cornerRadius(10, corners: [.topLeft, .topRight])
-                    .onChange(of: groupchatManager.lastMessageId) {
-                        withAnimation {
-                            proxy.scrollTo(groupchatManager.lastMessageId, anchor: .bottom)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            if shouldScrollToBottom, let lastId = groupchatManager.messages.last?.id {
+                                proxy.scrollTo(lastId, anchor: .bottom)
+                            }
                         }
                     }
+                    .onChange(of: groupchatManager.messages.last?.content) { scrollToBottom(proxy: proxy) }
                 }
+                
             }
             .sheet(isPresented: $openMemberList) {
                 GroupMembersView()
@@ -84,7 +91,15 @@ struct GroupChatView: View {
             
         }
         .navigationBarBackButtonHidden()
+        .onReceive(groupchatManager.$lastMessageId) { newId in
+            self.lastMessageId = newId
+        }
         
+    }
+    
+    private func scrollToBottom(proxy: ScrollViewProxy) {
+        guard let id = groupchatManager.messages.last?.id else { return }
+        proxy.scrollTo(id, anchor: .bottomTrailing)
     }
     
 }

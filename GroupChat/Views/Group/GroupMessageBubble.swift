@@ -24,9 +24,10 @@ struct GroupMessageBubble: View {
             VStack(alignment: isCurrentUser ? .trailing : .leading, spacing: 5) {
                 
                 if !isCurrentUser {
-                    Text(message.senderName)
+                    Text(message.senderName.components(separatedBy: "@").first ?? message.senderName)
                         .font(.custom(FontFamily.regular.rawValue, size: 12))
                         .foregroundColor(.black)
+                        .bold()
                 }
                 
                 Text(message.content)
@@ -46,6 +47,7 @@ struct GroupMessageBubble: View {
                 Text("\(message.timestamp, formatter: messageDateFormatter)")
                     .font(.caption)
                     .foregroundColor(.gray)
+                    .padding(.bottom, 5)
                 
             }
             

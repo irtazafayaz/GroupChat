@@ -13,9 +13,9 @@ class GroupChatVM: ObservableObject {
     
     @Published private(set) var messages: [GroupMessage] = []
     @Published var members: [UserDetails] = []
-    @Published private(set) var lastMessageId: String = ""
     @Published private(set) var friendAddedAlertMessage: String = ""
     @Published var friendAddedAlert: Bool = false
+    @Published var lastMessageId: String? = nil
 
     private let db = Firestore.firestore()
     private var messagesListener: ListenerRegistration?
@@ -66,10 +66,7 @@ class GroupChatVM: ObservableObject {
                     return
                 }
                 self?.messages = documents.compactMap { try? $0.data(as: GroupMessage.self) }
-                
-                if let lastMessageId = self?.messages.last?.id {
-                    self?.lastMessageId = lastMessageId
-                }
+                self?.lastMessageId = self?.messages.last?.id
             }
     }
     

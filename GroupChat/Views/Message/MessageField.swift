@@ -12,19 +12,15 @@ struct MessageField: View {
     @EnvironmentObject var messagesManager: MessagesManager
     @EnvironmentObject var sessionManager: SessionManager
     
-    @State private var message = "Enter your message here"
+    @State private var message = ""
     
     var receiverId: String
 
     var body: some View {
         HStack {
 
-            CustomTextField(label: $message, textfieldType: .email)
-
-//            CustomTextField(placeholder: Text("Enter your message here"), text: $message)
-//                .frame(height: 52)
-//                .disableAutocorrection(true)
-
+            CustomTextField(label: $message, textfieldType: .normal)
+            
             Button {
                 if let user = sessionManager.getCurrentAuthUser()?.uid {
                     messagesManager.sendMessage(senderId: user, receiverId: receiverId, message: message)
@@ -39,10 +35,6 @@ struct MessageField: View {
                     .cornerRadius(50)
             }
         }
-        .padding(.horizontal)
-        .padding(.vertical, 10)
-        .background(Color("Gray"))
-        .cornerRadius(50)
         .padding()
     }
 }

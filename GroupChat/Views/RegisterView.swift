@@ -57,7 +57,12 @@ struct RegisterView: View {
                 CustomTextField(label: $confirmPassword, placeholder: "Confirm Password", textfieldType: .password)
                 
                 Button("Sign Up") {
-                    sessionManager.createNewUser(name: fullName, email: email, photo: image, password: password)
+                    sessionManager.createNewUser(
+                        name: fullName,
+                        email: email,
+                        photo: image ?? UIImage(systemName: "person.crop.circle.fill"),
+                        password: password
+                    )
                 }
                 .foregroundColor(.white)
                 .padding()
