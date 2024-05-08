@@ -37,6 +37,7 @@ struct TitleRow: View {
             VStack(alignment: .leading) {
                 Text(name.uppercased())
                     .font(.custom(FontFamily.bold.rawValue, size: 20))
+                    .foregroundStyle(.white)
 
             }
             .frame(maxWidth: .infinity, alignment: .leading)

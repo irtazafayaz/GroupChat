@@ -17,7 +17,7 @@ struct CustomBackButton: View {
             presentationMode.wrappedValue.dismiss()
         }) {
             Image(systemName: "chevron.left")
-                .foregroundColor(.black)
+                .foregroundColor(.white)
                 .font(.title2)
                 .padding(.leading)
         }

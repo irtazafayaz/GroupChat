@@ -43,6 +43,7 @@ struct GroupChatView: View {
                     }
                     Text(selectedGroup.name.uppercased())
                         .font(.custom(FontFamily.bold.rawValue, size: 20))
+                        .foregroundStyle(.white)
                     Spacer()
                     Button {
                         openMemberList.toggle()
@@ -90,6 +91,7 @@ struct GroupChatView: View {
             }
             
         }
+        .background(Color("app-background"))
         .navigationBarBackButtonHidden()
         .onReceive(groupchatManager.$lastMessageId) { newId in
             self.lastMessageId = newId

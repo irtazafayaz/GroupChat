@@ -23,6 +23,7 @@ struct RegisterView: View {
         ZStack {
             VStack(spacing: 10) {
                 Text("Sign Up")
+                    .foregroundStyle(.white)
                     .font(.largeTitle).bold()
                 
                 VStack {
@@ -81,11 +82,12 @@ struct RegisterView: View {
                             .bold()
                     }
                 }
-                .foregroundColor(Color.black)
+                .foregroundColor(.white)
                 .padding(.bottom)
                 
             }
             .padding()
+            .background(Color("app-background"))
             .sheet(isPresented: $showImagePicker) {
                 ImagePicker(image: $image, isShown: $showImagePicker) {}
             }
@@ -107,4 +109,5 @@ struct RegisterView: View {
 
 #Preview {
     RegisterView()
+        .environmentObject(SessionManager())
 }

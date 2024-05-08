@@ -42,6 +42,7 @@ struct PrivateChatView: View {
                         }
                         Text(receiver.displayName.uppercased())
                             .font(.custom(FontFamily.bold.rawValue, size: 20))
+                            .foregroundStyle(.white)
                     }
                     Spacer()
                 }
@@ -56,8 +57,7 @@ struct PrivateChatView: View {
                                 .padding(.horizontal)
                         }
                     }
-                    .padding(.top, 10)
-                    .background(Color.white)
+                    .background(Color("app-background"))
                     .cornerRadius(10, corners: [.topLeft, .topRight])
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -75,6 +75,7 @@ struct PrivateChatView: View {
             MessageField(receiverId: receiverId)
                 .environmentObject(messagesManager)
         }
+        .background(Color("app-background"))
         .onAppear {
             if let user = sessionManager.getCurrentAuthUser()?.uid {
                 messagesManager.startOrRetrieveChat(senderId: user, receiverId: receiverId)

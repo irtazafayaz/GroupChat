@@ -1,10 +1,3 @@
-//
-//  LoginView.swift
-//  GroupChat
-//
-//  Created by Irtaza Fiaz on 21/03/2024.
-//
-
 import SwiftUI
 
 struct LoginView: View {
@@ -18,13 +11,14 @@ struct LoginView: View {
         ZStack {
             VStack(spacing: 10) {
                 Spacer()
-
-                Image(systemName: "message.badge.circle.fill")
+                Image("app-logo")
                     .resizable()
                     .frame(width: 100, height: 100)
                     .foregroundStyle(Color("primary-color"))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
                 
                 Text("Anonymous Chat Group")
+                    .foregroundStyle(.white)
                     .font(.largeTitle).bold()
                     .padding(.bottom, 40)
                 
@@ -47,19 +41,22 @@ struct LoginView: View {
                 HStack {
                     Text("Don't have an account?")
                         .font(Font.system(size: 16))
+                        .foregroundColor(.white)
                     Button(action: { sessionManager.authState = .register }) {
                         Text("Register")
                             .font(Font.system(size: 16))
                             .bold()
                             .underline()
+                            .foregroundColor(.white)
                     }
                 }
-                .foregroundColor(Color.black)
+                .foregroundColor(.white)
                 .padding(.bottom)
             }
             .padding()
+            .background(Color("app-background"))
             .blur(radius: sessionManager.isLoading ? 3 : 0)
-
+            
             if sessionManager.isLoading {
                 Color.black.opacity(0.4).edgesIgnoringSafeArea(.all)
                 

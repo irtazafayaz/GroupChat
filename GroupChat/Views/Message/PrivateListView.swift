@@ -24,7 +24,7 @@ struct PrivateListView: View {
             HStack {
                 Text("Private Chat")
                     .font(.custom(FontFamily.bold.rawValue, size: 30))
-                    .foregroundColor(.black)
+                    .foregroundColor(.white)
                 Spacer()
             }
             .frame(height: 30)
@@ -47,14 +47,14 @@ struct PrivateListView: View {
                                                 .frame(width: 30, height: 30)
                                                 .clipShape(Circle())
                                         } else {
-                                            Color.black
+                                            Color.white
                                                 .frame(width: 30, height: 30)
                                         }
                                         
                                         VStack(alignment: .leading) {
                                             Text(member.displayName.uppercased())
                                                 .font(.custom(FontFamily.bold.rawValue, size: 20))
-                                                .foregroundStyle(.black)
+                                                .foregroundStyle(.white)
                                                 .bold()
                                         }
                                         .padding(.leading, 5)
@@ -67,12 +67,16 @@ struct PrivateListView: View {
                                 
                             }
                         }
+                        .background(Color("app-background"))
                     }
+                    .background(Color("app-background"))
                 }
+                .background(Color("app-background"))
             }
             Spacer()
             
         }
+        .background(Color("app-background"))
         .onAppear {
             viewModel.startOrRetrieveChat(senderId: sessionManager.getCurrentAuthUser()?.uid ?? "NaN")
         }
@@ -87,5 +91,6 @@ struct PrivateListView: View {
 
 #Preview {
     PrivateListView(viewModel: PrivateVM())
+        .environmentObject(SessionManager())
 }
 

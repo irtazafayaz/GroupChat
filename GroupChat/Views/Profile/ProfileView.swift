@@ -24,21 +24,22 @@ struct ProfileView: View {
             
             Text(sessionManager.userName.uppercased())
                 .font(.custom(FontFamily.bold.rawValue, size: 30))
-                .foregroundStyle(.black)
+                .foregroundStyle(.white)
                 .padding(.top, 10)
 
             Text(sessionManager.userEmail.lowercased())
                 .font(.custom(FontFamily.regular.rawValue, size: 16))
-                .foregroundStyle(.gray)
+                .foregroundStyle(.white)
 
             Divider()
+                .background(.white)
             
             Button {
                 openImagePicker.toggle()
             } label: {
                 Text("Change Profile Picture")
                     .font(.custom(FontFamily.bold.rawValue, size: 20))
-                    .foregroundColor(Color("primary-color"))
+                    .foregroundStyle(.white)
                     .padding(.top)
             }
             .sheet(isPresented: $openImagePicker) {
@@ -50,10 +51,11 @@ struct ProfileView: View {
 
             
             Divider()
+                .background(.white)
 
             Text("Friends")
                 .font(.custom(FontFamily.bold.rawValue, size: 24))
-                .foregroundColor(.black)
+                .foregroundStyle(.white)
                 .padding(.top)
 
             VStack(spacing: 0) {
@@ -66,14 +68,14 @@ struct ProfileView: View {
                                 .clipShape(Circle())
                                 .padding(.leading)
                         } else {
-                            Color.black
+                            Color.white
                                 .frame(width: 20, height: 20)
                                 .padding(.leading)
                         }
                         
                         Text(friend.displayName.uppercased())
                             .font(.custom(FontFamily.semiBold.rawValue, size: 18))
-                            .foregroundStyle(.black)
+                            .foregroundStyle(.white)
                             .bold()
                             .padding(.leading, 5)
                         
@@ -106,6 +108,7 @@ struct ProfileView: View {
             .padding(.bottom, 20)
             
         }
+        .background(Color("app-background"))
         .navigationDestination(isPresented: $openChat, destination: {
             if let user = selectedFriend {
                 PrivateChatView(receiverId: user)
@@ -117,4 +120,5 @@ struct ProfileView: View {
 
 #Preview {
     ProfileView()
+        .environmentObject(SessionManager())
 }

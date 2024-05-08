@@ -20,7 +20,7 @@ struct GroupsListView: View {
             HStack {
                 Text("Groups")
                     .font(.custom(FontFamily.bold.rawValue, size: 30))
-                    .foregroundColor(.black)
+                    .foregroundColor(.white)
                 Spacer()
                 
                 Button {
@@ -58,16 +58,17 @@ struct GroupsListView: View {
                                         VStack(alignment: .leading) {
                                             Text(group.name)
                                                 .font(.custom(FontFamily.bold.rawValue, size: 20))
-                                                .foregroundStyle(.black)
+                                                .foregroundStyle(.white)
                                                 .bold()
                                             Text(group.description)
                                                 .font(.custom(FontFamily.regular.rawValue, size: 16))
-                                                .foregroundStyle(.gray)
+                                                .foregroundStyle(.white)
                                         }
                                         .padding(.leading, 5)
                                         Spacer()
                                     }
                                     Divider()
+                                        .background(.white)
                                         .frame(maxWidth: .infinity)
                                 }
                                 .padding()
@@ -80,6 +81,7 @@ struct GroupsListView: View {
             Spacer()
             
         }
+        .background(Color("app-background"))
         .sheet(isPresented: $viewModel.showingAddGroupView) {
             AddGroupView(isPresented: $viewModel.showingAddGroupView)
         }

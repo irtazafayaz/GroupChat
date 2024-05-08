@@ -21,7 +21,7 @@ struct TrendingView: View {
             HStack {
                 Text("Trending Groups 🔥")
                     .font(.custom(FontFamily.bold.rawValue, size: 26))
-                    .foregroundColor(.black)
+                    .foregroundColor(.white)
                 Spacer()
             }
             .frame(height: 30)
@@ -49,11 +49,11 @@ struct TrendingView: View {
                                     VStack(alignment: .leading) {
                                         Text(group.name)
                                             .font(.custom(FontFamily.bold.rawValue, size: 20))
-                                            .foregroundStyle(.black)
+                                            .foregroundColor(.white)
                                             .bold()
                                         Text(group.description)
                                             .font(.custom(FontFamily.regular.rawValue, size: 16))
-                                            .foregroundStyle(.gray)
+                                            .foregroundColor(.white)
                                     }
                                     Spacer()
                                     
@@ -86,6 +86,7 @@ struct TrendingView: View {
                     viewModel.filterGroups(searchText)
                 }
         }
+        .background(Color("app-background"))
     }
     
 }

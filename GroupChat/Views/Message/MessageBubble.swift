@@ -46,8 +46,8 @@ struct MessageBubble: View {
                 
                 Text("\(message.timestamp, formatter: messageDateFormatter)")
                     .font(.caption)
-                    .foregroundColor(.gray)
-                
+                    .foregroundStyle(.white)
+
             }
             
             if !isCurrentUser {

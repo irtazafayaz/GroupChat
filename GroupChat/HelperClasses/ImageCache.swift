@@ -56,6 +56,8 @@ struct CachedAsyncImageView: View {
                     .resizable()
             } else {
                 ProgressView()
+                    .foregroundStyle(.white)
+                    .tint(.white)
                     .onAppear {
                         ImageCache.shared.loadImage(url: url) { fetchedImage in
                             self.image = fetchedImage

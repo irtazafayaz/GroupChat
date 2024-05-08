@@ -28,11 +28,12 @@ struct ProfileHeader: View {
                     .shadow(radius: 10)
                     .padding(.top, 20)
             } else {
-                Image(systemName: "person.circle.fill")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 50, height: 50)
-                    .cornerRadius(50)
+                Color.white
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                    .shadow(radius: 10)
+                    .padding(.top, 20)
             }
             
             

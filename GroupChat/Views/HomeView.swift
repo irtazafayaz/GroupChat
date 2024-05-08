@@ -48,8 +48,9 @@ struct HomeView: View {
                         }
                         .tag(3)
                 }
-                
+                .background(Color("app-background"))
             }
+            .background(Color("app-background"))
             .onAppear {
                 sessionManager.fetchUserFriends()
                 sessionManager.fetchUserData()
@@ -63,4 +64,5 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
+        .environmentObject(SessionManager())
 }
