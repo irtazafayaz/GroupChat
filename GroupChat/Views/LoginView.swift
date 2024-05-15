@@ -32,7 +32,18 @@ struct LoginView: View {
                         .frame(width: 200)
                         .foregroundColor(.white)
                         .padding(.vertical, 15)
-                        .background(Color("primary-color"))
+                        .background(.black)
+                        .cornerRadius(10)
+                }
+                
+                Button {
+                    sessionManager.login(email: email, password: password)
+                } label: {
+                    Text("Login")
+                        .frame(width: 200)
+                        .foregroundColor(.white)
+                        .padding(.vertical, 15)
+                        .background(.blue)
                         .cornerRadius(10)
                 }
 

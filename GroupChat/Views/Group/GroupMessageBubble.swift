@@ -26,7 +26,7 @@ struct GroupMessageBubble: View {
                 if !isCurrentUser {
                     Text(message.senderName.components(separatedBy: "@").first ?? message.senderName)
                         .font(.custom(FontFamily.regular.rawValue, size: 12))
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                         .bold()
                 }
                 
@@ -46,7 +46,7 @@ struct GroupMessageBubble: View {
                 
                 Text("\(message.timestamp, formatter: messageDateFormatter)")
                     .font(.caption)
-                    .foregroundColor(.gray)
+                    .foregroundColor(.white)
                     .padding(.bottom, 5)
                 
             }

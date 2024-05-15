@@ -15,7 +15,7 @@ struct ProfileHeader: View {
         ZStack(alignment: .top) {
             
             Rectangle()
-                .foregroundColor(Color("primary-color"))
+                .foregroundColor(.pink)
                 .edgesIgnoringSafeArea(.top)
                 .frame(height: 70)
             

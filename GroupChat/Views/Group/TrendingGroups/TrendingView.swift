@@ -26,8 +26,8 @@ struct TrendingView: View {
             }
             .frame(height: 30)
             .padding()
-            .background(Color("primary-color"))
-            
+            .background(.pink)
+
             SearchBar(text: $searchText)
             
             if self.viewModel.filteredGroups.count > 0 {

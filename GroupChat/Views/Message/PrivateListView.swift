@@ -29,8 +29,8 @@ struct PrivateListView: View {
             }
             .frame(height: 30)
             .padding()
-            .background(Color("primary-color"))
-            
+            .background(.pink)
+
             if self.viewModel.members.count > 0 {
                 ScrollView {
                     VStack(spacing: 0) {
@@ -39,7 +39,7 @@ struct PrivateListView: View {
                                 selectedMember = member
                                 self.openPrivateChat.toggle()
                             } label: {
-                                VStack {
+                                VStack(spacing: 0) {
                                     HStack {
                                         if let url = URL(string: member.photoURL) {
                                             CachedAsyncImageView(url: url)
@@ -60,10 +60,12 @@ struct PrivateListView: View {
                                         .padding(.leading, 5)
                                         Spacer()
                                     }
+                                    .padding(10)
                                     Divider()
                                         .frame(maxWidth: .infinity)
+                                        .background(.white)
                                 }
-                                .padding()
+                                
                                 
                             }
                         }

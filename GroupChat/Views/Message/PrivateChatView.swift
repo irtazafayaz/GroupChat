@@ -74,6 +74,7 @@ struct PrivateChatView: View {
             
             MessageField(receiverId: receiverId)
                 .environmentObject(messagesManager)
+                .ignoresSafeArea()
         }
         .background(Color("app-background"))
         .onAppear {

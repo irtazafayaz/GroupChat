@@ -33,7 +33,7 @@ struct GroupsListView: View {
             }
             .frame(height: 30)
             .padding()
-            .background(Color("primary-color"))
+            .background(.pink)
             
             if self.viewModel.ownedOrJoinedGroups.count > 0 {
                 ScrollView {
@@ -49,7 +49,7 @@ struct GroupsListView: View {
                                             CachedAsyncImageView(url: url)
                                                 .aspectRatio(contentMode: .fill)
                                                 .frame(width: 50, height: 50)
-                                                .clipShape(Circle())
+                                                .clipShape(RoundedRectangle(cornerRadius: 10))
                                         } else {
                                             Color.black
                                                 .frame(width: 50, height: 50)
@@ -100,4 +100,5 @@ struct GroupsListView: View {
 
 #Preview {
     GroupsListView(viewModel: GroupsVM())
+        .environmentObject(SessionManager())
 }

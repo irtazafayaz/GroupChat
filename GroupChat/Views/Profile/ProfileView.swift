@@ -87,7 +87,7 @@ struct ProfileView: View {
                         } label: {
                             Image(systemName: "message.fill")
                                 .font(.custom(FontFamily.semiBold.rawValue, size: 16))
-                                .foregroundColor(Color("primary-color"))
+                                .foregroundColor(.pink)
                                 .padding(.trailing)
                         }
                     }

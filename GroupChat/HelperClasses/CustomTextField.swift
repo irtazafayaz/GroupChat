@@ -58,7 +58,7 @@ struct CustomTextField: View {
             
         }
         .padding(.horizontal)
-        .background(RoundedRectangle(cornerRadius: 10).fill(.gray.opacity(0.3)))
+        .background(RoundedRectangle(cornerRadius: 10).fill(.black.opacity(0.3)))
         .padding()
     }
 }

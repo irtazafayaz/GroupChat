@@ -26,6 +26,8 @@ struct HomeView: View {
                             Text("Chat")
                         }
                         .tag(0)
+                        .toolbarBackground(.white, for: .tabBar)
+                        .toolbar(.visible, for: .tabBar)
                     TrendingView(viewModel: viewModel, selectedTab: $selectedTab)
                         .tabItem {
                             Image(systemName: "chart.line.uptrend.xyaxis.circle.fill")
@@ -33,6 +35,8 @@ struct HomeView: View {
                             Text("Trending")
                         }
                         .tag(1)
+                        .toolbarBackground(.white, for: .tabBar)
+                        .toolbar(.visible, for: .tabBar)
                     GroupsListView(viewModel: viewModel)
                         .tabItem {
                             Image(systemName: "rectangle.3.group.bubble.fill")
@@ -40,6 +44,8 @@ struct HomeView: View {
                             Text("Groups")
                         }
                         .tag(2)
+                        .toolbarBackground(.white, for: .tabBar)
+                        .toolbar(.visible, for: .tabBar)
                     ProfileView()
                         .tabItem {
                             Image(systemName: "person.crop.circle.fill")
@@ -47,10 +53,15 @@ struct HomeView: View {
                             Text("Profile")
                         }
                         .tag(3)
+                        .toolbarBackground(.white, for: .tabBar)
+                        .toolbar(.visible, for: .tabBar)
                 }
-                .background(Color("app-background"))
+                .tint(.white)
+                .toolbarBackground(.white, for: .tabBar)
+                .toolbar(.visible, for: .tabBar)
             }
-            .background(Color("app-background"))
+            .toolbarBackground(.white, for: .tabBar)
+            .toolbar(.visible, for: .tabBar)
             .onAppear {
                 sessionManager.fetchUserFriends()
                 sessionManager.fetchUserData()

@@ -66,7 +66,7 @@ struct GroupChatView: View {
                         }
                     }
                     .padding(.top, 10)
-                    .background(.white)
+                    .background(Color("app-background"))
                     .cornerRadius(10, corners: [.topLeft, .topRight])
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
