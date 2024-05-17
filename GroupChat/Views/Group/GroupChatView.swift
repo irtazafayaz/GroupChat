@@ -60,9 +60,9 @@ struct GroupChatView: View {
                 ScrollViewReader { proxy in
                     ScrollView {
                         ForEach(groupchatManager.messages, id: \.id) { message in
-                            GroupMessageBubble(message: message)
-                                .padding(.horizontal)
-                                .id(message.id)
+                            GroupMessageBubble(message: message) {
+                                groupchatManager.reportMessage(message, senderId: sessionManager.getCurrentAuthUser()?.uid ?? "")
+                            }.padding(.horizontal).id(message.id)
                         }
                     }
                     .padding(.top, 10)

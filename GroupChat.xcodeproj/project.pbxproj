@@ -42,6 +42,8 @@
 		D544BE022BC1B74A0013C004 /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D544BE012BC1B74A0013C004 /* ProfileHeader.swift */; };
 		D55F6D492BCDD3DE0048C757 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55F6D482BCDD3DE0048C757 /* ImageCache.swift */; };
 		D55F6D4B2BCDD4290048C757 /* CachedAsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55F6D4A2BCDD4290048C757 /* CachedAsyncImageView.swift */; };
+		D56EA7F12BF805F600A196BE /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56EA7EF2BF805F600A196BE /* WebView.swift */; };
+		D56EA7F22BF805F600A196BE /* SharedWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56EA7F02BF805F600A196BE /* SharedWebView.swift */; };
 		D57E00402BDF05EC00C07250 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57E003F2BDF05EC00C07250 /* CustomTextField.swift */; };
 		D5AD630C2BAE097A002ECFD0 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD630B2BAE097A002ECFD0 /* ImagePicker.swift */; };
 		D5AD630E2BAE0E3E002ECFD0 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = D5AD630D2BAE0E3E002ECFD0 /* FirebaseStorage */; };
@@ -104,6 +106,8 @@
 		D544BE012BC1B74A0013C004 /* ProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeader.swift; sourceTree = "<group>"; };
 		D55F6D482BCDD3DE0048C757 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		D55F6D4A2BCDD4290048C757 /* CachedAsyncImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImageView.swift; sourceTree = "<group>"; };
+		D56EA7EF2BF805F600A196BE /* WebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		D56EA7F02BF805F600A196BE /* SharedWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedWebView.swift; sourceTree = "<group>"; };
 		D57E003F2BDF05EC00C07250 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		D5AD630B2BAE097A002ECFD0 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		D5AD630F2BAE63A1002ECFD0 /* GroupChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatView.swift; sourceTree = "<group>"; };
@@ -279,6 +283,8 @@
 		D5439E292BAD0A4200BCFD6F /* HelperClasses */ = {
 			isa = PBXGroup;
 			children = (
+				D56EA7F02BF805F600A196BE /* SharedWebView.swift */,
+				D56EA7EF2BF805F600A196BE /* WebView.swift */,
 				D5439E2A2BAD0A4D00BCFD6F /* Utilities.swift */,
 				D5AD630B2BAE097A002ECFD0 /* ImagePicker.swift */,
 				D5AD63182BAF1D41002ECFD0 /* Enums.swift */,
@@ -437,6 +443,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D56EA7F12BF805F600A196BE /* WebView.swift in Sources */,
 				D5439E142BAC781500BCFD6F /* RegisterView.swift in Sources */,
 				D5439E1C2BAC7E0300BCFD6F /* HomeView.swift in Sources */,
 				D5439E1E2BAC7E9D00BCFD6F /* GroupsListView.swift in Sources */,
@@ -444,6 +451,7 @@
 				D5439DEC2BAC66DA00BCFD6F /* Message.swift in Sources */,
 				D55F6D492BCDD3DE0048C757 /* ImageCache.swift in Sources */,
 				D5AD631D2BAF2735002ECFD0 /* RoundedCorner.swift in Sources */,
+				D56EA7F22BF805F600A196BE /* SharedWebView.swift in Sources */,
 				D57E00402BDF05EC00C07250 /* CustomTextField.swift in Sources */,
 				D5439DDF2BAC650400BCFD6F /* ContentView.swift in Sources */,
 				D5439E0E2BAC768600BCFD6F /* SessionManager.swift in Sources */,
@@ -605,19 +613,19 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"GroupChat/Preview Content\"";
 				DEVELOPMENT_TEAM = XDNGURW54Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GroupChat/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Anonymous Group Chats";
+				INFOPLIST_KEY_CFBundleDisplayName = "Anonymous Chat";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Wants to Acess Libray to upload profile pictures";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -625,13 +633,16 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.0.0;
+				MARKETING_VERSION = 3.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mahadmohamed.groupchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -643,20 +654,20 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"GroupChat/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = XDNGURW54Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GroupChat/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Anonymous Group Chats";
+				INFOPLIST_KEY_CFBundleDisplayName = "Anonymous Chat";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Wants to Acess Libray to upload profile pictures";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -664,14 +675,17 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.0.0;
+				MARKETING_VERSION = 3.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mahadmohamed.groupchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = MahadDistribution;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

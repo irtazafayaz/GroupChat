@@ -10,12 +10,9 @@ import SwiftUI
 struct GroupMessageBubble: View {
     
     @EnvironmentObject var sessionManager: SessionManager
-    private var message: GroupMessage
-    
-    init(message: GroupMessage) {
-        self.message = message
-    }
-    
+    var message: GroupMessage
+    var reportAction: () -> Void
+
     var body: some View {
         HStack {
             if isCurrentUser {
@@ -43,6 +40,14 @@ struct GroupMessageBubble: View {
                         isCurrentUser ?
                         Color("primary-color") : Color(hex: "#F5F5F5")
                     ))
+                    .contextMenu {
+                        Button(action: {
+                            reportAction()
+                        }) {
+                            Text("Report")
+                            Image(systemName: "exclamationmark.triangle")
+                        }
+                    }
                 
                 Text("\(message.timestamp, formatter: messageDateFormatter)")
                     .font(.caption)

@@ -53,8 +53,10 @@ struct PrivateChatView: View {
                 ScrollViewReader { proxy in
                     ScrollView {
                         ForEach(messagesManager.messages, id: \.id) { message in
-                            MessageBubble(message: message)
-                                .padding(.horizontal)
+                            MessageBubble(message: message) {
+                                messagesManager.reportMessage(message, senderId: sessionManager.getCurrentAuthUser()?.uid ?? "")
+                            }.padding(.horizontal)
+
                         }
                     }
                     .background(Color("app-background"))
@@ -92,4 +94,8 @@ struct PrivateChatView: View {
         proxy.scrollTo(id, anchor: .bottomTrailing)
     }
     
+}
+
+#Preview {
+    PrivateChatView(receiverId: "").environmentObject(SessionManager())
 }

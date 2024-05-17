@@ -35,17 +35,6 @@ struct LoginView: View {
                         .background(.black)
                         .cornerRadius(10)
                 }
-                
-                Button {
-                    sessionManager.login(email: email, password: password)
-                } label: {
-                    Text("Login")
-                        .frame(width: 200)
-                        .foregroundColor(.white)
-                        .padding(.vertical, 15)
-                        .background(.blue)
-                        .cornerRadius(10)
-                }
 
                 Spacer()
                 
@@ -63,6 +52,11 @@ struct LoginView: View {
                 }
                 .foregroundColor(.white)
                 .padding(.bottom)
+                
+                Text("Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")")
+                    .font(.footnote)
+                    .foregroundColor(.black)
+                
             }
             .padding()
             .background(Color("app-background"))

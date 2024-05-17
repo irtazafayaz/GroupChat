@@ -67,4 +67,23 @@ class MessagesManager: ObservableObject {
         }
     }
     
+    func reportMessage(_ message: Message, senderId: String) {
+        let reportData = [
+            "reportedBy": senderId,
+            "messageId": message.id ?? "",
+            "senderId": message.senderId,
+            "receiverId": message.receiverId,
+            "message": message.message,
+            "timestamp": FieldValue.serverTimestamp()
+        ] as [String : Any]
+
+        db.collection("reports").addDocument(data: reportData) { error in
+            if let error = error {
+                print("Error reporting message: \(error.localizedDescription)")
+            } else {
+                print("Message reported successfully")
+            }
+        }
+    }
+    
 }

@@ -67,7 +67,7 @@ struct RegisterView: View {
                 }
                 .foregroundColor(.white)
                 .padding()
-                .background(Color("primary-color"))
+                .background(.black)
                 .cornerRadius(10)
                 
                 Spacer()

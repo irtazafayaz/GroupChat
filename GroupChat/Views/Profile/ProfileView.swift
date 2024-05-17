@@ -16,7 +16,12 @@ struct ProfileView: View {
     @State private var isFriendsListExpanded: Bool = false
     @State private var image: UIImage?
     @State private var selectedFriend: String?
-
+    @State private var showDeleteConfirmation: Bool = false
+    @State private var showErrorAlert: Bool = false
+    @State private var errorMessage: String = ""
+    @State private var showTerms = false
+    @State private var showPrivacy = false
+    
     var body: some View {
         VStack {
             
@@ -40,7 +45,6 @@ struct ProfileView: View {
                 Text("Change Profile Picture")
                     .font(.custom(FontFamily.bold.rawValue, size: 20))
                     .foregroundStyle(.white)
-                    .padding(.top)
             }
             .sheet(isPresented: $openImagePicker) {
                 ImagePicker(image: $image, isShown: $openImagePicker) {
@@ -53,6 +57,48 @@ struct ProfileView: View {
             Divider()
                 .background(.white)
 
+            HStack {
+                Button {
+                    showTerms.toggle()
+                } label: {
+                    HStack(alignment: .center) {
+                        Image("ic_help_center")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 17, height: 20)
+                        Text("Terms&Conditions")
+                            .font(Font.custom(FontFamily.bold.rawValue, size: 18))
+                            .foregroundColor(.white)
+                            .padding(.leading, 5)
+                        Spacer()
+                        Image("ic_arrow_right")
+                            .foregroundColor(.black)
+                    }
+                }
+                
+                Button {
+                    showPrivacy.toggle()
+                } label: {
+                    HStack(alignment: .center) {
+                        Image("ic_privacy_policy")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 17, height: 20)
+                        Text("Privacy Policy")
+                            .font(Font.custom(FontFamily.bold.rawValue, size: 18))
+                            .foregroundColor(.white)
+                            .padding(.leading, 5)
+                        Spacer()
+                        Image("ic_arrow_right")
+                            .foregroundColor(.black)
+                    }
+                }
+
+            }
+            
+            Divider()
+                .background(.white)
+            
             Text("Friends")
                 .font(.custom(FontFamily.bold.rawValue, size: 24))
                 .foregroundStyle(.white)
@@ -97,6 +143,8 @@ struct ProfileView: View {
             
             Spacer()
             
+
+            
             Button("Sign Out") {
                 sessionManager.logout()
             }
@@ -107,18 +155,55 @@ struct ProfileView: View {
             .cornerRadius(10)
             .padding(.bottom, 20)
             
+            Button("Delete Account") {
+                showDeleteConfirmation = true
+            }
+            .foregroundColor(.white)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
+            .background(.red)
+            .cornerRadius(10)
+            .padding(.bottom, 20)
+            .alert("Are you sure you want to delete your account?", isPresented: $showDeleteConfirmation) {
+                Button("Delete", role: .destructive) {
+                    sessionManager.deleteAccount { result in
+                        switch result {
+                        case .success:
+                            // Handle successful account deletion if needed
+                            break
+                        case .failure(let error):
+                            errorMessage = error.localizedDescription
+                            showErrorAlert = true
+                        }
+                    }
+                }
+            }
+            
         }
+        .sheet(isPresented: $showTerms, content: {
+            SharedWebView(pageType: .terms)
+        })
+        .sheet(isPresented: $showPrivacy, content: {
+            SharedWebView(pageType: .privacy)
+        })
         .background(Color("app-background"))
         .navigationDestination(isPresented: $openChat, destination: {
             if let user = selectedFriend {
                 PrivateChatView(receiverId: user)
             }
         })
+        .alert(isPresented: $showErrorAlert) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        }
     }
 }
-
 
 #Preview {
     ProfileView()
         .environmentObject(SessionManager())
 }
+

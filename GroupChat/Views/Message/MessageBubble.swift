@@ -11,6 +11,7 @@ struct MessageBubble: View {
     @EnvironmentObject var sessionManager: SessionManager
 
     var message: Message
+    var reportAction: () -> Void
     @State private var showTime = false
     
     private var isCurrentUser: Bool {
@@ -43,6 +44,14 @@ struct MessageBubble: View {
                         isCurrentUser ?
                         Color("primary-color") : Color(hex: "#F5F5F5")
                     ))
+                    .contextMenu {
+                        Button(action: {
+                            reportAction()
+                        }) {
+                            Text("Report")
+                            Image(systemName: "exclamationmark.triangle")
+                        }
+                    }
                 
                 Text("\(message.timestamp, formatter: messageDateFormatter)")
                     .font(.caption)
@@ -58,30 +67,8 @@ struct MessageBubble: View {
         .transition(.scale)
     }
     
-
-    func getMessageViewWithImage(_ message: GroupMessage) -> some View {
-        HStack {
-            if isCurrentUser {
-                Spacer()
-            }
-            HStack {
-                Text(message.content)
-                    .font(.custom(FontFamily.medium.rawValue, size: 18))
-                    .foregroundColor(isCurrentUser ? .white : .black)
-                    .padding()
-                    .background(RoundedCorners(
-                        tl: isCurrentUser ? 20 : 8,
-                        tr: 20,
-                        bl: 20,
-                        br: isCurrentUser ? 8 : 20
-                    ).fill(isCurrentUser ? Color(hex: Colors.primary.rawValue) : Color(hex: "#F5F5F5")))
-                
-            }
-            if !isCurrentUser {
-                Spacer()
-            }
-        }
-        .padding(.vertical, 10)
-    }
 }
 
+#Preview {
+    MessageBubble(message: Message(message: "Hello", receiverId: "", senderId: "", timestamp: Date()), reportAction: {}).environmentObject(SessionManager())
+}

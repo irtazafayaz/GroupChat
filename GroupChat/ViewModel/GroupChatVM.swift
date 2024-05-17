@@ -140,6 +140,24 @@ class GroupChatVM: ObservableObject {
         friendAddedAlert.toggle()
     }
     
+    func reportMessage(_ message: GroupMessage, senderId: String) {
+        let reportData = [
+            "reportedBy": senderId,
+            "messageId": message.id ?? "",
+            "senderId": message.senderId,
+            "message": message.content,
+            "timestamp": FieldValue.serverTimestamp()
+        ] as [String : Any]
+
+        db.collection("group-reports").addDocument(data: reportData) { error in
+            if let error = error {
+                print("Error reporting message: \(error.localizedDescription)")
+            } else {
+                print("Message reported successfully")
+            }
+        }
+    }
+    
     
 }
 

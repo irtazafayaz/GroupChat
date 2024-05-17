@@ -162,6 +162,29 @@ class SessionManager: ObservableObject {
         }
     }
     
+    func deleteAccount(completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let user = Auth.auth().currentUser else {
+            completion(.failure(NSError(domain: "No user logged in", code: 401, userInfo: nil)))
+            return
+        }
+
+        user.delete { error in
+            if let error = error {
+                // Error handling, e.g., if the user needs to re-authenticate
+                if (error as NSError).code == AuthErrorCode.requiresRecentLogin.rawValue {
+                    // Here, you can prompt the user to re-authenticate
+                    completion(.failure(NSError(domain: "Re-authentication required", code: AuthErrorCode.requiresRecentLogin.rawValue, userInfo: nil)))
+                } else {
+                    completion(.failure(error))
+                }
+            } else {
+                // User account deleted successfully
+                completion(.success(()))
+            }
+        }
+    }
+
+    
     func getCurrentAuthUser() -> User? {
         return Auth.auth().currentUser
     }
