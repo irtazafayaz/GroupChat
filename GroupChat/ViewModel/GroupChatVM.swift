@@ -140,20 +140,94 @@ class GroupChatVM: ObservableObject {
         friendAddedAlert.toggle()
     }
     
-    func reportMessage(_ message: GroupMessage, senderId: String) {
-        let reportData = [
-            "reportedBy": senderId,
-            "messageId": message.id ?? "",
-            "senderId": message.senderId,
-            "message": message.content,
-            "timestamp": FieldValue.serverTimestamp()
-        ] as [String : Any]
+    func blockUser(currentUserId: String, userIdToBlock: String) {
+            let usersRef = db.collection("users")
+            let currentUserRef = usersRef.document(currentUserId)
+            
+            db.runTransaction({ (transaction, errorPointer) -> Any? in
+                let currentUserDocument: DocumentSnapshot
+                do {
+                    try currentUserDocument = transaction.getDocument(currentUserRef)
+                } catch let fetchError as NSError {
+                    errorPointer?.pointee = fetchError
+                    print("Unable to block user: \(fetchError.localizedDescription)")
+                    return nil
+                }
+                
+                var blockedUsers = currentUserDocument.data()?["blockedUsers"] as? [String] ?? []
+                if !blockedUsers.contains(userIdToBlock) {
+                    blockedUsers.append(userIdToBlock)
+                    transaction.updateData(["blockedUsers": blockedUsers], forDocument: currentUserRef)
+                }
+                
+                return nil
+            }) { (object, error) in
+                if let error = error {
+                    print("Transaction failed: \(error.localizedDescription)")
+                } else {
+                    print("User successfully blocked!")
+                }
+            }
+        }
+        
+        func reportMessage(_ message: GroupMessage, senderId: String) {
+            let reportData = [
+                "reportedBy": senderId,
+                "messageId": message.id ?? "",
+                "senderId": message.senderId,
+                "message": message.content,
+                "timestamp": FieldValue.serverTimestamp()
+            ] as [String : Any]
 
-        db.collection("group-reports").addDocument(data: reportData) { error in
-            if let error = error {
-                print("Error reporting message: \(error.localizedDescription)")
+            db.collection("group-reports").addDocument(data: reportData) { error in
+                if let error = error {
+                    print("Error reporting message: \(error.localizedDescription)")
+                } else {
+                    print("Message reported successfully")
+                    self.blockUser(currentUserId: senderId, userIdToBlock: message.senderId)
+                }
+            }
+        }
+    
+    
+    
+    func leaveGroup(groupId: String, userId: String, completion: @escaping (Error?) -> Void) async {
+        let groupRef = db.collection("groups").document(groupId)
+        
+        db.runTransaction({ (transaction, errorPointer) -> Any? in
+            let groupDocument: DocumentSnapshot
+            do {
+                try groupDocument = transaction.getDocument(groupRef)
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+                return nil
+            }
+            
+            guard var groupData = groupDocument.data() else {
+                let error = NSError(domain: "AppErrorDomain", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to fetch group data."])
+                errorPointer?.pointee = error
+                return nil
+            }
+            
+            var members = groupData["members"] as? [String] ?? []
+            if let index = members.firstIndex(of: userId) {
+                // Remove the user from the members array and update the database.
+                members.remove(at: index)
+                groupData["members"] = members
+                transaction.updateData(["members": members], forDocument: groupRef)
             } else {
-                print("Message reported successfully")
+                // User is not a member, nothing to do.
+                let error = NSError(domain: "AppErrorDomain", code: -1, userInfo: [NSLocalizedDescriptionKey: "User is not a member of the group."])
+                errorPointer?.pointee = error
+                return nil
+            }
+            return nil
+            
+        }) { (object, error) in
+            if let error = error {
+                completion(error)
+            } else {
+                completion(nil)
             }
         }
     }

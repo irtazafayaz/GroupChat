@@ -12,7 +12,6 @@ struct HomeView: View {
     
     //MARK: - Data Members
     @State private var selectedTab: Int = 0
-    @StateObject private var viewModel = GroupsVM()
     @EnvironmentObject var sessionManager: SessionManager
     
     var body: some View {
@@ -28,7 +27,7 @@ struct HomeView: View {
                         .tag(0)
                         .toolbarBackground(.white, for: .tabBar)
                         .toolbar(.visible, for: .tabBar)
-                    TrendingView(viewModel: viewModel, selectedTab: $selectedTab)
+                    TrendingView(selectedTab: $selectedTab)
                         .tabItem {
                             Image(systemName: "chart.line.uptrend.xyaxis.circle.fill")
                                 .renderingMode(.template)
@@ -37,7 +36,7 @@ struct HomeView: View {
                         .tag(1)
                         .toolbarBackground(.white, for: .tabBar)
                         .toolbar(.visible, for: .tabBar)
-                    GroupsListView(viewModel: viewModel)
+                    GroupsListView()
                         .tabItem {
                             Image(systemName: "rectangle.3.group.bubble.fill")
                                 .renderingMode(.template)
@@ -65,7 +64,6 @@ struct HomeView: View {
             .onAppear {
                 sessionManager.fetchUserFriends()
                 sessionManager.fetchUserData()
-                viewModel.fetchGroupsByOwner(sessionManager.getCurrentAuthUser()?.uid ?? "NaN")
             }
             .navigationBarBackButtonHidden(true)
         }

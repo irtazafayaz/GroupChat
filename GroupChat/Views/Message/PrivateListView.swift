@@ -10,11 +10,11 @@ import SwiftUI
 struct PrivateListView: View {
     
     // MARK: Data Members
+    @State var members: [UserDetails] = []
     @State private var selectedMember: UserDetails?
     @State private var openPrivateChat: Bool = false
     
     // MARK: Data Binding
-    @StateObject var viewModel: PrivateVM = PrivateVM()
     @EnvironmentObject var sessionManager: SessionManager
     
     // MARK: Body
@@ -30,11 +30,11 @@ struct PrivateListView: View {
             .frame(height: 30)
             .padding()
             .background(.pink)
-
-            if self.viewModel.members.count > 0 {
+            
+            if members.count > 0 {
                 ScrollView {
                     VStack(spacing: 0) {
-                        ForEach(viewModel.members, id: \.id) { member in
+                        ForEach(members, id: \.id) { member in
                             Button {
                                 selectedMember = member
                                 self.openPrivateChat.toggle()
@@ -80,7 +80,24 @@ struct PrivateListView: View {
         }
         .background(Color("app-background"))
         .onAppear {
-            viewModel.startOrRetrieveChat(senderId: sessionManager.getCurrentAuthUser()?.uid ?? "NaN")
+            self.members.removeAll()
+            FirebaseManager.shared.fetchFriendListForPrivateChat(senderId: sessionManager.getCurrentAuthUser()?.uid ?? "NaN") { friends, error in
+                if let error = error {
+                    print("Error starting or retrieving chat: \(error.localizedDescription)")
+                    return
+                }
+                for friend in friends {
+                    FirebaseManager.shared.fetchUserInfo(friend) { userDetails, error in
+                        DispatchQueue.main.async {
+                            if let userDetails = userDetails {
+                                self.members.append(userDetails)
+                            } else if let error = error {
+                                print("Failed to fetch user details: \(error.localizedDescription)")
+                            }
+                        }
+                    }
+                }
+            }
         }
         .navigationDestination(isPresented: $openPrivateChat, destination: {
             if let memberId = selectedMember?.id {
@@ -92,7 +109,6 @@ struct PrivateListView: View {
 }
 
 #Preview {
-    PrivateListView(viewModel: PrivateVM())
-        .environmentObject(SessionManager())
+    PrivateListView().environmentObject(SessionManager())
 }
 

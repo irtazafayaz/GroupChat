@@ -13,9 +13,15 @@ struct PrivateChatView: View {
     private var receiverId: String
     
     // MARK: Data Managers
+    @State private(set) var messages: [Message] = []
+    @State private(set) var lastMessageId: String = ""
+    @State private(set) var chatId: String = ""
+    @State private(set) var receiverInfo: UserDetails?
+    @State private var showAlert = false
+    @State private var message = ""
+
     @EnvironmentObject private var sessionManager: SessionManager
-    @StateObject private var messagesManager = MessagesManager()
-    
+    @Environment(\.dismiss) private var dismiss
     init(receiverId: String) {
         self.receiverId = receiverId
     }
@@ -25,7 +31,7 @@ struct PrivateChatView: View {
             VStack {
                 HStack {
                     CustomBackButton()
-                    if let receiver = messagesManager.receiverInfo {
+                    if let receiver = receiverInfo {
                         if let url = URL(string: receiver.photoURL) {
                             CachedAsyncImageView(url: url)
                                 .aspectRatio(contentMode: .fill)
@@ -45,6 +51,23 @@ struct PrivateChatView: View {
                             .foregroundStyle(.white)
                     }
                     Spacer()
+                    
+                    Button {
+                        showAlert.toggle()
+                    } label: {
+                        Image(systemName: "trash.square.fill")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            .foregroundStyle(.white)
+                            .padding(.trailing)
+                    }
+                    .alert("are you sure you want to stop talking with your friend? 🥹", isPresented: $showAlert) {
+                        Button("OK", role: .destructive) {
+                            FirebaseManager.shared.stopChattingWithFriend(chatId: chatId)
+                            FirebaseManager.shared.removeFriend(currentUserId: sessionManager.getCurrentAuthUser()?.uid ?? "", friendId: receiverId)
+                            dismiss()
+                        }
+                    }
                 }
                 .frame(height: 60)
                 .background(Color("primary-color"))
@@ -52,9 +75,9 @@ struct PrivateChatView: View {
                 
                 ScrollViewReader { proxy in
                     ScrollView {
-                        ForEach(messagesManager.messages, id: \.id) { message in
+                        ForEach(messages, id: \.id) { message in
                             MessageBubble(message: message) {
-                                messagesManager.reportMessage(message, senderId: sessionManager.getCurrentAuthUser()?.uid ?? "")
+                                FirebaseManager.shared.reportMessage(message, senderId: sessionManager.getCurrentAuthUser()?.uid ?? "")
                             }.padding(.horizontal)
 
                         }
@@ -63,34 +86,66 @@ struct PrivateChatView: View {
                     .cornerRadius(10, corners: [.topLeft, .topRight])
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            if let lastId = messagesManager.messages.last?.id {
+                            if let lastId = messages.last?.id {
                                 proxy.scrollTo(lastId, anchor: .bottom)
                             }
                         }
                     }
-                    .onChange(of: messagesManager.messages.last?.id) { scrollToBottom(proxy: proxy) }
+                    .onChange(of: messages.last?.id) { scrollToBottom(proxy: proxy) }
 
                 }
                 Spacer()
             }
             
-            MessageField(receiverId: receiverId)
-                .environmentObject(messagesManager)
-                .ignoresSafeArea()
+            messageField.ignoresSafeArea()
         }
         .background(Color("app-background"))
         .onAppear {
+            FirebaseManager.shared.fetchUserInfo(receiverId) { friend, error in
+                if error == nil {
+                    self.receiverInfo = friend
+                }
+            }
             if let user = sessionManager.getCurrentAuthUser()?.uid {
-                messagesManager.startOrRetrieveChat(senderId: user, receiverId: receiverId)
-                messagesManager.fetchFriendInfo(receiverId: receiverId)
+                FirebaseManager.shared.fetchConversationId(senderId: user, receiverId: receiverId, completion: { conversationId, error in
+                    if error == nil, let convoId = conversationId {
+                        chatId = convoId
+                        FirebaseManager.shared.fetchConversationMessages(convoId, completion: { messages, error in
+                            if error == nil {
+                                self.messages = messages
+                            }
+                        })
+                    }
+                    
+                })
             }
         }
         .navigationBarBackButtonHidden()
         .frame(maxWidth: .infinity)
     }
     
+    var messageField: some View {
+        HStack {
+            CustomTextField(label: $message, textfieldType: .normal)
+            Button {
+                if let user = sessionManager.getCurrentAuthUser()?.uid {
+                    FirebaseManager.shared.sendPrivateMessage(senderId: user, receiverId: receiverId, message: message, chatId: chatId)
+                    message = ""
+                }
+                
+            } label: {
+                Image(systemName: "paperplane.fill")
+                    .foregroundColor(.white)
+                    .padding(10)
+                    .background(Color("primary-color"))
+                    .cornerRadius(50)
+            }
+        }
+        .padding()
+    }
+    
     private func scrollToBottom(proxy: ScrollViewProxy) {
-        guard let id = messagesManager.messages.last?.id else { return }
+        guard let id = messages.last?.id else { return }
         proxy.scrollTo(id, anchor: .bottomTrailing)
     }
     

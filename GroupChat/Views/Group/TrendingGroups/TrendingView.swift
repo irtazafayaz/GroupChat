@@ -9,11 +9,21 @@ import SwiftUI
 
 struct TrendingView: View {
     
-    @ObservedObject var viewModel: GroupsVM
     @EnvironmentObject var sessionManager: SessionManager
     
     @State private var searchText = ""
     @Binding var selectedTab: Int
+    
+    @State var groupsArray: [Group] = []
+    @State var ownedOrJoinedGroups: [Group] = []
+    @State var notJoinedGroups: [Group] = []
+    
+    @State var isLoading: Bool = false
+    @State var showingAddGroupView = false
+    @State var openDiscoverGroupsView = false
+    @State var isFetchingGroups = false
+    @State var filteredGroups: [Group] = []
+    
     
     var body: some View {
         VStack {
@@ -30,10 +40,10 @@ struct TrendingView: View {
 
             SearchBar(text: $searchText)
             
-            if self.viewModel.filteredGroups.count > 0 {
+            if filteredGroups.count > 0 {
                 ScrollView {
                     VStack {
-                        ForEach(viewModel.filteredGroups.prefix(10), id: \.id) { group in
+                        ForEach(filteredGroups.prefix(10), id: \.id) { group in
                             VStack {
                                 HStack {
                                     if let url = URL(string: group.image) {
@@ -59,7 +69,7 @@ struct TrendingView: View {
                                     
                                     Button("Join") {
                                         if let user = sessionManager.getCurrentAuthUser() {
-                                            viewModel.joinGroup(groupId: group.id ?? "NaN", userId: user.uid) { error  in
+                                            FirebaseManager.shared.joinGroup(groupId: group.id ?? "NaN", userId: user.uid) { error  in
                                                 if error == nil  {
                                                     print("Error Joining Group \(String(describing: group.id))")
                                                 } else {
@@ -83,10 +93,47 @@ struct TrendingView: View {
             }
             Spacer()
                 .onChange(of: searchText) {
-                    viewModel.filterGroups(searchText)
+                    filterGroups(searchText)
                 }
         }
         .background(Color("app-background"))
+        .onAppear {
+            FirebaseManager.shared.fetchGroupsByOwner((sessionManager.getCurrentAuthUser()?.uid ?? "NaN")) { groups, error in
+                if error == nil {
+                    groupsArray.removeAll()
+                    groupsArray = groups
+                    categorizeGroups()
+                }
+
+            }
+        }
+    }
+    
+    private func categorizeGroups() {
+        let uid = sessionManager.getCurrentAuthUser()?.uid ?? "NaN"
+        ownedOrJoinedGroups.removeAll()
+        notJoinedGroups.removeAll()
+        for group in groupsArray {
+            if group.owner == uid || (group.members?.contains(uid) ?? false) {
+                ownedOrJoinedGroups.append(group)
+            } else {
+                notJoinedGroups.append(group)
+            }
+        }
+        notJoinedGroups.sort { (group1, group2) -> Bool in
+            let count1 = group1.members?.count ?? 0
+            let count2 = group2.members?.count ?? 0
+            return count1 > count2
+        }
+        filterGroups("")
+    }
+    
+    private func filterGroups(_ searchText: String) {
+        if searchText.isEmpty {
+            filteredGroups = notJoinedGroups
+        } else {
+            filteredGroups = groupsArray.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+        }
     }
     
 }

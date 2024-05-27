@@ -9,10 +9,18 @@ import SwiftUI
 
 struct GroupsListView: View {
     
-    @ObservedObject var viewModel: GroupsVM
     @EnvironmentObject var sessionManager: SessionManager
+    
     @State private var selectedGroup: Group?
+    
     @State private var openGroupChat: Bool = false
+    @State private var showingAddGroupView = false
+
+    @State private var groupsArray: [Group] = []
+    @State private var ownedOrJoinedGroups: [Group] = []
+    @State private var notJoinedGroups: [Group] = []
+    @State var filteredGroups: [Group] = []
+    
     
     var body: some View {
         VStack {
@@ -24,7 +32,7 @@ struct GroupsListView: View {
                 Spacer()
                 
                 Button {
-                    viewModel.showingAddGroupView.toggle()
+                    showingAddGroupView.toggle()
                 } label: {
                     Image(systemName: "plus.rectangle.fill.on.rectangle.fill")
                         .font(.custom(FontFamily.bold.rawValue, size: 20))
@@ -35,10 +43,10 @@ struct GroupsListView: View {
             .padding()
             .background(.pink)
             
-            if self.viewModel.ownedOrJoinedGroups.count > 0 {
+            if ownedOrJoinedGroups.count > 0 {
                 ScrollView {
                     VStack(spacing: 0) {
-                        ForEach(viewModel.ownedOrJoinedGroups, id: \.id) { group in
+                        ForEach(ownedOrJoinedGroups, id: \.id) { group in
                             Button {
                                 selectedGroup = group
                                 self.openGroupChat.toggle()
@@ -82,11 +90,18 @@ struct GroupsListView: View {
             
         }
         .background(Color("app-background"))
-        .sheet(isPresented: $viewModel.showingAddGroupView) {
-            AddGroupView(isPresented: $viewModel.showingAddGroupView)
+        .sheet(isPresented: $showingAddGroupView) {
+            AddGroupView(isPresented: $showingAddGroupView)
         }
         .onAppear {
-            viewModel.fetchGroupsByOwner(sessionManager.getCurrentAuthUser()?.uid ?? "NaN")
+            FirebaseManager.shared.fetchGroupsByOwner((sessionManager.getCurrentAuthUser()?.uid ?? "NaN")) { groups, error in
+                if error == nil {
+                    groupsArray.removeAll()
+                    groupsArray = groups
+                    categorizeGroups()
+                }
+
+            }
         }
         .navigationDestination(isPresented: $openGroupChat, destination: {
             if let selected = selectedGroup {
@@ -95,10 +110,38 @@ struct GroupsListView: View {
         })
     }
     
+    private func categorizeGroups() {
+        let uid = sessionManager.getCurrentAuthUser()?.uid ?? "NaN"
+        ownedOrJoinedGroups.removeAll()
+        notJoinedGroups.removeAll()
+        for group in groupsArray {
+            if group.owner == uid || (group.members?.contains(uid) ?? false) {
+                ownedOrJoinedGroups.append(group)
+            } else {
+                notJoinedGroups.append(group)
+            }
+        }
+        notJoinedGroups.sort { (group1, group2) -> Bool in
+            let count1 = group1.members?.count ?? 0
+            let count2 = group2.members?.count ?? 0
+            return count1 > count2
+        }
+        filterGroups("")
+    }
+    
+    private func filterGroups(_ searchText: String) {
+        if searchText.isEmpty {
+            filteredGroups = notJoinedGroups
+        } else {
+            filteredGroups = groupsArray.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+        }
+    }
+    
+    
 }
 
 
 #Preview {
-    GroupsListView(viewModel: GroupsVM())
+    GroupsListView()
         .environmentObject(SessionManager())
 }

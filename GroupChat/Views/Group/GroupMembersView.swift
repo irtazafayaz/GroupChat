@@ -68,7 +68,7 @@ struct GroupMembersView: View {
                         .disabled(isCurrentUser(member.id ?? "NaN"))
                         .alert(isPresented: $groupchatManager.friendAddedAlert) {
                             Alert(
-                                title: Text("Adding \(member.displayName ?? "friend")"),
+                                title: Text("Adding \(member.displayName)"),
                                 message: Text(groupchatManager.friendAddedAlertMessage),
                                 dismissButton: .default(Text("OK"), action: {})
                             )

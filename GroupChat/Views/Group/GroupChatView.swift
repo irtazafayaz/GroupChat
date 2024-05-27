@@ -11,9 +11,14 @@ struct GroupChatView: View {
     
     @ObservedObject var groupchatManager = GroupChatVM()
     @EnvironmentObject var sessionManager: SessionManager
+    @Environment(\.dismiss) private var dismiss
+
+    
     @State private var openMemberList: Bool = false
     @State private var lastMessageId: String? = nil
     @State private var shouldScrollToBottom: Bool = true
+    @State private var showAlert = false
+    @State private var message = ""
     
     private var selectedGroup: Group
     
@@ -45,6 +50,22 @@ struct GroupChatView: View {
                         .font(.custom(FontFamily.bold.rawValue, size: 20))
                         .foregroundStyle(.white)
                     Spacer()
+                    Button {
+                        showAlert.toggle()
+                    } label: {
+                        Image(systemName: "trash.square.fill")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            .foregroundStyle(.white)
+                            .padding(.trailing)
+                    }
+                    .alert("are you sure you want to leave this group? 🥹", isPresented: $showAlert) {
+                        Button("OK", role: .destructive) {
+                            FirebaseManager.shared.leaveGroup(groupId: selectedGroup.id ?? "", userId: sessionManager.getCurrentAuthUser()?.uid ?? "") {_ in}
+                            dismiss()
+                        }
+                    }
+                    .padding(.trailing)
                     Button {
                         openMemberList.toggle()
                     } label: {
@@ -104,4 +125,9 @@ struct GroupChatView: View {
         proxy.scrollTo(id, anchor: .bottomTrailing)
     }
     
+}
+
+#Preview {
+    GroupChatView(selectedGroup: Group(name: "", type: "", description: "", owner: "", image: ""))
+        .environmentObject(SessionManager())
 }
