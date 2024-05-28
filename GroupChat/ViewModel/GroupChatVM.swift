@@ -16,7 +16,7 @@ class GroupChatVM: ObservableObject {
     @Published private(set) var friendAddedAlertMessage: String = ""
     @Published var friendAddedAlert: Bool = false
     @Published var lastMessageId: String? = nil
-
+    
     private let db = Firestore.firestore()
     private var messagesListener: ListenerRegistration?
     private var groupListener: ListenerRegistration?
@@ -27,20 +27,7 @@ class GroupChatVM: ObservableObject {
     }
     
     func sendMessage(toGroup groupId: String, message: String, senderId: String, senderName: String) {
-        let messageData: [String: Any] = [
-            "senderId": senderId,
-            "senderName": senderName,
-            "timestamp": FieldValue.serverTimestamp(),
-            "content": message,
-        ]
-        
-        db.collection("groups").document(groupId).collection("messages").addDocument(data: messageData) { err in
-            if let err = err {
-                print("Error sending message: \(err)")
-            } else {
-                print("Message sent")
-            }
-        }
+        FirebaseManager.shared.sendGroupMessage(toGroup: groupId, message: message, senderId: senderId, senderName: senderName)
     }
     
     func getMessagesAndMembers(forGroup groupId: String) {

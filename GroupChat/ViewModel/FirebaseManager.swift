@@ -271,6 +271,22 @@ extension FirebaseManager {
         }
     }
 
+    func sendGroupMessage(toGroup groupId: String, message: String, senderId: String, senderName: String) {
+        let messageData: [String: Any] = [
+            "senderId": senderId,
+            "senderName": senderName,
+            "timestamp": FieldValue.serverTimestamp(),
+            "content": message,
+        ]
+        
+        db.collection("groups").document(groupId).collection("messages").addDocument(data: messageData) { err in
+            if let err = err {
+                print("Error sending message: \(err)")
+            } else {
+                print("Message sent")
+            }
+        }
+    }
 
     
 }

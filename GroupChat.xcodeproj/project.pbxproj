@@ -41,6 +41,7 @@
 		D56EA7F12BF805F600A196BE /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56EA7EF2BF805F600A196BE /* WebView.swift */; };
 		D56EA7F22BF805F600A196BE /* SharedWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56EA7F02BF805F600A196BE /* SharedWebView.swift */; };
 		D56EA8172C05254800A196BE /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56EA8162C05254800A196BE /* FirebaseManager.swift */; };
+		D56EA8192C06846300A196BE /* Popup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56EA8182C06846300A196BE /* Popup.swift */; };
 		D57E00402BDF05EC00C07250 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57E003F2BDF05EC00C07250 /* CustomTextField.swift */; };
 		D5AD630C2BAE097A002ECFD0 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AD630B2BAE097A002ECFD0 /* ImagePicker.swift */; };
 		D5AD630E2BAE0E3E002ECFD0 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = D5AD630D2BAE0E3E002ECFD0 /* FirebaseStorage */; };
@@ -102,6 +103,7 @@
 		D56EA7EF2BF805F600A196BE /* WebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		D56EA7F02BF805F600A196BE /* SharedWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedWebView.swift; sourceTree = "<group>"; };
 		D56EA8162C05254800A196BE /* FirebaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		D56EA8182C06846300A196BE /* Popup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popup.swift; sourceTree = "<group>"; };
 		D57E003F2BDF05EC00C07250 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		D5AD630B2BAE097A002ECFD0 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		D5AD630F2BAE63A1002ECFD0 /* GroupChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatView.swift; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 				D55F6D482BCDD3DE0048C757 /* ImageCache.swift */,
 				D55F6D4A2BCDD4290048C757 /* CachedAsyncImageView.swift */,
 				D57E003F2BDF05EC00C07250 /* CustomTextField.swift */,
+				D56EA8182C06846300A196BE /* Popup.swift */,
 			);
 			path = HelperClasses;
 			sourceTree = "<group>";
@@ -452,6 +455,7 @@
 				D5AD630C2BAE097A002ECFD0 /* ImagePicker.swift in Sources */,
 				D5439E162BAC784900BCFD6F /* ProfileView.swift in Sources */,
 				D5439E022BAC731A00BCFD6F /* UIView+Extensions.swift in Sources */,
+				D56EA8192C06846300A196BE /* Popup.swift in Sources */,
 				D5BA875D2BBB886B006CEA8C /* GroupMembersView.swift in Sources */,
 				D5AD63162BAE69A9002ECFD0 /* GroupMsgField.swift in Sources */,
 				D544BAFB2BBE32B1005AE549 /* SearchBar.swift in Sources */,
