@@ -17,8 +17,9 @@ struct RegisterView: View {
     @State private var fullName = ""
     @State private var image: UIImage?
     @State private var showImagePicker = false
-    
-    
+    @State private var agreedTermsAndConditions = false
+    @State private var showTermsAndConditions = false
+
     var body: some View {
         ZStack {
             VStack(spacing: 10) {
@@ -57,6 +58,27 @@ struct RegisterView: View {
                 
                 CustomTextField(label: $confirmPassword, placeholder: "Confirm Password", textfieldType: .password)
                 
+                HStack {
+                    Text("I accept the")
+                        .font(.system(size: 16))
+                    
+                    Button(action: { showTermsAndConditions.toggle() }) {
+                        Text("terms and conditions")
+                            .font(.system(size: 16))
+                            .underline()
+                            .lineLimit(1)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    
+                    Toggle("", isOn: $agreedTermsAndConditions)
+                        .labelsHidden()
+                        .tint(.black)
+                }
+                .foregroundColor(.white)
+                .padding(.bottom)
+                .padding(.horizontal)
+                
+                
                 Button("Sign Up") {
                     sessionManager.createNewUser(
                         name: fullName,
@@ -91,6 +113,9 @@ struct RegisterView: View {
             .sheet(isPresented: $showImagePicker) {
                 ImagePicker(image: $image, isShown: $showImagePicker) {}
             }
+            .sheet(isPresented: $showTermsAndConditions, content: {
+                TermsAndAgreements()
+            })
             .blur(radius: sessionManager.isLoading ? 3 : 0)
             
             
