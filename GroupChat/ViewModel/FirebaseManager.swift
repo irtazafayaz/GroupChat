@@ -288,5 +288,14 @@ extension FirebaseManager {
         }
     }
 
+    func deleteGroupMessage(_ message: GroupMessage, groupId: String) {
+        db.collection("groups").document(groupId).collection("messages").document(message.id ?? "").delete { error in
+            if let error = error {
+                print("Error deleting message: \(error)")
+            } else {
+                print("Message deleted")
+            }
+        }
+    }
     
 }

@@ -11,6 +11,7 @@ struct GroupMessageBubble: View {
     
     @EnvironmentObject var sessionManager: SessionManager
     var message: GroupMessage
+    var groupId: String
     var reportAction: () -> Void
 
     var body: some View {
@@ -45,6 +46,12 @@ struct GroupMessageBubble: View {
                             reportAction()
                         }) {
                             Text("Report")
+                            Image(systemName: "exclamationmark.triangle")
+                        }
+                        Button(action: {
+                            FirebaseManager.shared.deleteGroupMessage(message, groupId: groupId)
+                        }) {
+                            Text("Delete")
                             Image(systemName: "exclamationmark.triangle")
                         }
                     }

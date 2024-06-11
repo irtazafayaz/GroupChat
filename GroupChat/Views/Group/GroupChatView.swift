@@ -56,8 +56,7 @@ struct GroupChatView: View {
                         Image(systemName: "trash.square.fill")
                             .resizable()
                             .frame(width: 20, height: 20)
-                            .foregroundStyle(.white)
-                            .padding(.trailing)
+                            .foregroundStyle(.black)
                     }
                     .alert("are you sure you want to leave this group? 🥹", isPresented: $showAlert) {
                         Button("OK", role: .destructive) {
@@ -70,8 +69,9 @@ struct GroupChatView: View {
                         openMemberList.toggle()
                     } label: {
                         Image(systemName: "info.bubble.fill")
+                            .resizable()
+                            .frame(width: 20, height: 20)
                             .foregroundColor(.black)
-                            .font(.body)
                             .padding(.trailing)
                     }
                 }
@@ -81,7 +81,7 @@ struct GroupChatView: View {
                 ScrollViewReader { proxy in
                     ScrollView {
                         ForEach(groupchatManager.messages, id: \.id) { message in
-                            GroupMessageBubble(message: message) {
+                            GroupMessageBubble(message: message, groupId: selectedGroup.id ?? "") {
                                 groupchatManager.reportMessage(message, senderId: sessionManager.getCurrentAuthUser()?.uid ?? "")
                             }.padding(.horizontal).id(message.id)
                         }

@@ -36,8 +36,8 @@ struct HTMLStringView: UIViewRepresentable {
 }
 
 struct TermsAndAgreements: View {
-    @State private var content: String = "<p>Loading...</p>"
-    
+    @Binding var content: String
+
     var body: some View {
         HTMLStringView(htmlContent: content)
             .onAppear {
@@ -75,5 +75,5 @@ struct TermsAndAgreements: View {
 }
 
 #Preview {
-    TermsAndAgreements()
+    TermsAndAgreements(content: .constant(""))
 }

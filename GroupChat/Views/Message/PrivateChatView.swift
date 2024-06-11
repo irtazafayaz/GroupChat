@@ -22,6 +22,7 @@ struct PrivateChatView: View {
 
     @EnvironmentObject private var sessionManager: SessionManager
     @Environment(\.dismiss) private var dismiss
+    
     init(receiverId: String) {
         self.receiverId = receiverId
     }
@@ -61,7 +62,7 @@ struct PrivateChatView: View {
                             .foregroundStyle(.white)
                             .padding(.trailing)
                     }
-                    .alert("are you sure you want to stop talking with your friend? 🥹", isPresented: $showAlert) {
+                    .alert("are you sure you want to block your friend? 🥹", isPresented: $showAlert) {
                         Button("OK", role: .destructive) {
                             FirebaseManager.shared.stopChattingWithFriend(chatId: chatId)
                             FirebaseManager.shared.removeFriend(currentUserId: sessionManager.getCurrentAuthUser()?.uid ?? "", friendId: receiverId)
