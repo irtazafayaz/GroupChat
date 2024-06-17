@@ -631,7 +631,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GroupChat/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Anonymous Chat";
+				INFOPLIST_KEY_CFBundleDisplayName = "Buzz Group Chat";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Wants to Acess Libray to upload profile pictures";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -645,7 +645,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.0.2;
+				MARKETING_VERSION = 3.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mahadmohamed.groupchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -673,7 +673,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GroupChat/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Anonymous Chat";
+				INFOPLIST_KEY_CFBundleDisplayName = "Buzz Group Chat";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Wants to Acess Libray to upload profile pictures";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -687,7 +687,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.0.2;
+				MARKETING_VERSION = 3.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mahadmohamed.groupchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

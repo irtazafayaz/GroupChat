@@ -18,7 +18,7 @@ struct LoginView: View {
                     .foregroundStyle(Color("primary-color"))
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                 
-                Text("Anonymous Chat Group")
+                Text("Buzz Group Chat")
                     .foregroundStyle(.white)
                     .font(.largeTitle).bold()
                     .padding(.bottom, 40)
